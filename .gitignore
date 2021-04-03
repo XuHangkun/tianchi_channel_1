@@ -1,0 +1,6 @@
+*.csv
+*.chkpt
+*.model
+* __pycache__
+*.pyc
+*.bin
