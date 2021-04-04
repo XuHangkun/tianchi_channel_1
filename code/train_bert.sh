@@ -1,2 +1,3 @@
 #!/bin/bash
-python bert_pretrain.py
+#python bert_pretrain.py
+

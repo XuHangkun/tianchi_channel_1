@@ -27,12 +27,13 @@ from model.TextRNN import TextRNNConfig,TextRNNModel
 from model.TextRCNN import TextRCNNConfig,TextRCNNModel
 from model.TextRNN_Att import TextRNNAttConfig,TextRNNAttModel
 from model.transformer import TransformerConfig,TransformerModel
+from model.bert import BERTConfig,BERTModel
+from transformers import RobertaTokenizerFast
 import torch.optim as optim
 import torch.nn.functional as F
 import warnings
 warnings.filterwarnings('ignore')  # ignore warnings due to update in pytorch version
 from utils.eval import cal_accuracy
-from utils.kFoldData import KFoldDataLoader
 import gensim
 from gensim.models import Word2Vec
 import pandas as pd
@@ -48,7 +49,10 @@ def train_epoch(model, training_data, optimizer, opt, device):
 
     desc = '  - (Training)   '
     for report,label in tqdm(training_data, mininterval=2, desc=desc, leave=False):
-        report = report.type(torch.LongTensor).to(device)
+        if "BERT" in opt.model:
+            report = report.to(device)
+        else:
+            report = report.type(torch.LongTensor).to(device)
         label = label.to(device).float()
         # print(report.shape,label.shape)
 
@@ -77,7 +81,10 @@ def eval_epoch(model, validation_data, opt,device):
 
     desc = '  - (Validation)   '
     for report,label in tqdm(validation_data, mininterval=1, desc=desc, leave=False):
-        report = report.type(torch.LongTensor).to(device)
+        if "BERT" in opt.model:
+            report = report.to(device)
+        else:
+            report = report.type(torch.LongTensor).to(device)
         label = label.to(device).float()
         pred = model(report)    #prediction, we do not use mask now!
         loss = F.binary_cross_entropy(pred,label)
@@ -136,7 +143,7 @@ def train(model, training_data, validation_data, optimizer, device, opt):
                 print('    - [Info] The checkpoint file has been updated.')
         loss_over_shit = 100*(min(valid_losses) - train_loss)/min(valid_losses)
         acc_over_shit = 100*(train_acc > max(valid_accs))/max(valid_accs)
-        if loss_over_shit > 10 and acc_over_shit > 0.0:
+        if loss_over_shit > 0 and acc_over_shit > 0:
             break
 
     return train_losses,train_accs,valid_losses,valid_accs
@@ -165,6 +172,9 @@ def load_model(opt,device):
         model_config.device = device
         model_config.padding_idx = opt.pad_token
         m_model = TransformerModel(model_config).to(device)
+    elif  "BERT" in opt.model:
+        model_config = BERTConfig(num_class = opt.nclass,pre_train_path=opt.bert_path)
+        m_model = BERTModel(model_config).to(device)
     else:
         # default TextCNN
         model_config = TextCNNConfig(opt.ntokens,opt.nemb,opt.nclass)
@@ -182,10 +192,12 @@ def main():
     parser.add_argument('-label_smoothing', type=float, default=0.000,help="The possibility of flip train label")
 
     # ntokens will be changed according to train data
-    parser.add_argument('-model',default="TextCNN",choices=["TextCNN","DPCNN","TextRNN","TextAttRNN","TextRCNN","Transformer"],help="Net work for learning")
+    parser.add_argument('-model',default="TextCNN",choices=["BERT","TextCNN","DPCNN","TextRNN","TextAttRNN","TextRCNN","Transformer"],help="Net work for learning")
     parser.add_argument('-ntokens', type = int, default= 858)
     parser.add_argument('-nemb', type=int, default=500)
     parser.add_argument('-nclass', type=int, default=17)
+    parser.add_argument('-bert_path',default=os.path.join(os.getenv('PROJTOP'),"user_data/bert"),help="path of pretrained BERT")
+    parser.add_argument('-tokenizer_path',default=os.path.join(os.getenv('PROJTOP'),"user_data/bert"),help="path of tokenizer")
 
     # parameters of optimizer
     parser.add_argument('-n_warmup_steps', type=int, default=4000)
@@ -220,7 +232,25 @@ def main():
     print("Start getting data...")
     train_df = pd.read_csv(os.path.join(os.getenv('PROJTOP'),'tcdata/medical_nlp_round1_data/train.csv'),sep="\|,\|",names=["id","report","label"],index_col=0)
     #train_df = train_df.sample(frac=1).reset_index(drop=True)
-    k_fold_data_loader = KFoldDataLoader(
+    if opt.model in "BERT":
+        from utils.bert_kFoldData import KFoldDataLoader
+        tokenizer = RobertaTokenizerFast.from_pretrained(opt.tokenizer_path, max_len=70)
+        tokens = [str(i) for i in range(857,-1,-1)]
+        tokenizer.add_tokens(tokens)
+        k_fold_data_loader = KFoldDataLoader(
+                                df=train_df,
+                                tokenizer = tokenizer,
+                                batch_size = opt.batch_size,
+                                k = opt.fold_k,
+                                nclass = opt.nclass,
+                                max_len = opt.max_len,
+                                label_smoothing = opt.label_smoothing
+                                )
+        opt.pad_token = tokenizer.vocab["<pad>"]
+        opt.ntokens = len(tokenizer.vocab)
+    else:
+        from utils.kFoldData import KFoldDataLoader
+        k_fold_data_loader = KFoldDataLoader(
                                 df=train_df,
                                 batch_size = opt.batch_size,
                                 k = opt.fold_k,
@@ -228,8 +258,8 @@ def main():
                                 max_len = opt.max_len,
                                 label_smoothing = opt.label_smoothing
                                 )
-    opt.pad_token = k_fold_data_loader.pad_idx
-    opt.ntokens = k_fold_data_loader.pad_idx + 1
+        opt.pad_token = k_fold_data_loader.pad_idx
+        opt.ntokens = k_fold_data_loader.pad_idx + 1
     print("Finish getting data ~ v ~")
 
     # create the log file to save training performance
@@ -254,7 +284,7 @@ def main():
 
         word_vec_file = open(opt.word2vec_path,'rb')
         word2vec_model = pickle.load(word_vec_file)
-        if not opt.no_word2vec_pretrain:
+        if not opt.no_word2vec_pretrain and ("BERT" not in model_name):
             print("use pretrained word2vector model")
             m_model.use_pretrain_word2vec(word2vec_model)
         word_vec_file.close()
@@ -273,17 +303,17 @@ def main():
         max_valid_accs.append(max(valid_accs))
         print("Finish training ~ v ~")
 
-        for j in range(len(valid_dataset)):
-            report,label = valid_dataset[j]
-            pred = m_model(torch.LongTensor([report]).to(device)).squeeze()
-            res_report = ""
-            res_label = ""
-            for m,n in zip(pred,label):
-                res_report += "%.8f "%(m)
-                res_label += "%d "%(n)
+        #for j in range(len(valid_dataset)):
+        #    report,label = valid_dataset[j]
+        #    pred = m_model(torch.LongTensor([report]).to(device)).squeeze()
+        #    res_report = ""
+        #    res_label = ""
+        #    for m,n in zip(pred,label):
+        #        res_report += "%.8f "%(m)
+        #        res_label += "%d "%(n)
 
-            stacking_data["pred"].append(res_report)
-            stacking_data["label"].append(res_label)
+        #    stacking_data["pred"].append(res_report)
+        #    stacking_data["label"].append(res_label)
 
     # save the train info
     train_info_df = pd.DataFrame(train_info)
