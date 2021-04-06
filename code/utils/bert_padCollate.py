@@ -29,7 +29,7 @@ class PadCollate:
             batch - list of (tensor, label)
 
         reutrn:
-            xs - a tensor of all examples in 'batch' after padding
+            xs - a list of all reports in batch
             ys - a LongTensor of all labels in batch
         """
         new_reports = []

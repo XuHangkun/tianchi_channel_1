@@ -49,13 +49,14 @@ def train_epoch(model, training_data, optimizer, opt, device):
 
     desc = '  - (Training)   '
     for report,label in tqdm(training_data, mininterval=2, desc=desc, leave=False):
+        # modify the data format
         if "BERT" in opt.model:
             report = report.to(device)
         else:
             report = report.type(torch.LongTensor).to(device)
         label = label.to(device).float()
-        # print(report.shape,label.shape)
 
+        # predict and calculate the loss, accuracy
         optimizer.zero_grad()
         pred = model(report)    #prediction
         loss = F.binary_cross_entropy(pred,label)
@@ -81,11 +82,15 @@ def eval_epoch(model, validation_data, opt,device):
 
     desc = '  - (Validation)   '
     for report,label in tqdm(validation_data, mininterval=1, desc=desc, leave=False):
+        # modify the data format
         if "BERT" in opt.model:
             report = report.to(device)
         else:
             report = report.type(torch.LongTensor).to(device)
         label = label.to(device).float()
+
+        # predict and calculate the loss, accuracy
+        predict and calculate the loss
         pred = model(report)    #prediction, we do not use mask now!
         loss = F.binary_cross_entropy(pred,label)
         losses.append(loss.item())
@@ -152,6 +157,16 @@ def train(model, training_data, validation_data, optimizer, device, opt):
     return train_losses,train_accs,valid_losses,valid_accs
 
 def load_model(opt,device):
+    """
+    load the model
+    args:
+        opt : option for model, like name of model and setting of a model
+            there are several model which you can choose, like TextRCNN,TextCNN,DPCNN,BERT.
+            we advice the model name like "BERT_fold1_PLoss0.24_balabala"
+        device: which device you want to run the model
+    return:
+        the model
+    """
     m_model = None
     if "DPCNN" in opt.model:
         model_config = DPCNNConfig(opt.ntokens,opt.nemb,opt.nclass)
@@ -189,11 +204,11 @@ def load_model(opt,device):
 def main():
     parser = argparse.ArgumentParser()
     # parameters of training
-    parser.add_argument('-epoch', type=int, default=13)
-    parser.add_argument('-max_len',type=int,default=70)
-    parser.add_argument('-batch_size', type=int, default=128)
+    parser.add_argument('-epoch', type=int, default=13,help="epochs you want to run")
+    parser.add_argument('-max_len',type=int,default=70,help="mac length of the sentence")
+    parser.add_argument('-batch_size', type=int, default=128,help="size of batch")
     parser.add_argument('-stop_early',action="store_true", help="stop early")
-    parser.add_argument('-fold_k', type=int, default=5)
+    parser.add_argument('-fold_k', type=int, default=5,help="number of fold")
     parser.add_argument('-fold_index', type=int, default=-1,help="define which fold we will run. Run all fold if fold_index < 0")
     parser.add_argument('-label_smoothing', type=float, default=0.000,help="The possibility of flip train label")
 
@@ -201,9 +216,9 @@ def main():
     parser.add_argument('-model',default="TextCNN",
         # choices=["BERT","TextCNN","DPCNN","TextRNN","TextAttRNN","TextRCNN","Transformer"],
         help="Net work for learning")
-    parser.add_argument('-ntokens', type = int, default= 858)
-    parser.add_argument('-nemb', type=int, default=500)
-    parser.add_argument('-nclass', type=int, default=17)
+    parser.add_argument('-ntokens', type = int, default= 858,help="number of tokens")
+    parser.add_argument('-nemb', type=int, default=500,help="embeding size")
+    parser.add_argument('-nclass', type=int, default=17,help="number of class")
     parser.add_argument('-frazing_bert_encode',action="store_true", help="frazing bert encode when train")
     parser.add_argument('-bert_path',default=os.path.join(os.getenv('PROJTOP'),"user_data/bert"),help="path of pretrained BERT")
     parser.add_argument('-tokenizer_path',default=os.path.join(os.getenv('PROJTOP'),"user_data/bert"),help="path of tokenizer")
@@ -211,8 +226,8 @@ def main():
     # parameters of optimizer
     parser.add_argument('-n_warmup_steps', type=int, default=4000)
     parser.add_argument('-lr_mul', type=float, default=2.0)
-    parser.add_argument('-lr', type=float, default=1.e-5)
-    parser.add_argument('-seed', type=int, default=None)
+    parser.add_argument('-lr', type=float, default=1.e-5,help="learning rate, advice: 1.e-5 for bert and 1.e-3 for others")
+    parser.add_argument('-seed', type=int, default=None,help="random seed")
 
     # word2vector pretrain model
     parser.add_argument('-no_word2vec_pretrain',action='store_true',help="if we use pretrain word2vector model")
@@ -221,7 +236,7 @@ def main():
 
     # parameters of saving data
     parser.add_argument('-output_dir', type=str,
-        default=os.path.join(os.getenv('PROJTOP'),'user_data/model_data'))
+        default=os.path.join(os.getenv('PROJTOP'),'user_data/model_data'),help="the path to save the trained model")
     parser.add_argument('-save_mode', type=str, choices=['all', 'best'], default='best')
     parser.add_argument('-save_start_epoch', type=int, default = 5,help = "the epoch after which we start save the model")
     parser.add_argument('-save_per_epoch', type=int,default=5, help = "save the model every save_per_epoch after save_start_epoch")
@@ -239,11 +254,13 @@ def main():
     if opt.output_dir and not os.path.exists(opt.output_dir):
         os.makedirs(opt.output_dir)
 
+    # device to run the training process
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
     print("Start getting data...")
     train_df = pd.read_csv(os.path.join(os.getenv('PROJTOP'),'tcdata/medical_nlp_round1_data/train.csv'),sep="\|,\|",names=["id","report","label"],index_col=0)
     #train_df = train_df.sample(frac=1).reset_index(drop=True)
+    # The dataset format of BERT model and others are quite different, so we write the dataset class respectively
     if "BERT" in opt.model:
         from utils.bert_kFoldData import KFoldDataLoader
         tokenizer = RobertaTokenizerFast.from_pretrained(opt.tokenizer_path, max_len=70)
@@ -302,14 +319,17 @@ def main():
             else:
                 break
 
+        # get the dataset and dataloader
         print('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
         print('{0}th fold (total : {1})'.format(k_index,opt.fold_k))
         train_iterator, val_iterator ,train_dataset,valid_dataset= k_fold_data_loader.get_ith_data(k_index)
 
+        # create the model
         print("Create model...")
         m_model = load_model(opt,device)
         opt.model = "%s_fold%d"%(model_name,k_index+1)
 
+        # load the pretrained word vector or not
         word_vec_file = open(opt.word2vec_path,'rb')
         word2vec_model = pickle.load(word_vec_file)
         if not opt.no_word2vec_pretrain and ("BERT" not in model_name):
@@ -319,8 +339,10 @@ def main():
         print(m_model)
         print("Finish model producing ~ v ~")
 
+        # the optimizer
         optimizer = optim.Adam(m_model.parameters(),lr=opt.lr,betas=(0.9, 0.98), eps=1e-05)
-
+        
+        # train the model
         print("Start training...")
         train_losses,train_accs,valid_losses,valid_accs = train(m_model, train_iterator, val_iterator, optimizer, device, opt)
         train_info["{}th_fold_train_loss".format(k_index)] = train_losses

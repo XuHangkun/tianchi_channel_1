@@ -44,6 +44,11 @@ class ReportDataset(Dataset):
         self.easy_data_augmentation()
 
     def preprocess_text(self):
+        """
+        convert the text from string to list of token number
+        eg:
+            "1 2 4" -> [1,2,4]
+        """
         texts = []
         for text in self.texts:
             texts.append(self.tokenizer(str(text)))
@@ -51,7 +56,8 @@ class ReportDataset(Dataset):
 
     def easy_data_augmentation(self):
         """
-        Data Enhancement
+        Data Enhancement, randomly delete partial words or swap the words
+        For evergy sentence, we need to change eda_alpha*sentence_len words.
         """
         if self.n_aug == 0:
             return
@@ -103,6 +109,9 @@ class ReportDataset(Dataset):
         self.labels = labels
 
     def tokenizer(self,text):
+        """
+        split the sentence and map the tokens to word index
+        """
         rep = [int(x) for x in text.split()]
         if len(rep) >self.max_len:
             rep = rep[:self.max_len]

@@ -10,9 +10,12 @@
 
 def cal_accuracy(pred,label):
     """
-    input :
+    If score of a class in pred is bigger than 0.5, we think it's true, otherwise False
+    args :
         pred : prediction [batch_size,num_class]
         label: label      [batch_size,num_class]
+    return:
+        accuracy
     """
     # shape of pred and label must be same
     assert pred.shape == label.shape

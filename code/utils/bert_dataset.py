@@ -115,7 +115,7 @@ class ReportDataset(Dataset):
     def __getitem__(self,idx):
         """
         return array of report and label
-        report,label = [1,2,3....],[0,1]
+        report,label = "1 2 3",[0,1]
         """
         # do label smoothing
         if self.label_smoothing:
