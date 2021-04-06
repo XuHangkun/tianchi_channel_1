@@ -20,6 +20,9 @@ from model.TextRNN import TextRNNConfig,TextRNNModel
 from model.TextRCNN import TextRCNNConfig,TextRCNNModel
 from model.TextRNN_Att import TextRNNAttConfig,TextRNNAttModel
 from model.transformer import TransformerConfig,TransformerModel
+from model.bert import BERTConfig,BERTModel
+from utils.bert_kFoldData import KFoldDataLoader
+from transformers import RobertaTokenizerFast
 
 def load_model(opt,device):
     m_models = []
@@ -51,6 +54,9 @@ def load_model(opt,device):
             model_config.device = device
             model_config.padding_idx = model_setting.pad_token
             m_model = TransformerModel(model_config).to(device)
+        elif  "BERT" in opt.models[index]:
+            model_config = BERTConfig(num_class = model_setting.nclass,pre_train_path=model_setting.bert_path)
+            m_model = BERTModel(model_config).to(device)
         else:
             # default TextCNN
             model_config = TextCNNConfig(model_setting.ntokens,model_setting.nemb,model_setting.nclass)
@@ -76,6 +82,7 @@ def main():
     parser.add_argument('-model_path', type = str,
                         default=os.path.join(os.getenv('PROJTOP'),'user_data/model_data'),
                         help='Path to model weight file')
+    parser.add_argument('-tokenizer_path',default=os.path.join(os.getenv('PROJTOP'),"user_data/bert"),help="path of tokenizer")
     parser.add_argument('-input', type = str,
                         default=os.path.join(os.getenv('PROJTOP'),'user_data/tmp_data/test.csv'),
                         help='input csv file')
@@ -90,6 +97,11 @@ def main():
 
     # load model
     models = load_model(opt,device)
+
+    # tokenizer for bert model
+    tokenizer = RobertaTokenizerFast.from_pretrained(opt.tokenizer_path, max_len=70)
+    tokens = [str(i) for i in range(857,-1,-1)]
+    tokenizer.add_tokens(tokens)
 
     # load data
     if opt.is_test:
@@ -107,20 +119,27 @@ def main():
     # prediction here
     desc = '  - (Prediction)   '
     for index in tqdm(data.index, mininterval=1, desc=desc, leave=False):
-        report = [[int(x) for x in (data["report"][index]).split()]]
-        if len(report[0]) > 70:
-            new_report = [[report[0][i] for i in range(70)]]
-            report = new_report
-        else:
-            report=[report[0]+[858 for i in range(70-len(report[0]))]]
-        report = torch.LongTensor(report).to(device)
-        #print(report.shape)
 
         results["report_ID"].append(index)
         if not opt.is_test:
             results["label"].append(data["label"][index])
         preds = []
-        for model in models:
+        for model,model_name in zip(models,opt.models):
+
+            if "BERT" in model_name:
+                report = [data["report"][index]]
+                report = tokenizer(report,padding=True, truncation=True, return_tensors="pt")
+                report.to(device)
+            else:
+                report = [[int(x) for x in (data["report"][index]).split()]]
+                if len(report[0]) > 70:
+                    new_report = [[report[0][i] for i in range(70)]]
+                    report = new_report
+                else:
+                    report=[report[0]+[858 for i in range(70-len(report[0]))]]
+                report = torch.LongTensor(report).to(device)
+                #print(report.shape)
+
             pred = model(report).squeeze()  # shape [17,1] --> [5]
             preds.append(pred)
         mean_pred = torch.zeros(preds[0].shape).to(device)

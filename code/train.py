@@ -110,6 +110,7 @@ def train(model, training_data, validation_data, optimizer, device, opt):
     valid_accs = []
     train_losses = []
     train_accs = []
+    min_valid_loss_index = 0
     for epoch_i in range(opt.epoch):
 
         print('[ Epoch', epoch_i, ']')
@@ -134,17 +135,19 @@ def train(model, training_data, validation_data, optimizer, device, opt):
         # save the model
         checkpoint = {'epoch': epoch_i, 'settings': opt, 'model': model.state_dict(),'valid_loss':valid_loss,'valid_acc':valid_acc}
         if opt.save_mode == 'all':
-            model_name = '{model_name}_loss_{loss:3.3f}.chkpt'.format(model_name=opt.model,loss=train_loss)
-            torch.save(checkpoint, os.path.join(opt.output_dir, model_name))
+            if (epoch_i + 1 - opt.save_start_epoch)%(opt.save_per_epoch) == 0:
+                model_name = '{model_name}_epoch_{epoch:d}_loss_{loss:3.3f}.chkpt'.format(model_name=opt.model,epoch=epoch_i+1,loss=valid_loss)
+                torch.save(checkpoint, os.path.join(opt.output_dir, model_name))
         elif opt.save_mode == 'best':
             model_name = '{model_name}.chkpt'.format(model_name=opt.model)
             if valid_loss <= min(valid_losses) and valid_acc >= max(valid_accs):
                 torch.save(checkpoint, os.path.join(opt.output_dir, model_name))
                 print('    - [Info] The checkpoint file has been updated.')
-        loss_over_shit = 100*(min(valid_losses) - train_loss)/min(valid_losses)
-        acc_over_shit = 100*(train_acc > max(valid_accs))/max(valid_accs)
-        if loss_over_shit > 0 and acc_over_shit > 0:
-            break
+        if opt.stop_early:
+            loss_over_shit = 100*(min(valid_losses) - train_loss)/min(valid_losses)
+            acc_over_shit = 100*(train_acc > max(valid_accs))/max(valid_accs)
+            if loss_over_shit > 0 and acc_over_shit > 0:
+                break
 
     return train_losses,train_accs,valid_losses,valid_accs
 
@@ -173,7 +176,8 @@ def load_model(opt,device):
         model_config.padding_idx = opt.pad_token
         m_model = TransformerModel(model_config).to(device)
     elif  "BERT" in opt.model:
-        model_config = BERTConfig(num_class = opt.nclass,pre_train_path=opt.bert_path)
+        model_config = BERTConfig(num_class = opt.nclass,
+            frazing_encode=opt.frazing_bert_encode,pre_train_path=opt.bert_path)
         m_model = BERTModel(model_config).to(device)
     else:
         # default TextCNN
@@ -188,20 +192,26 @@ def main():
     parser.add_argument('-epoch', type=int, default=13)
     parser.add_argument('-max_len',type=int,default=70)
     parser.add_argument('-batch_size', type=int, default=128)
+    parser.add_argument('-stop_early',action="store_true", help="stop early")
     parser.add_argument('-fold_k', type=int, default=5)
+    parser.add_argument('-fold_index', type=int, default=-1,help="define which fold we will run. Run all fold if fold_index < 0")
     parser.add_argument('-label_smoothing', type=float, default=0.000,help="The possibility of flip train label")
 
     # ntokens will be changed according to train data
-    parser.add_argument('-model',default="TextCNN",choices=["BERT","TextCNN","DPCNN","TextRNN","TextAttRNN","TextRCNN","Transformer"],help="Net work for learning")
+    parser.add_argument('-model',default="TextCNN",
+        # choices=["BERT","TextCNN","DPCNN","TextRNN","TextAttRNN","TextRCNN","Transformer"],
+        help="Net work for learning")
     parser.add_argument('-ntokens', type = int, default= 858)
     parser.add_argument('-nemb', type=int, default=500)
     parser.add_argument('-nclass', type=int, default=17)
+    parser.add_argument('-frazing_bert_encode',action="store_true", help="frazing bert encode when train")
     parser.add_argument('-bert_path',default=os.path.join(os.getenv('PROJTOP'),"user_data/bert"),help="path of pretrained BERT")
     parser.add_argument('-tokenizer_path',default=os.path.join(os.getenv('PROJTOP'),"user_data/bert"),help="path of tokenizer")
 
     # parameters of optimizer
     parser.add_argument('-n_warmup_steps', type=int, default=4000)
     parser.add_argument('-lr_mul', type=float, default=2.0)
+    parser.add_argument('-lr', type=float, default=1.e-5)
     parser.add_argument('-seed', type=int, default=None)
 
     # word2vector pretrain model
@@ -213,6 +223,8 @@ def main():
     parser.add_argument('-output_dir', type=str,
         default=os.path.join(os.getenv('PROJTOP'),'user_data/model_data'))
     parser.add_argument('-save_mode', type=str, choices=['all', 'best'], default='best')
+    parser.add_argument('-save_start_epoch', type=int, default = 5,help = "the epoch after which we start save the model")
+    parser.add_argument('-save_per_epoch', type=int,default=5, help = "save the model every save_per_epoch after save_start_epoch")
     opt = parser.parse_args()
 
     # https://pytorch.org/docs/stable/notes/randomness.html
@@ -232,7 +244,7 @@ def main():
     print("Start getting data...")
     train_df = pd.read_csv(os.path.join(os.getenv('PROJTOP'),'tcdata/medical_nlp_round1_data/train.csv'),sep="\|,\|",names=["id","report","label"],index_col=0)
     #train_df = train_df.sample(frac=1).reset_index(drop=True)
-    if opt.model in "BERT":
+    if "BERT" in opt.model:
         from utils.bert_kFoldData import KFoldDataLoader
         tokenizer = RobertaTokenizerFast.from_pretrained(opt.tokenizer_path, max_len=70)
         tokens = [str(i) for i in range(857,-1,-1)]
@@ -263,7 +275,10 @@ def main():
     print("Finish getting data ~ v ~")
 
     # create the log file to save training performance
-    log_train_file = os.path.join(opt.output_dir, 'train.csv')
+    if opt.fold_index > 0:
+        log_train_file = os.path.join(opt.output_dir, '%s_fold%d_train.csv'%(opt.model,opt.fold_index))
+    else:
+        log_train_file = os.path.join(opt.output_dir, '%s_train.csv'%(opt.model))
     print('[Info] Training performance will be written to file: {}'.format(
         log_train_file))
     train_info = {}
@@ -274,6 +289,19 @@ def main():
     model_name = opt.model
     stacking_data = {"pred":[],"label":[]}
     for k_index in range(0,opt.fold_k):
+
+        # if opt.fold_index is set to a integer bigger than zero,
+        # we only a definite fold
+        if opt.fold_index < 0:
+            pass
+        else:
+            if (k_index+1) < opt.fold_index:
+                continue
+            elif (k_index+1) == opt.fold_index:
+                pass
+            else:
+                break
+
         print('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
         print('{0}th fold (total : {1})'.format(k_index,opt.fold_k))
         train_iterator, val_iterator ,train_dataset,valid_dataset= k_fold_data_loader.get_ith_data(k_index)
@@ -291,7 +319,7 @@ def main():
         print(m_model)
         print("Finish model producing ~ v ~")
 
-        optimizer = optim.Adam(m_model.parameters(), betas=(0.9, 0.98), eps=1e-05)
+        optimizer = optim.Adam(m_model.parameters(),lr=opt.lr,betas=(0.9, 0.98), eps=1e-05)
 
         print("Start training...")
         train_losses,train_accs,valid_losses,valid_accs = train(m_model, train_iterator, val_iterator, optimizer, device, opt)

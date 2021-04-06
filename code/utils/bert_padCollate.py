@@ -9,8 +9,6 @@
     :license: MIT, see LICENSE for more details.
 """
 import torch
-
-
 class PadCollate:
     """
     a variant of callate_fn that pads according to the longest sequence in

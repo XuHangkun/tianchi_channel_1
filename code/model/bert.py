@@ -17,12 +17,13 @@ from transformers import AutoConfig,AutoModel
 #        self.embedding = self.hidden_size                               # dim of embedding
 
 class BERTConfig:
-    def __init__(self,num_class=17,embed_dim=768,
+    def __init__(self,num_class=17,embed_dim=768,frazing_encode=False,
         pre_train_path=os.path.join(os.getenv('PROJTOP'),'user_data/bert')):
         self.model_name = 'BERT'
         self.num_classes = num_class                                    # 类别数
         self.embed_dim = embed_dim
         self.pre_train_path = pre_train_path
+        self.frazing_encode = frazing_encode
 
 class BERTModel(nn.Module):
     def __init__(self, config):
@@ -32,8 +33,13 @@ class BERTModel(nn.Module):
         super(BERTModel, self).__init__()
         self.embed_dim = config.embed_dim
         self.pre_train_path = config.pre_train_path
+        self.frazing_encode = config.frazing_encode
 
         self.bert = AutoModel.from_pretrained(self.pre_train_path)
+        if self.frazing_encode:
+            for param in self.bert.base_model.parameters():
+                param.requires_grad = False
+
         self.feed_forward = nn.Sequential(
             nn.Dropout(0.5),
             nn.Linear(self.embed_dim, config.num_classes),
