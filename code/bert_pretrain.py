@@ -10,7 +10,7 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 
 # Read train.csv and save the report
-reports_path = os.path.join(os.getenv('PROJTOP'),'user_data/Bert/reports.txt')
+reports_path = os.path.join(os.getenv('PROJTOP'),'user_data/bert/reports.txt')
 reports_f = open(reports_path,"w")
 train_df = pd.read_csv(os.path.join(os.getenv('PROJTOP'),'tcdata/medical_nlp_round1_data/train.csv'),sep="\|,\|",names=["id","report","label"],index_col=0)
 for i in range(len(train_df)):
@@ -24,10 +24,10 @@ tokens = [str(i) for i in range(857,-1,-1)]
 tokenizer.add_tokens(tokens)
 # Customize training
 #tokenizer.train(files=reports_path,vocab_size=658+5, min_frequency=2)
-tokenizer.save_model(os.path.join(os.getenv('PROJTOP'),'user_data/Bert'))
+tokenizer.save_model(os.path.join(os.getenv('PROJTOP'),'user_data/bert'))
 
 from transformers import RobertaTokenizerFast
-tokenizer = RobertaTokenizerFast.from_pretrained(os.path.join(os.getenv('PROJTOP'),'user_data/Bert'), max_len=70)
+tokenizer = RobertaTokenizerFast.from_pretrained(os.path.join(os.getenv('PROJTOP'),'user_data/bert'), max_len=70)
 tokens = [str(i) for i in range(857,-1,-1)]
 tokenizer.add_tokens(tokens)
 print(tokenizer.vocab)
@@ -59,7 +59,7 @@ model = RobertaForMaskedLM(config=config).to(device)
 from transformers import Trainer, TrainingArguments
 #counts = 1
 training_args = TrainingArguments(
-    output_dir=os.path.join(os.getenv('PROJTOP'),'user_data/Bert'),
+    output_dir=os.path.join(os.getenv('PROJTOP'),'user_data/bert'),
     overwrite_output_dir=True,
     num_train_epochs=1000,
     per_device_train_batch_size=128,
