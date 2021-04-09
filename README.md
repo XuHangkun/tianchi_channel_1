@@ -57,3 +57,4 @@ Release:        7.8.2003
 Codename:       Core
 ```
 - python 3.6
+- cuda 10.2
