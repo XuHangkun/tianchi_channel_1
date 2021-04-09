@@ -4,3 +4,7 @@
 * __pycache__
 *.pyc
 *.bin
+*.sh
+*.out
+code/log
+code/script

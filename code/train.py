@@ -142,7 +142,7 @@ def train(model, training_data, validation_data, optimizer, device, opt,schedule
         checkpoint = {'epoch': epoch_i, 'settings': opt, 'model': model.state_dict(),'valid_loss':valid_loss,'valid_acc':valid_acc}
         if opt.save_mode == 'all':
             if (epoch_i + 1 - opt.save_start_epoch)%(opt.save_per_epoch) == 0:
-                model_name = '{model_name}_epoch_{epoch:d}_loss_{loss:3.3f}.chkpt'.format(model_name=opt.model,epoch=epoch_i+1,loss=valid_loss)
+                model_name = '{model_name}_epoch_{epoch:d}.chkpt'.format(model_name=opt.model,epoch=epoch_i+1,loss=valid_loss)
                 torch.save(checkpoint, os.path.join(opt.output_dir, model_name))
         elif opt.save_mode == 'best':
             model_name = '{model_name}.chkpt'.format(model_name=opt.model)
@@ -362,18 +362,6 @@ def main():
         min_valid_losses.append(min(valid_losses))
         max_valid_accs.append(max(valid_accs))
         print("Finish training ~ v ~")
-
-        #for j in range(len(valid_dataset)):
-        #    report,label = valid_dataset[j]
-        #    pred = m_model(torch.LongTensor([report]).to(device)).squeeze()
-        #    res_report = ""
-        #    res_label = ""
-        #    for m,n in zip(pred,label):
-        #        res_report += "%.8f "%(m)
-        #        res_label += "%d "%(n)
-
-        #    stacking_data["pred"].append(res_report)
-        #    stacking_data["label"].append(res_label)
 
     # save the train info
     train_info_df = pd.DataFrame(train_info)
