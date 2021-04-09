@@ -1,290 +1,0 @@
-  - (Training)   :   0%|          | 0/124 [00:00<?, ?it/s]  - (Training)   :  19%|█▉        | 24/124 [00:02<00:08, 11.98it/s]  - (Training)   :  45%|████▌     | 56/124 [00:04<00:04, 14.29it/s]  - (Training)   :  71%|███████   | 88/124 [00:06<00:02, 15.01it/s]  - (Training)   :  97%|█████████▋| 120/124 [00:08<00:00, 15.35it/s]                                                                      - (Validation)   :   0%|          | 0/16 [00:00<?, ?it/s]                                                             - (Training)   :   0%|          | 0/124 [00:00<?, ?it/s]  - (Training)   :  26%|██▌       | 32/124 [00:02<00:05, 15.86it/s]  - (Training)   :  52%|█████▏    | 64/124 [00:04<00:03, 15.88it/s]  - (Training)   :  77%|███████▋  | 96/124 [00:06<00:01, 15.88it/s]                                                                     - (Validation)   :   0%|          | 0/16 [00:00<?, ?it/s]                                                             - (Training)   :   0%|          | 0/124 [00:00<?, ?it/s]  - (Training)   :  26%|██▌       | 32/124 [00:02<00:05, 15.90it/s]  - (Training)   :  52%|█████▏    | 64/124 [00:04<00:03, 15.89it/s]  - (Training)   :  77%|███████▋  | 96/124 [00:06<00:01, 15.87it/s]                                                                     - (Validation)   :   0%|          | 0/16 [00:00<?, ?it/s]                                                             - (Training)   :   0%|          | 0/124 [00:00<?, ?it/s]  - (Training)   :  26%|██▌       | 32/124 [00:02<00:05, 15.90it/s]  - (Training)   :  52%|█████▏    | 64/124 [00:04<00:03, 15.85it/s]  - (Training)   :  77%|███████▋  | 96/124 [00:06<00:01, 15.87it/s]                                                                     - (Validation)   :   0%|          | 0/16 [00:00<?, ?it/s]                                                             - (Training)   :   0%|          | 0/124 [00:00<?, ?it/s]  - (Training)   :  26%|██▌       | 32/124 [00:02<00:05, 15.87it/s]  - (Training)   :  52%|█████▏    | 64/124 [00:04<00:03, 15.86it/s]  - (Training)   :  77%|███████▋  | 96/124 [00:06<00:01, 15.87it/s]                                                                     - (Validation)   :   0%|          | 0/16 [00:00<?, ?it/s]                                                             - (Training)   :   0%|          | 0/124 [00:00<?, ?it/s]  - (Training)   :  26%|██▌       | 32/124 [00:02<00:05, 15.87it/s]  - (Training)   :  52%|█████▏    | 64/124 [00:04<00:03, 15.88it/s]  - (Training)   :  77%|███████▋  | 96/124 [00:06<00:01, 15.88it/s]                                                                     - (Validation)   :   0%|          | 0/16 [00:00<?, ?it/s]                                                             - (Training)   :   0%|          | 0/124 [00:00<?, ?it/s]  - (Training)   :  26%|██▌       | 32/124 [00:02<00:05, 15.87it/s]  - (Training)   :  52%|█████▏    | 64/124 [00:04<00:03, 15.88it/s]  - (Training)   :  77%|███████▋  | 96/124 [00:06<00:01, 15.89it/s]                                                                     - (Validation)   :   0%|          | 0/16 [00:00<?, ?it/s]                                                             - (Training)   :   0%|          | 0/124 [00:00<?, ?it/s]  - (Training)   :  26%|██▌       | 32/124 [00:02<00:05, 15.90it/s]  - (Training)   :  52%|█████▏    | 64/124 [00:04<00:03, 15.90it/s]  - (Training)   :  77%|███████▋  | 96/124 [00:06<00:01, 15.88it/s]                                                                     - (Validation)   :   0%|          | 0/16 [00:00<?, ?it/s]                                                             - (Training)   :   0%|          | 0/124 [00:00<?, ?it/s]  - (Training)   :  26%|██▌       | 32/124 [00:02<00:05, 15.89it/s]  - (Training)   :  52%|█████▏    | 64/124 [00:04<00:03, 15.89it/s]  - (Training)   :  77%|███████▋  | 96/124 [00:06<00:01, 15.88it/s]                                                                     - (Validation)   :   0%|          | 0/16 [00:00<?, ?it/s]                                                             - (Training)   :   0%|          | 0/126 [00:00<?, ?it/s]  - (Training)   :  25%|██▌       | 32/126 [00:02<00:05, 15.83it/s]  - (Training)   :  51%|█████     | 64/126 [00:04<00:03, 15.83it/s]  - (Training)   :  76%|███████▌  | 96/126 [00:06<00:01, 15.83it/s]                                                                     - (Validation)   :   0%|          | 0/16 [00:00<?, ?it/s]                                                             - (Training)   :   0%|          | 0/126 [00:00<?, ?it/s]  - (Training)   :  25%|██▌       | 32/126 [00:02<00:05, 15.79it/s]  - (Training)   :  51%|█████     | 64/126 [00:04<00:03, 15.82it/s]  - (Training)   :  76%|███████▌  | 96/126 [00:06<00:01, 15.83it/s]                                                                     - (Validation)   :   0%|          | 0/16 [00:00<?, ?it/s]                                                             - (Training)   :   0%|          | 0/126 [00:00<?, ?it/s]  - (Training)   :  25%|██▌       | 32/126 [00:02<00:05, 15.84it/s]  - (Training)   :  51%|█████     | 64/126 [00:04<00:03, 15.84it/s]  - (Training)   :  76%|███████▌  | 96/126 [00:06<00:01, 15.84it/s]                                                                     - (Validation)   :   0%|          | 0/16 [00:00<?, ?it/s]                                                             - (Training)   :   0%|          | 0/126 [00:00<?, ?it/s]  - (Training)   :  25%|██▌       | 32/126 [00:02<00:05, 15.85it/s]  - (Training)   :  51%|█████     | 64/126 [00:04<00:03, 15.84it/s]  - (Training)   :  76%|███████▌  | 96/126 [00:06<00:01, 15.84it/s]                                                                     - (Validation)   :   0%|          | 0/16 [00:00<?, ?it/s]                                                             - (Training)   :   0%|          | 0/126 [00:00<?, ?it/s]  - (Training)   :  25%|██▌       | 32/126 [00:02<00:05, 15.84it/s]  - (Training)   :  51%|█████     | 64/126 [00:04<00:03, 15.83it/s]  - (Training)   :  76%|███████▌  | 96/126 [00:06<00:01, 15.84it/s]                                                                     - (Validation)   :   0%|          | 0/16 [00:00<?, ?it/s]                                                             - (Training)   :   0%|          | 0/126 [00:00<?, ?it/s]  - (Training)   :  25%|██▌       | 32/126 [00:02<00:05, 15.82it/s]  - (Training)   :  51%|█████     | 64/126 [00:04<00:03, 15.83it/s]  - (Training)   :  76%|███████▌  | 96/126 [00:06<00:01, 15.84it/s]                                                                     - (Validation)   :   0%|          | 0/16 [00:00<?, ?it/s]                                                             - (Training)   :   0%|          | 0/126 [00:00<?, ?it/s]  - (Training)   :  25%|██▌       | 32/126 [00:02<00:05, 15.81it/s]  - (Training)   :  51%|█████     | 64/126 [00:04<00:03, 15.83it/s]  - (Training)   :  76%|███████▌  | 96/126 [00:06<00:01, 15.83it/s]                                                                     - (Validation)   :   0%|          | 0/16 [00:00<?, ?it/s]                                                             - (Training)   :   0%|          | 0/126 [00:00<?, ?it/s]  - (Training)   :  25%|██▌       | 32/126 [00:02<00:05, 15.84it/s]  - (Training)   :  51%|█████     | 64/126 [00:04<00:03, 15.84it/s]  - (Training)   :  76%|███████▌  | 96/126 [00:06<00:01, 15.83it/s]                                                                     - (Validation)   :   0%|          | 0/16 [00:00<?, ?it/s]                                                             - (Training)   :   0%|          | 0/126 [00:00<?, ?it/s]  - (Training)   :  25%|██▌       | 32/126 [00:02<00:05, 15.84it/s]  - (Training)   :  51%|█████     | 64/126 [00:04<00:03, 15.83it/s]  - (Training)   :  76%|███████▌  | 96/126 [00:06<00:01, 15.84it/s]                                                                     - (Validation)   :   0%|          | 0/16 [00:00<?, ?it/s]                                                             - (Training)   :   0%|          | 0/125 [00:00<?, ?it/s]  - (Training)   :  26%|██▌       | 32/125 [00:02<00:05, 15.84it/s]  - (Training)   :  51%|█████     | 64/125 [00:04<00:03, 15.84it/s]  - (Training)   :  77%|███████▋  | 96/125 [00:06<00:01, 15.84it/s]                                                                     - (Validation)   :   0%|          | 0/16 [00:00<?, ?it/s]                                                             - (Training)   :   0%|          | 0/125 [00:00<?, ?it/s]  - (Training)   :  26%|██▌       | 32/125 [00:02<00:05, 15.84it/s]  - (Training)   :  51%|█████     | 64/125 [00:04<00:03, 15.84it/s]  - (Training)   :  77%|███████▋  | 96/125 [00:06<00:01, 15.84it/s]                                                                     - (Validation)   :   0%|          | 0/16 [00:00<?, ?it/s]                                                             - (Training)   :   0%|          | 0/125 [00:00<?, ?it/s]  - (Training)   :  26%|██▌       | 32/125 [00:02<00:05, 15.84it/s]  - (Training)   :  51%|█████     | 64/125 [00:04<00:03, 15.85it/s]  - (Training)   :  77%|███████▋  | 96/125 [00:06<00:01, 15.83it/s]                                                                     - (Validation)   :   0%|          | 0/16 [00:00<?, ?it/s]                                                             - (Training)   :   0%|          | 0/125 [00:00<?, ?it/s]  - (Training)   :  26%|██▌       | 32/125 [00:02<00:05, 15.85it/s]  - (Training)   :  51%|█████     | 64/125 [00:04<00:03, 15.85it/s]  - (Training)   :  77%|███████▋  | 96/125 [00:06<00:01, 15.84it/s]                                                                     - (Validation)   :   0%|          | 0/16 [00:00<?, ?it/s]                                                             - (Training)   :   0%|          | 0/125 [00:00<?, ?it/s]  - (Training)   :  26%|██▌       | 32/125 [00:02<00:05, 15.87it/s]  - (Training)   :  51%|█████     | 64/125 [00:04<00:03, 15.86it/s]  - (Training)   :  77%|███████▋  | 96/125 [00:06<00:01, 15.86it/s]                                                                     - (Validation)   :   0%|          | 0/16 [00:00<?, ?it/s]                                                             - (Training)   :   0%|          | 0/125 [00:00<?, ?it/s]  - (Training)   :  26%|██▌       | 32/125 [00:02<00:05, 15.85it/s]  - (Training)   :  51%|█████     | 64/125 [00:04<00:03, 15.86it/s]  - (Training)   :  77%|███████▋  | 96/125 [00:06<00:01, 15.86it/s]                                                                     - (Validation)   :   0%|          | 0/16 [00:00<?, ?it/s]                                                             - (Training)   :   0%|          | 0/125 [00:00<?, ?it/s]  - (Training)   :  26%|██▌       | 32/125 [00:02<00:05, 15.81it/s]  - (Training)   :  51%|█████     | 64/125 [00:04<00:03, 15.82it/s]  - (Training)   :  77%|███████▋  | 96/125 [00:06<00:01, 15.83it/s]                                                                     - (Validation)   :   0%|          | 0/16 [00:00<?, ?it/s]                                                             - (Training)   :   0%|          | 0/125 [00:00<?, ?it/s]  - (Training)   :  26%|██▌       | 32/125 [00:02<00:05, 15.80it/s]  - (Training)   :  51%|█████     | 64/125 [00:04<00:03, 15.82it/s]  - (Training)   :  77%|███████▋  | 96/125 [00:06<00:01, 15.82it/s]                                                                     - (Validation)   :   0%|          | 0/16 [00:00<?, ?it/s]                                                             - (Training)   :   0%|          | 0/125 [00:00<?, ?it/s]  - (Training)   :  26%|██▌       | 32/125 [00:02<00:05, 15.83it/s]  - (Training)   :  51%|█████     | 64/125 [00:04<00:03, 15.84it/s]  - (Training)   :  77%|███████▋  | 96/125 [00:06<00:01, 15.83it/s]                                                                     - (Validation)   :   0%|          | 0/16 [00:00<?, ?it/s]                                                             - (Training)   :   0%|          | 0/125 [00:00<?, ?it/s]  - (Training)   :  26%|██▌       | 32/125 [00:02<00:05, 15.85it/s]  - (Training)   :  51%|█████     | 64/125 [00:04<00:03, 15.81it/s]  - (Training)   :  77%|███████▋  | 96/125 [00:06<00:01, 15.83it/s]                                                                     - (Validation)   :   0%|          | 0/16 [00:00<?, ?it/s]                                                             - (Training)   :   0%|          | 0/125 [00:00<?, ?it/s]  - (Training)   :  26%|██▌       | 32/125 [00:02<00:05, 15.83it/s]  - (Training)   :  51%|█████     | 64/125 [00:04<00:03, 15.84it/s]  - (Training)   :  77%|███████▋  | 96/125 [00:06<00:01, 15.85it/s]                                                                     - (Validation)   :   0%|          | 0/16 [00:00<?, ?it/s]                                                             - (Training)   :   0%|          | 0/125 [00:00<?, ?it/s]  - (Training)   :  26%|██▌       | 32/125 [00:02<00:05, 15.85it/s]  - (Training)   :  51%|█████     | 64/125 [00:04<00:03, 15.85it/s]  - (Training)   :  77%|███████▋  | 96/125 [00:06<00:01, 15.85it/s]                                                                     - (Validation)   :   0%|          | 0/16 [00:00<?, ?it/s]                                                             - (Training)   :   0%|          | 0/125 [00:00<?, ?it/s]  - (Training)   :  26%|██▌       | 32/125 [00:02<00:05, 15.87it/s]  - (Training)   :  51%|█████     | 64/125 [00:04<00:03, 15.86it/s]  - (Training)   :  77%|███████▋  | 96/125 [00:06<00:01, 15.85it/s]                                                                     - (Validation)   :   0%|          | 0/16 [00:00<?, ?it/s]                                                             - (Training)   :   0%|          | 0/125 [00:00<?, ?it/s]  - (Training)   :  26%|██▌       | 32/125 [00:02<00:05, 15.86it/s]  - (Training)   :  51%|█████     | 64/125 [00:04<00:03, 15.85it/s]  - (Training)   :  77%|███████▋  | 96/125 [00:06<00:01, 15.85it/s]                                                                     - (Validation)   :   0%|          | 0/16 [00:00<?, ?it/s]                                                             - (Training)   :   0%|          | 0/126 [00:00<?, ?it/s]  - (Training)   :  25%|██▌       | 32/126 [00:02<00:05, 15.83it/s]  - (Training)   :  51%|█████     | 64/126 [00:04<00:03, 15.83it/s]  - (Training)   :  76%|███████▌  | 96/126 [00:06<00:01, 15.84it/s]                                                                     - (Validation)   :   0%|          | 0/16 [00:00<?, ?it/s]                                                             - (Training)   :   0%|          | 0/126 [00:00<?, ?it/s]  - (Training)   :  25%|██▌       | 32/126 [00:02<00:05, 15.78it/s]  - (Training)   :  51%|█████     | 64/126 [00:04<00:03, 15.81it/s]  - (Training)   :  76%|███████▌  | 96/126 [00:06<00:01, 15.82it/s]                                                                     - (Validation)   :   0%|          | 0/16 [00:00<?, ?it/s]                                                             - (Training)   :   0%|          | 0/126 [00:00<?, ?it/s]  - (Training)   :  25%|██▌       | 32/126 [00:02<00:05, 15.83it/s]  - (Training)   :  51%|█████     | 64/126 [00:04<00:03, 15.85it/s]  - (Training)   :  76%|███████▌  | 96/126 [00:06<00:01, 15.85it/s]                                                                     - (Validation)   :   0%|          | 0/16 [00:00<?, ?it/s]                                                             - (Training)   :   0%|          | 0/126 [00:00<?, ?it/s]  - (Training)   :  25%|██▌       | 32/126 [00:02<00:05, 15.86it/s]  - (Training)   :  51%|█████     | 64/126 [00:04<00:03, 15.85it/s]  - (Training)   :  76%|███████▌  | 96/126 [00:06<00:01, 15.86it/s]                                                                     - (Validation)   :   0%|          | 0/16 [00:00<?, ?it/s]                                                             - (Training)   :   0%|          | 0/126 [00:00<?, ?it/s]  - (Training)   :  25%|██▌       | 32/126 [00:02<00:05, 15.85it/s]  - (Training)   :  51%|█████     | 64/126 [00:04<00:03, 15.85it/s]  - (Training)   :  76%|███████▌  | 96/126 [00:06<00:01, 15.86it/s]                                                                     - (Validation)   :   0%|          | 0/16 [00:00<?, ?it/s]                                                             - (Training)   :   0%|          | 0/126 [00:00<?, ?it/s]  - (Training)   :  25%|██▌       | 32/126 [00:02<00:05, 15.84it/s]  - (Training)   :  51%|█████     | 64/126 [00:04<00:03, 15.85it/s]  - (Training)   :  76%|███████▌  | 96/126 [00:06<00:01, 15.85it/s]                                                                     - (Validation)   :   0%|          | 0/16 [00:00<?, ?it/s]                                                             - (Training)   :   0%|          | 0/126 [00:00<?, ?it/s]  - (Training)   :  25%|██▌       | 32/126 [00:02<00:05, 15.87it/s]  - (Training)   :  51%|█████     | 64/126 [00:04<00:03, 15.87it/s]  - (Training)   :  76%|███████▌  | 96/126 [00:06<00:01, 15.87it/s]                                                                     - (Validation)   :   0%|          | 0/16 [00:00<?, ?it/s]                                                           Start getting data...
-Finish getting data ~ v ~
-[Info] Training performance will be written to file: /hpcfs/juno/junogpu/xuhangkun/ML/MyselfProject/tc_medical_nlp/user_data/model_data/train.csv
-Namespace(batch_size=128, epoch=10, fold_k=5, label_smoothing=0.0, lr_mul=2.0, max_len=70, model='DPCNN', n_warmup_steps=4000, nclass=17, nemb=500, no_word2vec_pretrain=False, ntokens=859, output_dir='/hpcfs/juno/junogpu/xuhangkun/ML/MyselfProject/tc_medical_nlp/user_data/model_data', pad_token=858, save_mode='best', seed=None, word2vec_path='/hpcfs/juno/junogpu/xuhangkun/ML/MyselfProject/tc_medical_nlp/user_data/word_pretrain/word2vector.model')
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-0th fold (total : 5)
-Create model...
-use pretrained word2vector model
-DPCNNModel(
-  (embed): Embedding(859, 500, padding_idx=858)
-  (conv_region): Conv2d(1, 250, kernel_size=(3, 500), stride=(1, 1))
-  (conv): Conv2d(250, 250, kernel_size=(3, 1), stride=(1, 1))
-  (max_pool): MaxPool2d(kernel_size=(3, 1), stride=2, padding=0, dilation=1, ceil_mode=False)
-  (padding1): ZeroPad2d(padding=(0, 0, 1, 1), value=0.0)
-  (padding2): ZeroPad2d(padding=(0, 0, 0, 1), value=0.0)
-  (relu): ReLU()
-  (feed_forward): Sequential(
-    (0): Dropout(p=0.5, inplace=False)
-    (1): Linear(in_features=250, out_features=250, bias=True)
-    (2): Dropout(p=0.5, inplace=False)
-    (3): ReLU()
-    (4): Linear(in_features=250, out_features=17, bias=True)
-    (5): Sigmoid()
-  )
-)
-Finish model producing ~ v ~
-Start training...
-[ Epoch 0 ]
-  - Training     loss : 0.28246 , acc : 0.913 , elapse : 0.13846 min
-  - Validation   loss : 0.24926 , acc : 0.918 , elapse : 0.01356 min
-    - [Info] The checkpoint file has been updated.
-[ Epoch 1 ]
-  - Training     loss : 0.21752 , acc : 0.926 , elapse : 0.13010 min
-  - Validation   loss : 0.18408 , acc : 0.931 , elapse : 0.01354 min
-    - [Info] The checkpoint file has been updated.
-[ Epoch 2 ]
-  - Training     loss : 0.15558 , acc : 0.942 , elapse : 0.13012 min
-  - Validation   loss : 0.12747 , acc : 0.948 , elapse : 0.01352 min
-    - [Info] The checkpoint file has been updated.
-[ Epoch 3 ]
-  - Training     loss : 0.11442 , acc : 0.955 , elapse : 0.13019 min
-  - Validation   loss : 0.10006 , acc : 0.961 , elapse : 0.01353 min
-    - [Info] The checkpoint file has been updated.
-[ Epoch 4 ]
-  - Training     loss : 0.08234 , acc : 0.967 , elapse : 0.13021 min
-  - Validation   loss : 0.07634 , acc : 0.971 , elapse : 0.01352 min
-    - [Info] The checkpoint file has been updated.
-[ Epoch 5 ]
-  - Training     loss : 0.06407 , acc : 0.975 , elapse : 0.13020 min
-  - Validation   loss : 0.06046 , acc : 0.979 , elapse : 0.01353 min
-    - [Info] The checkpoint file has been updated.
-[ Epoch 6 ]
-  - Training     loss : 0.05080 , acc : 0.981 , elapse : 0.13012 min
-  - Validation   loss : 0.04947 , acc : 0.983 , elapse : 0.01351 min
-    - [Info] The checkpoint file has been updated.
-[ Epoch 7 ]
-  - Training     loss : 0.04009 , acc : 0.985 , elapse : 0.13011 min
-  - Validation   loss : 0.04560 , acc : 0.986 , elapse : 0.01353 min
-    - [Info] The checkpoint file has been updated.
-[ Epoch 8 ]
-  - Training     loss : 0.03523 , acc : 0.987 , elapse : 0.13006 min
-  - Validation   loss : 0.04798 , acc : 0.985 , elapse : 0.01352 min
-Finish training ~ v ~
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-1th fold (total : 5)
-Create model...
-use pretrained word2vector model
-DPCNNModel(
-  (embed): Embedding(859, 500, padding_idx=858)
-  (conv_region): Conv2d(1, 250, kernel_size=(3, 500), stride=(1, 1))
-  (conv): Conv2d(250, 250, kernel_size=(3, 1), stride=(1, 1))
-  (max_pool): MaxPool2d(kernel_size=(3, 1), stride=2, padding=0, dilation=1, ceil_mode=False)
-  (padding1): ZeroPad2d(padding=(0, 0, 1, 1), value=0.0)
-  (padding2): ZeroPad2d(padding=(0, 0, 0, 1), value=0.0)
-  (relu): ReLU()
-  (feed_forward): Sequential(
-    (0): Dropout(p=0.5, inplace=False)
-    (1): Linear(in_features=250, out_features=250, bias=True)
-    (2): Dropout(p=0.5, inplace=False)
-    (3): ReLU()
-    (4): Linear(in_features=250, out_features=17, bias=True)
-    (5): Sigmoid()
-  )
-)
-Finish model producing ~ v ~
-Start training...
-[ Epoch 0 ]
-  - Training     loss : 0.29534 , acc : 0.911 , elapse : 0.13206 min
-  - Validation   loss : 0.24849 , acc : 0.918 , elapse : 0.01358 min
-    - [Info] The checkpoint file has been updated.
-[ Epoch 1 ]
-  - Training     loss : 0.22220 , acc : 0.925 , elapse : 0.13200 min
-  - Validation   loss : 0.20300 , acc : 0.930 , elapse : 0.01354 min
-    - [Info] The checkpoint file has been updated.
-[ Epoch 2 ]
-  - Training     loss : 0.16555 , acc : 0.938 , elapse : 0.13182 min
-  - Validation   loss : 0.13014 , acc : 0.948 , elapse : 0.01353 min
-    - [Info] The checkpoint file has been updated.
-[ Epoch 3 ]
-  - Training     loss : 0.12544 , acc : 0.949 , elapse : 0.13184 min
-  - Validation   loss : 0.10538 , acc : 0.955 , elapse : 0.01354 min
-    - [Info] The checkpoint file has been updated.
-[ Epoch 4 ]
-  - Training     loss : 0.09960 , acc : 0.957 , elapse : 0.13188 min
-  - Validation   loss : 0.08556 , acc : 0.966 , elapse : 0.01356 min
-    - [Info] The checkpoint file has been updated.
-[ Epoch 5 ]
-  - Training     loss : 0.07495 , acc : 0.970 , elapse : 0.13188 min
-  - Validation   loss : 0.06208 , acc : 0.977 , elapse : 0.01363 min
-    - [Info] The checkpoint file has been updated.
-[ Epoch 6 ]
-  - Training     loss : 0.05691 , acc : 0.978 , elapse : 0.13196 min
-  - Validation   loss : 0.06434 , acc : 0.979 , elapse : 0.01356 min
-[ Epoch 7 ]
-  - Training     loss : 0.04371 , acc : 0.983 , elapse : 0.13188 min
-  - Validation   loss : 0.04680 , acc : 0.985 , elapse : 0.01354 min
-    - [Info] The checkpoint file has been updated.
-[ Epoch 8 ]
-  - Training     loss : 0.03598 , acc : 0.987 , elapse : 0.13185 min
-  - Validation   loss : 0.04425 , acc : 0.985 , elapse : 0.01353 min
-Finish training ~ v ~
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-2th fold (total : 5)
-Create model...
-use pretrained word2vector model
-DPCNNModel(
-  (embed): Embedding(859, 500, padding_idx=858)
-  (conv_region): Conv2d(1, 250, kernel_size=(3, 500), stride=(1, 1))
-  (conv): Conv2d(250, 250, kernel_size=(3, 1), stride=(1, 1))
-  (max_pool): MaxPool2d(kernel_size=(3, 1), stride=2, padding=0, dilation=1, ceil_mode=False)
-  (padding1): ZeroPad2d(padding=(0, 0, 1, 1), value=0.0)
-  (padding2): ZeroPad2d(padding=(0, 0, 0, 1), value=0.0)
-  (relu): ReLU()
-  (feed_forward): Sequential(
-    (0): Dropout(p=0.5, inplace=False)
-    (1): Linear(in_features=250, out_features=250, bias=True)
-    (2): Dropout(p=0.5, inplace=False)
-    (3): ReLU()
-    (4): Linear(in_features=250, out_features=17, bias=True)
-    (5): Sigmoid()
-  )
-)
-Finish model producing ~ v ~
-Start training...
-[ Epoch 0 ]
-  - Training     loss : 0.27919 , acc : 0.912 , elapse : 0.13153 min
-  - Validation   loss : 0.22638 , acc : 0.924 , elapse : 0.01353 min
-    - [Info] The checkpoint file has been updated.
-[ Epoch 1 ]
-  - Training     loss : 0.20448 , acc : 0.929 , elapse : 0.13153 min
-  - Validation   loss : 0.16572 , acc : 0.939 , elapse : 0.01354 min
-    - [Info] The checkpoint file has been updated.
-[ Epoch 2 ]
-  - Training     loss : 0.14736 , acc : 0.945 , elapse : 0.13160 min
-  - Validation   loss : 0.12584 , acc : 0.950 , elapse : 0.01357 min
-    - [Info] The checkpoint file has been updated.
-[ Epoch 3 ]
-  - Training     loss : 0.11359 , acc : 0.953 , elapse : 0.13144 min
-  - Validation   loss : 0.09438 , acc : 0.960 , elapse : 0.01352 min
-    - [Info] The checkpoint file has been updated.
-[ Epoch 4 ]
-  - Training     loss : 0.08305 , acc : 0.966 , elapse : 0.13132 min
-  - Validation   loss : 0.07041 , acc : 0.976 , elapse : 0.01355 min
-    - [Info] The checkpoint file has been updated.
-[ Epoch 5 ]
-  - Training     loss : 0.06079 , acc : 0.976 , elapse : 0.13135 min
-  - Validation   loss : 0.06908 , acc : 0.976 , elapse : 0.01357 min
-    - [Info] The checkpoint file has been updated.
-Finish training ~ v ~
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-3th fold (total : 5)
-Create model...
-use pretrained word2vector model
-DPCNNModel(
-  (embed): Embedding(859, 500, padding_idx=858)
-  (conv_region): Conv2d(1, 250, kernel_size=(3, 500), stride=(1, 1))
-  (conv): Conv2d(250, 250, kernel_size=(3, 1), stride=(1, 1))
-  (max_pool): MaxPool2d(kernel_size=(3, 1), stride=2, padding=0, dilation=1, ceil_mode=False)
-  (padding1): ZeroPad2d(padding=(0, 0, 1, 1), value=0.0)
-  (padding2): ZeroPad2d(padding=(0, 0, 0, 1), value=0.0)
-  (relu): ReLU()
-  (feed_forward): Sequential(
-    (0): Dropout(p=0.5, inplace=False)
-    (1): Linear(in_features=250, out_features=250, bias=True)
-    (2): Dropout(p=0.5, inplace=False)
-    (3): ReLU()
-    (4): Linear(in_features=250, out_features=17, bias=True)
-    (5): Sigmoid()
-  )
-)
-Finish model producing ~ v ~
-Start training...
-[ Epoch 0 ]
-  - Training     loss : 0.30802 , acc : 0.911 , elapse : 0.13136 min
-  - Validation   loss : 0.25104 , acc : 0.921 , elapse : 0.01353 min
-    - [Info] The checkpoint file has been updated.
-[ Epoch 1 ]
-  - Training     loss : 0.23009 , acc : 0.925 , elapse : 0.13138 min
-  - Validation   loss : 0.19528 , acc : 0.931 , elapse : 0.01352 min
-    - [Info] The checkpoint file has been updated.
-[ Epoch 2 ]
-  - Training     loss : 0.17506 , acc : 0.936 , elapse : 0.13129 min
-  - Validation   loss : 0.14299 , acc : 0.944 , elapse : 0.01354 min
-    - [Info] The checkpoint file has been updated.
-[ Epoch 3 ]
-  - Training     loss : 0.13276 , acc : 0.947 , elapse : 0.13131 min
-  - Validation   loss : 0.11071 , acc : 0.955 , elapse : 0.01356 min
-    - [Info] The checkpoint file has been updated.
-[ Epoch 4 ]
-  - Training     loss : 0.10345 , acc : 0.956 , elapse : 0.13120 min
-  - Validation   loss : 0.09744 , acc : 0.959 , elapse : 0.01354 min
-    - [Info] The checkpoint file has been updated.
-[ Epoch 5 ]
-  - Training     loss : 0.07687 , acc : 0.968 , elapse : 0.13115 min
-  - Validation   loss : 0.07157 , acc : 0.974 , elapse : 0.01352 min
-    - [Info] The checkpoint file has been updated.
-[ Epoch 6 ]
-  - Training     loss : 0.05711 , acc : 0.978 , elapse : 0.13110 min
-  - Validation   loss : 0.05793 , acc : 0.980 , elapse : 0.01353 min
-    - [Info] The checkpoint file has been updated.
-[ Epoch 7 ]
-  - Training     loss : 0.04496 , acc : 0.983 , elapse : 0.13114 min
-  - Validation   loss : 0.05576 , acc : 0.981 , elapse : 0.01354 min
-    - [Info] The checkpoint file has been updated.
-Finish training ~ v ~
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-4th fold (total : 5)
-Create model...
-use pretrained word2vector model
-DPCNNModel(
-  (embed): Embedding(859, 500, padding_idx=858)
-  (conv_region): Conv2d(1, 250, kernel_size=(3, 500), stride=(1, 1))
-  (conv): Conv2d(250, 250, kernel_size=(3, 1), stride=(1, 1))
-  (max_pool): MaxPool2d(kernel_size=(3, 1), stride=2, padding=0, dilation=1, ceil_mode=False)
-  (padding1): ZeroPad2d(padding=(0, 0, 1, 1), value=0.0)
-  (padding2): ZeroPad2d(padding=(0, 0, 0, 1), value=0.0)
-  (relu): ReLU()
-  (feed_forward): Sequential(
-    (0): Dropout(p=0.5, inplace=False)
-    (1): Linear(in_features=250, out_features=250, bias=True)
-    (2): Dropout(p=0.5, inplace=False)
-    (3): ReLU()
-    (4): Linear(in_features=250, out_features=17, bias=True)
-    (5): Sigmoid()
-  )
-)
-Finish model producing ~ v ~
-Start training...
-[ Epoch 0 ]
-  - Training     loss : 0.29172 , acc : 0.912 , elapse : 0.13213 min
-  - Validation   loss : 0.24255 , acc : 0.921 , elapse : 0.01358 min
-    - [Info] The checkpoint file has been updated.
-[ Epoch 1 ]
-  - Training     loss : 0.22046 , acc : 0.926 , elapse : 0.13239 min
-  - Validation   loss : 0.18126 , acc : 0.935 , elapse : 0.01358 min
-    - [Info] The checkpoint file has been updated.
-[ Epoch 2 ]
-  - Training     loss : 0.16573 , acc : 0.938 , elapse : 0.13204 min
-  - Validation   loss : 0.13671 , acc : 0.944 , elapse : 0.01355 min
-    - [Info] The checkpoint file has been updated.
-[ Epoch 3 ]
-  - Training     loss : 0.12684 , acc : 0.949 , elapse : 0.13196 min
-  - Validation   loss : 0.09731 , acc : 0.960 , elapse : 0.01356 min
-    - [Info] The checkpoint file has been updated.
-[ Epoch 4 ]
-  - Training     loss : 0.09227 , acc : 0.963 , elapse : 0.13200 min
-  - Validation   loss : 0.06707 , acc : 0.975 , elapse : 0.01355 min
-    - [Info] The checkpoint file has been updated.
-[ Epoch 5 ]
-  - Training     loss : 0.06584 , acc : 0.974 , elapse : 0.13208 min
-  - Validation   loss : 0.05892 , acc : 0.979 , elapse : 0.01357 min
-    - [Info] The checkpoint file has been updated.
-[ Epoch 6 ]
-  - Training     loss : 0.05121 , acc : 0.981 , elapse : 0.13190 min
-  - Validation   loss : 0.06135 , acc : 0.979 , elapse : 0.01353 min
-Finish training ~ v ~
-Traceback (most recent call last):
-  File "train.py", line 300, in <module>
-    main()
-  File "train.py", line 289, in main
-    train_info_df = pd.DataFrame(train_info)
-  File "/hpcfs/juno/junogpu/xuhangkun/SoftWare/anaconda3/envs/pytorch/lib/python3.7/site-packages/pandas/core/frame.py", line 529, in __init__
-    mgr = init_dict(data, index, columns, dtype=dtype)
-  File "/hpcfs/juno/junogpu/xuhangkun/SoftWare/anaconda3/envs/pytorch/lib/python3.7/site-packages/pandas/core/internals/construction.py", line 287, in init_dict
-    return arrays_to_mgr(arrays, data_names, index, columns, dtype=dtype)
-  File "/hpcfs/juno/junogpu/xuhangkun/SoftWare/anaconda3/envs/pytorch/lib/python3.7/site-packages/pandas/core/internals/construction.py", line 80, in arrays_to_mgr
-    index = extract_index(arrays)
-  File "/hpcfs/juno/junogpu/xuhangkun/SoftWare/anaconda3/envs/pytorch/lib/python3.7/site-packages/pandas/core/internals/construction.py", line 401, in extract_index
-    raise ValueError("arrays must all be same length")
-ValueError: arrays must all be same length
