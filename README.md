@@ -58,3 +58,13 @@ Codename:       Core
 ```
 - python 3.6
 - cuda 10.2
+
+## **推荐环境配置**
+```bash
+# 首先确定上述的操作系统，python版本，cuda版本
+cd /project/path
+pipenv shell
+pipenv install -r requirements.txt
+# 其实根据Pipfile来安装更加简单
+# or pipenv install
+```
