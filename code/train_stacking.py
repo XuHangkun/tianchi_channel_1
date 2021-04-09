@@ -3,7 +3,7 @@
     predict according to trained model
     ~~~~~~~~~~~~~~~~~~~~~~
 
-    :author: Xu Hangkun (许杭锟)
+    :author: Xu Hangkun (许杭锟),Fu Yangsheng,Huang Zheng
     :copyright: © 2020 Xu Hangkun <xuhangkun@ihep.ac.cn>
     :license: MIT, see LICENSE for more details.
 """

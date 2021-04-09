@@ -7,15 +7,6 @@ import os
 from transformers import BertModel, BertConfig
 from transformers import AutoConfig,AutoModel
 
-#class BERTConfig(BertConfig):
-#    def __init__(self,n_vocab=859,num_calss=17):
-#        super(BERTConfig,self).__init__(vocab_size=n_vocab,pad_token_id=n_vocab-1)
-#        self.model_name = 'BERT'
-#        self.n_vocab = n_vocab                                          # 词表大小，在运行时赋值
-#        self.padding_idx = n_vocab - 1
-#        self.num_classes = num_calss                                    # 类别数
-#        self.embedding = self.hidden_size                               # dim of embedding
-
 class BERTConfig:
     def __init__(self,num_class=17,embed_dim=768,frazing_encode=False,
         pre_train_path=os.path.join(os.getenv('PROJTOP'),'user_data/bert')):
@@ -24,7 +15,6 @@ class BERTConfig:
         self.embed_dim = embed_dim
         self.pre_train_path = pre_train_path
         self.frazing_encode = frazing_encode
-
 class BERTModel(nn.Module):
     def __init__(self, config):
         """

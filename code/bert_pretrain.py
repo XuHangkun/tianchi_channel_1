@@ -14,8 +14,6 @@ reports_path = os.path.join(os.getenv('PROJTOP'),'user_data/Bert/reports.txt')
 reports_f = open(reports_path,"w")
 train_df = pd.read_csv(os.path.join(os.getenv('PROJTOP'),'tcdata/medical_nlp_round1_data/train.csv'),sep="\|,\|",names=["id","report","label"],index_col=0)
 for i in range(len(train_df)):
-    if i > 5000:
-        break
     report = train_df["report"][i]
     reports_f.write("%s\n"%(report))
 reports_f.close()
@@ -64,7 +62,7 @@ training_args = TrainingArguments(
     output_dir=os.path.join(os.getenv('PROJTOP'),'user_data/Bert'),
     overwrite_output_dir=True,
     num_train_epochs=1000,
-    per_device_train_batch_size=64,
+    per_device_train_batch_size=128,
     save_steps=3950,
     save_total_limit=30,
     prediction_loss_only=True,

@@ -23,7 +23,7 @@
 # Specify the output file path of your job
 # Attention!! Your afs account must have write access to the path
 # Or the job will be FAILED!
-#SBATCH --output=/hpcfs/juno/junogpu/xuhangkun/ML/MyselfProject/tc_medical_nlp/code/log/gpujob-%j.out
+#SBATCH --output=/hpcfs/juno/junogpu/xuhangkun/ML/MyselfProject/tianchi_channel_1/code/log/gpujob-%j.out
 
 # Specify memory to use, or slurm will allocate all available memory in MB
 #SBATCH --mem-per-cpu=10GB
@@ -34,9 +34,9 @@
 ######## Part 2 ######
 # Script workload    #
 ######################
-
-#export PYTHONPATH=$PYTHONPATH:/hpcfs/juno/junogpu/xuhangkun/SoftWare/VsCode/.local/lib/python3.6/site-packages
-source /afs/ihep.ac.cn/users/x/xuhangkun/.bashrc.anaconda
-conda activate pytorch
-export PROJTOP=/hpcfs/juno/junogpu/xuhangkun/ML/MyselfProject/tc_medical_nlp
-python train.py -model TextRCNN -epoch 10
+export PROJTOP=/hpcfs/juno/junogpu/xuhangkun/ML/MyselfProject/tianchi_channel_1
+cd ${PROJTOP}
+pipenv shell
+export PROJTOP=/hpcfs/juno/junogpu/xuhangkun/ML/MyselfProject/tianchi_channel_1
+cd code
+python train.py -model TextRCNN -epoch 30 -no_word2vec_pretrain

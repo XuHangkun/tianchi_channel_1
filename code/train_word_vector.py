@@ -4,7 +4,7 @@
     pretrain the word model, word2vec and glove
     ~~~~~~~~~~~~~~~~~~~~~~
 
-    :author: Xu Hangkun (许杭锟)
+    :author: Xu Hangkun (许杭锟),Fu Yangsheng,Huang Zheng
     :copyright: © 2020 Xu Hangkun <xuhangkun@ihep.ac.cn>
     :license: MIT, see LICENSE for more details.
 """

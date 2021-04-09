@@ -8,14 +8,15 @@ import copy
 class DPCNNConfig(object):
 
     """配置参数"""
-    def __init__(self,n_vocab=859,embedding=500,num_calss=17):
+    def __init__(self,n_vocab=859,embedding=200,num_class=17,max_seq_len=60):
         self.model_name = 'DPCNN'
         self.dropout = 0.5                                              # 随机失活
         self.n_vocab = n_vocab                                          # 词表大小，在运行时赋值
         self.padding_idx = n_vocab - 1
-        self.num_classes = num_calss                                    # 类别数
+        self.num_classes = num_class                                    # 类别数
         self.embedding = embedding                                      # dim of embedding
         self.num_filters = 250                                          # 卷积核数量(channels数)
+        self.max_seq_len = max_seq_len
 
 class DPCNNModel(nn.Module):
     def __init__(self, config):
@@ -26,6 +27,7 @@ class DPCNNModel(nn.Module):
         self.padding_idx = config.padding_idx
         self.embed_num = config.n_vocab
         self.embed_dim = config.embedding
+        self.max_seq_len = config.max_seq_len
         self.dropout = config.dropout
 
         self.embed = nn.Embedding(config.n_vocab,config.embedding, padding_idx=config.padding_idx)
@@ -44,18 +46,19 @@ class DPCNNModel(nn.Module):
             nn.Sigmoid()
         )
 
+
     def complete_short_sentence(self,x):
-        if x.size(1) >= 8:
-            return x
+        device = x.device
+        if x.size(1) > self.max_seq_len:
+            x = torch.Tensor(x[:self.max_seq_len],requires_grad=False,device=device)
         else:
-            cat_size = (x.size(0),8-x.size(1))
-            pad_tensor = torch.full(cat_size,self.padding_idx,dtype=torch.long)
+            cat_size = (x.size(0),self.max_seq_len-x.size(1))
+            pad_tensor = torch.full(cat_size,self.padding_idx,dtype=torch.long,requires_grad=False,device=device)
             x = torch.cat((x,pad_tensor),1)
-            x.requires_grad=False
-            return x
+        return x
 
     def forward(self, x):
-        # x = self.complete_short_sentence(x) # [batch_size,seq_length]
+        x = self.complete_short_sentence(x) # [batch_size,seq_length]
         x = self.embed(x)  # [batch_size,seq_length,emb_size]
         x = x.unsqueeze(1)  # [batch_size, 1, seq_len, emb_size]
         x = self.conv_region(x)  # [batch_size, 250, seq_len-3+1, 1]

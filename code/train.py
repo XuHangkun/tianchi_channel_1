@@ -3,7 +3,7 @@
     train a neural network for medical diagnosis classification
     ~~~~~~~~~~~~~~~~~~~~~~
 
-    :author: Xu Hangkun (许杭锟)
+    :author: Xu Hangkun (许杭锟),Fu Yangsheng,Huang Zheng
     :copyright: © 2020 Xu Hangkun <xuhangkun@ihep.ac.cn>
     :license: MIT, see LICENSE for more details.
 """
@@ -39,7 +39,7 @@ from gensim.models import Word2Vec
 import pandas as pd
 import pickle
 
-def train_epoch(model, training_data, optimizer, opt, device):
+def train_epoch(model, training_data, optimizer, opt, device,scheduler=None):
     """
     train a epoch
     """
@@ -90,7 +90,6 @@ def eval_epoch(model, validation_data, opt,device):
         label = label.to(device).float()
 
         # predict and calculate the loss, accuracy
-        predict and calculate the loss
         pred = model(report)    #prediction, we do not use mask now!
         loss = F.binary_cross_entropy(pred,label)
         losses.append(loss.item())
@@ -102,7 +101,7 @@ def eval_epoch(model, validation_data, opt,device):
     return loss_per_seq,acc_per_seq
 
 
-def train(model, training_data, validation_data, optimizer, device, opt):
+def train(model, training_data, validation_data, optimizer, device, opt,scheduler=None):
     """
     train the model
     """
@@ -123,7 +122,9 @@ def train(model, training_data, validation_data, optimizer, device, opt):
         # train in training dataset
         start = time.time()
         train_loss,train_acc = train_epoch(model, training_data,
-            optimizer, opt,device)
+            optimizer, opt,device,scheduler=scheduler)
+        if scheduler:
+            scheduler.step()
         print_performances('Training',start,train_loss,train_acc)
         train_losses += [train_loss]
         train_accs += [train_acc]
@@ -169,7 +170,7 @@ def load_model(opt,device):
     """
     m_model = None
     if "DPCNN" in opt.model:
-        model_config = DPCNNConfig(opt.ntokens,opt.nemb,opt.nclass)
+        model_config = DPCNNConfig(n_vocab=opt.ntokens,embedding=opt.nemb,num_class=opt.nclass,max_seq_len=opt.max_len)
         model_config.padding_idx = opt.pad_token
         m_model = DPCNNModel(model_config).to(device)
     # TextRNN
@@ -182,7 +183,7 @@ def load_model(opt,device):
         model_config.padding_idx = opt.pad_token
         m_model = TextRNNAttModel(model_config).to(device)
     elif  "TextRCNN" in opt.model:
-        model_config = TextRCNNConfig(opt.ntokens,opt.nemb,opt.nclass)
+        model_config = TextRCNNConfig(n_vocab=opt.ntokens,embedding=opt.nemb,max_seq_len=opt.max_len,num_class=opt.nclass)
         model_config.padding_idx = opt.pad_token
         m_model = TextRCNNModel(model_config).to(device)
     elif  "Transformer" in opt.model:
@@ -196,7 +197,7 @@ def load_model(opt,device):
         m_model = BERTModel(model_config).to(device)
     else:
         # default TextCNN
-        model_config = TextCNNConfig(opt.ntokens,opt.nemb,opt.nclass)
+        model_config = TextCNNConfig(n_vocab=opt.ntokens,embedding=opt.nemb,num_class=opt.nclass,max_seq_len=opt.max_len)
         model_config.padding_idx = opt.pad_token
         m_model = TextCNNModel(model_config).to(device)
     return m_model
@@ -204,8 +205,8 @@ def load_model(opt,device):
 def main():
     parser = argparse.ArgumentParser()
     # parameters of training
-    parser.add_argument('-epoch', type=int, default=13,help="epochs you want to run")
-    parser.add_argument('-max_len',type=int,default=70,help="mac length of the sentence")
+    parser.add_argument('-epoch', type=int, default=30,help="epochs you want to run")
+    parser.add_argument('-max_len',type=int,default=60,help="mac length of the sentence")
     parser.add_argument('-batch_size', type=int, default=128,help="size of batch")
     parser.add_argument('-stop_early',action="store_true", help="stop early")
     parser.add_argument('-fold_k', type=int, default=5,help="number of fold")
@@ -217,16 +218,18 @@ def main():
         # choices=["BERT","TextCNN","DPCNN","TextRNN","TextAttRNN","TextRCNN","Transformer"],
         help="Net work for learning")
     parser.add_argument('-ntokens', type = int, default= 858,help="number of tokens")
-    parser.add_argument('-nemb', type=int, default=500,help="embeding size")
+    parser.add_argument('-nemb', type=int, default=200,help="embeding size")
     parser.add_argument('-nclass', type=int, default=17,help="number of class")
     parser.add_argument('-frazing_bert_encode',action="store_true", help="frazing bert encode when train")
     parser.add_argument('-bert_path',default=os.path.join(os.getenv('PROJTOP'),"user_data/bert"),help="path of pretrained BERT")
     parser.add_argument('-tokenizer_path',default=os.path.join(os.getenv('PROJTOP'),"user_data/bert"),help="path of tokenizer")
 
+    # data enhancement, not do this defaultly
+    parser.add_argument('-eda_alpha',type=float,default=0.0,help="alpha of eda")
+    parser.add_argument('-n_aug',type=float,default=0.0,help="n of aug")
+
     # parameters of optimizer
-    parser.add_argument('-n_warmup_steps', type=int, default=4000)
-    parser.add_argument('-lr_mul', type=float, default=2.0)
-    parser.add_argument('-lr', type=float, default=1.e-5,help="learning rate, advice: 1.e-5 for bert and 1.e-3 for others")
+    parser.add_argument('-lr', type=float, default=1.e-3,help="learning rate, advice: 1.e-5 for bert and 1.e-3 for others")
     parser.add_argument('-seed', type=int, default=None,help="random seed")
 
     # word2vector pretrain model
@@ -235,6 +238,8 @@ def main():
                         help="path of word2vector model")
 
     # parameters of saving data
+    parser.add_argument('-input', type=str,
+        default=os.path.join(os.getenv('PROJTOP'),'tcdata/medical_nlp_round1_data/train.csv'),help="path for train.csv")
     parser.add_argument('-output_dir', type=str,
         default=os.path.join(os.getenv('PROJTOP'),'user_data/model_data'),help="the path to save the trained model")
     parser.add_argument('-save_mode', type=str, choices=['all', 'best'], default='best')
@@ -258,7 +263,7 @@ def main():
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
     print("Start getting data...")
-    train_df = pd.read_csv(os.path.join(os.getenv('PROJTOP'),'tcdata/medical_nlp_round1_data/train.csv'),sep="\|,\|",names=["id","report","label"],index_col=0)
+    train_df = pd.read_csv(opt.input,sep="\|,\|",names=["id","report","label"],index_col=0)
     #train_df = train_df.sample(frac=1).reset_index(drop=True)
     # The dataset format of BERT model and others are quite different, so we write the dataset class respectively
     if "BERT" in opt.model:
@@ -273,7 +278,9 @@ def main():
                                 k = opt.fold_k,
                                 nclass = opt.nclass,
                                 max_len = opt.max_len,
-                                label_smoothing = opt.label_smoothing
+                                label_smoothing = opt.label_smoothing,
+                                eda_alpha = opt.eda_alpha,
+                                n_aug = opt.n_aug
                                 )
         opt.pad_token = tokenizer.vocab["<pad>"]
         opt.ntokens = len(tokenizer.vocab)
@@ -285,7 +292,9 @@ def main():
                                 k = opt.fold_k,
                                 nclass = opt.nclass,
                                 max_len = opt.max_len,
-                                label_smoothing = opt.label_smoothing
+                                label_smoothing = opt.label_smoothing,
+                                eda_alpha = opt.eda_alpha,
+                                n_aug = opt.n_aug
                                 )
         opt.pad_token = k_fold_data_loader.pad_idx
         opt.ntokens = k_fold_data_loader.pad_idx + 1
@@ -341,10 +350,11 @@ def main():
 
         # the optimizer
         optimizer = optim.Adam(m_model.parameters(),lr=opt.lr,betas=(0.9, 0.98), eps=1e-05)
-        
+        lr_scheduler = torch.optim.lr_scheduler.CosineAnnealingWarmRestarts(optimizer,T_0=3,T_mult=2,eta_min=1.e-6,last_epoch=-1)
+
         # train the model
         print("Start training...")
-        train_losses,train_accs,valid_losses,valid_accs = train(m_model, train_iterator, val_iterator, optimizer, device, opt)
+        train_losses,train_accs,valid_losses,valid_accs = train(m_model, train_iterator, val_iterator, optimizer, device, opt,scheduler=lr_scheduler)
         train_info["{}th_fold_train_loss".format(k_index)] = train_losses
         train_info["{}th_fold_train_acc".format(k_index)] = train_accs
         train_info["{}th_fold_valid_loss".format(k_index)] = valid_losses

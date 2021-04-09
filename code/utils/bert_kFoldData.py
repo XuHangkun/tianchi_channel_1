@@ -17,7 +17,7 @@ class KFoldDataLoader:
     """
     K Fold Data Loader
     """
-    def __init__(self,df,tokenizer,batch_size=128,k=5,nclass=17,max_len=70,label_smoothing=0):
+    def __init__(self,df,tokenizer,batch_size=128,k=5,nclass=17,max_len=70,label_smoothing=0,eda_alpha=0,n_aug=0):
         """
         args:
             k - k Folder, default = 5
@@ -33,6 +33,8 @@ class KFoldDataLoader:
         self.max_len = max_len
         self.batch_size = batch_size
         self.label_smoothing = label_smoothing
+        self.eda_alpha = eda_alpha
+        self.n_aug = n_aug
 
     def get_ith_data(self,i):
         """
@@ -52,7 +54,7 @@ class KFoldDataLoader:
             train_index += range(0,i*self.a_fold_length)
 
         train_df = self.df.iloc[train_index]
-        train_dataset = ReportDataset(train_df,nclass=self.nclass,max_len=self.max_len,label_smoothing=self.label_smoothing,eda_alpha=0.1,n_aug=0.5)
+        train_dataset = ReportDataset(train_df,nclass=self.nclass,max_len=self.max_len,label_smoothing=self.label_smoothing,eda_alpha=self.eda_alpha,n_aug=self.n_aug)
         train_dataloader = DataLoader(dataset=train_dataset,batch_size=self.batch_size,collate_fn=self.collect_fn)
         valid_df = self.df.iloc[valid_index]
         valid_dataset = ReportDataset(valid_df,nclass=self.nclass,max_len=self.max_len,eda_alpha=0,n_aug=0)
@@ -76,7 +78,6 @@ def test():
     print(train_loader)
     for X,y in train_loader:
         print(X)
-        print(X.__dict__)
         print(y.shape)
         break
 

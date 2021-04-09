@@ -3,7 +3,7 @@
     predict according to trained model
     ~~~~~~~~~~~~~~~~~~~~~~
 
-    :author: Xu Hangkun (许杭锟)
+    :author: Xu Hangkun (许杭锟),Fu Yangsheng,Huang Zheng
     :copyright: © 2020 Xu Hangkun <xuhangkun@ihep.ac.cn>
     :license: MIT, see LICENSE for more details.
 """
@@ -42,7 +42,7 @@ def load_model(opt,device):
             model_config.padding_idx = model_setting.pad_token
             m_model = TextRNNModel(model_config).to(device)
         elif "TextRCNN_" in opt.models[index]:
-            model_config = TextRCNNConfig(model_setting.ntokens,model_setting.nemb,model_setting.nclass)
+            model_config = TextRCNNConfig(n_vocab=model_setting.ntokens,embedding=model_setting.nemb,max_seq_len=60,num_class=model_setting.nclass)
             model_config.padding_idx = model_setting.pad_token
             m_model = TextRCNNModel(model_config).to(device)
         elif "TextRNNAtt_" in opt.models[index]:
@@ -83,9 +83,8 @@ def main():
                         default=os.path.join(os.getenv('PROJTOP'),'user_data/model_data'),
                         help='Path to model weight file')
     parser.add_argument('-tokenizer_path',default=os.path.join(os.getenv('PROJTOP'),"user_data/bert"),help="path of tokenizer")
-    parser.add_argument('-input', type = str,
-                        default=os.path.join(os.getenv('PROJTOP'),'user_data/tmp_data/test.csv'),
-                        help='input csv file')
+    parser.add_argument('-input', type=str,
+        default=os.path.join(os.getenv('PROJTOP'),'tcdata/medical_nlp_round1_data/test.csv'),help="path for test.csv")
     parser.add_argument('-output', type = str,
                         default=os.path.join(os.getenv('PROJTOP'),'prediction_result/result.csv'),
                         help='output csv file')
@@ -105,14 +104,10 @@ def main():
 
     # load data
     if opt.is_test:
-        names = ['id','report']
         results = {"report_ID":[],"Prediction":[]}
-        sep = ","
     else:
-        name = ['id','label']
         results = {"report_ID":[],"Prediction":[],"label":[]}
-        sep=","
-    data = pd.read_csv(opt.input,index_col=0)
+    data = pd.read_csv(opt.input,index_col=0,sep="\|,\|",names=["id","report"])
     print(data)
 
 
@@ -132,11 +127,11 @@ def main():
                 report.to(device)
             else:
                 report = [[int(x) for x in (data["report"][index]).split()]]
-                if len(report[0]) > 70:
-                    new_report = [[report[0][i] for i in range(70)]]
+                if len(report[0]) > 60:
+                    new_report = [[report[0][i] for i in range(60)]]
                     report = new_report
                 else:
-                    report=[report[0]+[858 for i in range(70-len(report[0]))]]
+                    report=[report[0]+[858 for i in range(60-len(report[0]))]]
                 report = torch.LongTensor(report).to(device)
                 #print(report.shape)
 
@@ -152,8 +147,11 @@ def main():
         # print(res)
         results["Prediction"].append(res.strip())
 
-    pred_results = pd.DataFrame(results)
-    pred_results.to_csv(opt.output,sep=sep,index=False)
+    #pred_results = pd.DataFrame(results)
+    #pred_results.to_csv(opt.output,sep=sep,index=False)
+    with open(opt.output,"w") as f:
+        for index,report in zip(results["report_ID"],results["Prediction"]):
+            f.write("%d|,|%s\n"%(index,report))
 
 if __name__ == '__main__':
     main()
