@@ -38,7 +38,6 @@ $ python bert_pretrain.py
 ### 训练三个模型
 ```bash
 # You have many model choices, like DPCNN,TextCNN,TextRCNN,BERT. You are free to change the model name, for eg, BERT_lalala is also a fine model name.
-python train.py -model DPCNN -epoch 8
 source train.sh
 ```
 
