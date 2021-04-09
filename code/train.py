@@ -339,12 +339,12 @@ def main():
         opt.model = "%s_fold%d"%(model_name,k_index+1)
 
         # load the pretrained word vector or not
-        word_vec_file = open(opt.word2vec_path,'rb')
-        word2vec_model = pickle.load(word_vec_file)
         if not opt.no_word2vec_pretrain and ("BERT" not in model_name):
+            word_vec_file = open(opt.word2vec_path,'rb')
+            word2vec_model = pickle.load(word_vec_file)
             print("use pretrained word2vector model")
             m_model.use_pretrain_word2vec(word2vec_model)
-        word_vec_file.close()
+            word_vec_file.close()
         print(m_model)
         print("Finish model producing ~ v ~")
 
