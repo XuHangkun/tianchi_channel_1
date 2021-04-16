@@ -219,7 +219,7 @@ def main():
         help="Net work for learning")
     parser.add_argument('-ntokens', type = int, default= 858,help="number of tokens")
     parser.add_argument('-nemb', type=int, default=200,help="embeding size")
-    parser.add_argument('-nclass', type=int, default=17,help="number of class")
+    parser.add_argument('-nclass', type=int, default=29,help="number of class")
     parser.add_argument('-frazing_bert_encode',action="store_true", help="frazing bert encode when train")
     parser.add_argument('-bert_path',default=os.path.join(os.getenv('PROJTOP'),"user_data/bert"),help="path of pretrained BERT")
     parser.add_argument('-tokenizer_path',default=os.path.join(os.getenv('PROJTOP'),"user_data/bert"),help="path of tokenizer")
@@ -239,7 +239,7 @@ def main():
 
     # parameters of saving data
     parser.add_argument('-input', type=str,
-        default=os.path.join(os.getenv('PROJTOP'),'tcdata/medical_nlp_round1_data/train.csv'),help="path for train.csv")
+        default=os.path.join(os.getenv('PROJTOP'),'tcdata/train.csv'),help="path for train.csv")
     parser.add_argument('-output_dir', type=str,
         default=os.path.join(os.getenv('PROJTOP'),'user_data/model_data'),help="the path to save the trained model")
     parser.add_argument('-save_mode', type=str, choices=['all', 'best'], default='best')

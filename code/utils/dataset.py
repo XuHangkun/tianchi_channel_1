@@ -18,7 +18,7 @@ class ReportDataset(Dataset):
     """
     Dataset of medical report
     """
-    def __init__(self,df,nclass=17,max_len=70,label_smoothing=0,eda_alpha=0.1,n_aug=2):
+    def __init__(self,df,nclass=29,max_len=70,label_smoothing=0,eda_alpha=0.1,n_aug=2):
         """
         create a dataset from dataFrame, ['id','report','label']
         args:
@@ -96,14 +96,21 @@ class ReportDataset(Dataset):
         labels = []
         for label in self.labels:
             label_tensor = [0.0 for i in range(self.nclass)]
-            label = str(label)
-            if label == '' or label == 'nan':
+            label_area,label_ill = str(label).split(',')
+            # label area
+            if label_area == '' or label_area == 'nan':
                 pass
             else:
-                label = self.tokenizer(label)
-                for index in label:
+                label_area = self.tokenizer(label_area)
+                for index in label_area:
                     label_tensor[index] = 1.0
 
+            if label_ill == '' or label_ill == 'nan':
+                pass
+            else:
+                label_ill = self.tokenizer(label_ill)
+                for index in label_ill:
+                    label_tensor[index+17] = 1.0
             labels.append(label_tensor)
 
         self.labels = labels
@@ -143,7 +150,7 @@ class ReportDataset(Dataset):
 def test():
     import pandas as pd
     import os
-    train_df = pd.read_csv(os.path.join(os.getenv('PROJTOP'),'tcdata/medical_nlp_round1_data/train.csv'),sep="\|,\|",names=["id","report","label"],index_col=0)
+    train_df = pd.read_csv(os.path.join(os.getenv('PROJTOP'),'tcdata/train.csv'),sep="\|,\|",names=["id","report","label"],index_col=0)
     data = ReportDataset(train_df)
     count = 0
     for index in range(10):
