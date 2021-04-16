@@ -261,6 +261,8 @@ def main():
 
     # device to run the training process
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    print("If the cuda is avaliable ?")
+    print(torch.cuda.is_available())
 
     print("Start getting data...")
     train_df = pd.read_csv(opt.input,sep="\|,\|",names=["id","report","label"],index_col=0)

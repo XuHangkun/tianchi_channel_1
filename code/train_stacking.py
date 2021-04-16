@@ -10,7 +10,7 @@
 
 import torch
 import argparse
-import torchtext
+#import torchtext
 import os
 import pandas as pd
 from tqdm import tqdm

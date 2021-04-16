@@ -97,10 +97,6 @@ def main():
     # load model
     models = load_model(opt,device)
 
-    # tokenizer for bert model
-    tokenizer = RobertaTokenizerFast.from_pretrained(opt.tokenizer_path, max_len=70)
-    tokens = [str(i) for i in range(857,-1,-1)]
-    tokenizer.add_tokens(tokens)
 
     # load data
     if opt.is_test:
@@ -122,6 +118,10 @@ def main():
         for model,model_name in zip(models,opt.models):
 
             if "BERT" in model_name:
+                # tokenizer for bert model
+                tokenizer = RobertaTokenizerFast.from_pretrained(opt.tokenizer_path, max_len=70)
+                tokens = [str(i) for i in range(857,-1,-1)]
+                tokenizer.add_tokens(tokens)
                 report = [data["report"][index]]
                 report = tokenizer(report,padding=True, truncation=True, return_tensors="pt")
                 report.to(device)
