@@ -94,6 +94,19 @@ def main():
     print(opt)
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
+    contain_bert=False
+    for model_name in opt.models:
+        if "BERT" in model_name:
+            contain_bert = True
+            break
+    if contain_bert:
+        # tokenizer for bert model
+        tokenizer = RobertaTokenizerFast.from_pretrained(opt.tokenizer_path, max_len=70)
+        tokens = [str(i) for i in range(857,-1,-1)]
+        tokenizer.add_tokens(tokens)
+    else:
+        tokenizer = None
+
     # load model
     models = load_model(opt,device)
 
@@ -118,10 +131,6 @@ def main():
         for model,model_name in zip(models,opt.models):
 
             if "BERT" in model_name:
-                # tokenizer for bert model
-                tokenizer = RobertaTokenizerFast.from_pretrained(opt.tokenizer_path, max_len=70)
-                tokens = [str(i) for i in range(857,-1,-1)]
-                tokenizer.add_tokens(tokens)
                 report = [data["report"][index]]
                 report = tokenizer(report,padding=True, truncation=True, return_tensors="pt")
                 report.to(device)

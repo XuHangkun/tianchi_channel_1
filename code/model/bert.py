@@ -8,7 +8,7 @@ from transformers import BertModel, BertConfig
 from transformers import AutoConfig,AutoModel
 
 class BERTConfig:
-    def __init__(self,num_class=17,embed_dim=768,frazing_encode=False,
+    def __init__(self,num_class=29,embed_dim=768,frazing_encode=False,
         pre_train_path=os.path.join(os.getenv('PROJTOP'),'user_data/bert')):
         self.model_name = 'BERT'
         self.num_classes = num_class                                    # 类别数
