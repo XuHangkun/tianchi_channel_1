@@ -5,6 +5,8 @@ cd .
 export PROJTOP=$(pwd)
 cd -
 
+nvidia-smi
+
 ############ TRAIN ################
 # 5-fold train TextRCNN
 python ./code/train.py -model TextRCNN -epoch 30 -no_word2vec_pretrain \
