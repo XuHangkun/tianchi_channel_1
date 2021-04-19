@@ -48,7 +48,7 @@ def train_epoch(model, training_data, optimizer, opt, device,scheduler=None):
     acces = []
 
     desc = '  - (Training)   '
-    for report,label in tqdm(training_data, mininterval=2, desc=desc, leave=False):
+    for report,label in training_data:
         # modify the data format
         if "BERT" in opt.model:
             report = report.to(device)
@@ -59,7 +59,7 @@ def train_epoch(model, training_data, optimizer, opt, device,scheduler=None):
         # predict and calculate the loss, accuracy
         optimizer.zero_grad()
         pred = model(report)    #prediction
-        loss = F.binary_cross_entropy(pred,label)
+        loss = 0.6*F.binary_cross_entropy(pred[:17],label[:17]) +  0.4*F.binary_cross_entropy(pred[17:],label[17:])
         acc = cal_accuracy(pred,label)
         loss.backward()
         optimizer.step()
@@ -81,7 +81,7 @@ def eval_epoch(model, validation_data, opt,device):
     acces = []
 
     desc = '  - (Validation)   '
-    for report,label in tqdm(validation_data, mininterval=1, desc=desc, leave=False):
+    for report,label in validation_data:
         # modify the data format
         if "BERT" in opt.model:
             report = report.to(device)
@@ -91,7 +91,7 @@ def eval_epoch(model, validation_data, opt,device):
 
         # predict and calculate the loss, accuracy
         pred = model(report)    #prediction, we do not use mask now!
-        loss = F.binary_cross_entropy(pred,label)
+        loss = 0.6*F.binary_cross_entropy(pred[:17],label[:17]) +  0.4*F.binary_cross_entropy(pred[17:],label[17:])
         losses.append(loss.item())
         acc = cal_accuracy(pred,label)
         acces.append(acc)
@@ -106,9 +106,9 @@ def train(model, training_data, validation_data, optimizer, device, opt,schedule
     train the model
     """
 
-    def print_performances(header,start_time,loss,acc):
-        print('  - {header:12} loss : {loss:5.5f} , acc : {acc:0.3f} , elapse : {elapse:5.5f} min'.format(
-              header=header,loss=loss, acc=acc, elapse=(time.time()-start_time)/60))
+    def performance_info(header,start_time,loss,acc):
+        return '  - {header:12} loss : {loss:5.5f} , acc : {acc:0.3f} , elapse : {elapse:5.5f} min'.format(
+                header=header,loss=loss, acc=acc, elapse=(time.time()-start_time)/60)
 
     valid_losses = []
     valid_accs = []
@@ -117,7 +117,7 @@ def train(model, training_data, validation_data, optimizer, device, opt,schedule
     min_valid_loss_index = 0
     for epoch_i in range(opt.epoch):
 
-        print('[ Epoch', epoch_i, ']')
+        epoch_info = '[ Epoch %d ]'%(epoch_i)
 
         # train in training dataset
         start = time.time()
@@ -125,7 +125,7 @@ def train(model, training_data, validation_data, optimizer, device, opt,schedule
             optimizer, opt,device,scheduler=scheduler)
         if scheduler:
             scheduler.step()
-        print_performances('Training',start,train_loss,train_acc)
+        epoch_info += performance_info('Training',start,train_loss,train_acc)
         train_losses += [train_loss]
         train_accs += [train_acc]
 
@@ -133,7 +133,7 @@ def train(model, training_data, validation_data, optimizer, device, opt,schedule
         start = time.time()
         valid_loss,valid_acc = eval_epoch(model, validation_data,
             opt,device)
-        print_performances('Validation',start,valid_loss,valid_acc)
+        epoch_info += performance_info('Validation',start,valid_loss,valid_acc)
 
         valid_losses += [valid_loss]
         valid_accs += [valid_acc]
@@ -148,13 +148,13 @@ def train(model, training_data, validation_data, optimizer, device, opt,schedule
             model_name = '{model_name}.chkpt'.format(model_name=opt.model)
             if valid_loss <= min(valid_losses) and valid_acc >= max(valid_accs):
                 torch.save(checkpoint, os.path.join(opt.output_dir, model_name))
-                print('    - [Info] The checkpoint file has been updated.')
+                epoch_info += '    - [Info] The checkpoint file has been updated.'
         if opt.stop_early:
             loss_over_shit = 100*(min(valid_losses) - train_loss)/min(valid_losses)
             acc_over_shit = 100*(train_acc > max(valid_accs))/max(valid_accs)
             if loss_over_shit > 0 and acc_over_shit > 0:
                 break
-
+        print(epoch_info)
     return train_losses,train_accs,valid_losses,valid_accs
 
 def load_model(opt,device):
@@ -170,7 +170,7 @@ def load_model(opt,device):
     """
     m_model = None
     if "DPCNN" in opt.model:
-        model_config = DPCNNConfig(n_vocab=opt.ntokens,embedding=opt.nemb,num_class=opt.nclass,max_seq_len=opt.max_len)
+        model_config = DPCNNConfig(n_vocab=opt.ntokens,embedding=opt.nemb,num_class=opt.nclass,max_seq_len=opt.max_len,dropout=opt.dropout)
         model_config.padding_idx = opt.pad_token
         m_model = DPCNNModel(model_config).to(device)
     # TextRNN
@@ -183,7 +183,7 @@ def load_model(opt,device):
         model_config.padding_idx = opt.pad_token
         m_model = TextRNNAttModel(model_config).to(device)
     elif  "TextRCNN" in opt.model:
-        model_config = TextRCNNConfig(n_vocab=opt.ntokens,embedding=opt.nemb,max_seq_len=opt.max_len,num_class=opt.nclass)
+        model_config = TextRCNNConfig(n_vocab=opt.ntokens,embedding=opt.nemb,max_seq_len=opt.max_len,num_class=opt.nclass,dropout=opt.dropout)
         model_config.padding_idx = opt.pad_token
         m_model = TextRCNNModel(model_config).to(device)
     elif  "Transformer" in opt.model:
@@ -192,12 +192,12 @@ def load_model(opt,device):
         model_config.padding_idx = opt.pad_token
         m_model = TransformerModel(model_config).to(device)
     elif  "BERT" in opt.model:
-        model_config = BERTConfig(num_class = opt.nclass,
+        model_config = BERTConfig(num_class = opt.nclass,dropout=opt.dropout,
             frazing_encode=opt.frazing_bert_encode,pre_train_path=opt.bert_path)
         m_model = BERTModel(model_config).to(device)
     else:
         # default TextCNN
-        model_config = TextCNNConfig(n_vocab=opt.ntokens,embedding=opt.nemb,num_class=opt.nclass,max_seq_len=opt.max_len)
+        model_config = TextCNNConfig(n_vocab=opt.ntokens,embedding=opt.nemb,num_class=opt.nclass,max_seq_len=opt.max_len,dropout=opt.dropout)
         model_config.padding_idx = opt.pad_token
         m_model = TextCNNModel(model_config).to(device)
     return m_model
@@ -220,6 +220,7 @@ def main():
     parser.add_argument('-ntokens', type = int, default= 858,help="number of tokens")
     parser.add_argument('-nemb', type=int, default=200,help="embeding size")
     parser.add_argument('-nclass', type=int, default=29,help="number of class")
+    parser.add_argument('-dropout', type=float, default=0.5,help="number of class")
     parser.add_argument('-frazing_bert_encode',action="store_true", help="frazing bert encode when train")
     parser.add_argument('-bert_path',default=os.path.join(os.getenv('PROJTOP'),"user_data/bert"),help="path of pretrained BERT")
     parser.add_argument('-tokenizer_path',default=os.path.join(os.getenv('PROJTOP'),"user_data/bert"),help="path of tokenizer")
@@ -347,8 +348,8 @@ def main():
             print("use pretrained word2vector model")
             m_model.use_pretrain_word2vec(word2vec_model)
             word_vec_file.close()
-        print(m_model)
-        print("Finish model producing ~ v ~")
+        if k_index == 0:
+            print(m_model)
 
         # the optimizer
         optimizer = optim.Adam(m_model.parameters(),lr=opt.lr,betas=(0.9, 0.98), eps=1e-05)

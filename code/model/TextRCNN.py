@@ -8,10 +8,10 @@ import copy
 class TextRCNNConfig(object):
 
     """配置参数"""
-    def __init__(self, n_vocab=859, embedding=200,max_seq_len=60,num_class=17):
+    def __init__(self, n_vocab=859, embedding=200,max_seq_len=60,num_class=17,dropout=0.5):
         self.model_name = 'TextRCNN'
 
-        self.dropout = 0.5                                              # 随机失活
+        self.dropout = dropout                                              # 随机失活
         self.num_classes = num_class                                    # 类别数
         self.n_vocab = n_vocab                                          # 词表大小，在运行时赋值
         self.padding_idx = self.n_vocab - 1
@@ -33,7 +33,7 @@ class TextRCNNModel(nn.Module):
         self.embed_dim = config.embedding
         self.max_seq_len = config.max_seq_len
         self.hidden_size = config.hidden_size
-        self.dropout = 0.5                                              # 随机失活
+        self.dropout = config.dropout                                              # 随机失活
         self.padding_idx = config.padding_idx
 
         self.embed = nn.Embedding(config.n_vocab, config.embedding, padding_idx=config.n_vocab - 1)

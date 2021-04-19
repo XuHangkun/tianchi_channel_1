@@ -8,13 +8,14 @@ from transformers import BertModel, BertConfig
 from transformers import AutoConfig,AutoModel
 
 class BERTConfig:
-    def __init__(self,num_class=29,embed_dim=768,frazing_encode=False,
+    def __init__(self,num_class=29,embed_dim=768,frazing_encode=False,dropout=0.5,
         pre_train_path=os.path.join(os.getenv('PROJTOP'),'user_data/bert')):
         self.model_name = 'BERT'
         self.num_classes = num_class                                    # 类别数
         self.embed_dim = embed_dim
         self.pre_train_path = pre_train_path
         self.frazing_encode = frazing_encode
+        self.dropout = dropout
 class BERTModel(nn.Module):
     def __init__(self, config):
         """
@@ -24,6 +25,7 @@ class BERTModel(nn.Module):
         self.embed_dim = config.embed_dim
         self.pre_train_path = config.pre_train_path
         self.frazing_encode = config.frazing_encode
+        self.dropout = config.dropout
 
         self.bert = AutoModel.from_pretrained(self.pre_train_path)
         if self.frazing_encode:
@@ -31,7 +33,7 @@ class BERTModel(nn.Module):
                 param.requires_grad = False
 
         self.feed_forward = nn.Sequential(
-            nn.Dropout(0.5),
+            nn.Dropout(self.dropout),
             nn.Linear(self.embed_dim, config.num_classes),
             nn.Sigmoid()
         )
