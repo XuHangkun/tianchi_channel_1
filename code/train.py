@@ -25,6 +25,7 @@ from model.textCNN import TextCNNModel,TextCNNConfig
 from model.DPCNN import DPCNNConfig,DPCNNModel
 from model.TextRNN import TextRNNConfig,TextRNNModel
 from model.TextRCNN import TextRCNNConfig,TextRCNNModel
+from model.TextMRCNN import TextMRCNNConfig,TextMRCNNModel
 from model.TextRNN_Att import TextRNNAttConfig,TextRNNAttModel
 from model.transformer import TransformerConfig,TransformerModel
 from model.bert import BERTConfig,BERTModel
@@ -186,6 +187,10 @@ def load_model(opt,device):
         model_config = TextRCNNConfig(n_vocab=opt.ntokens,embedding=opt.nemb,max_seq_len=opt.max_len,num_class=opt.nclass,dropout=opt.dropout)
         model_config.padding_idx = opt.pad_token
         m_model = TextRCNNModel(model_config).to(device)
+    elif  "TextMRCNN" in opt.model:
+        model_config = TextMRCNNConfig(n_vocab=opt.ntokens,embedding=opt.nemb,max_seq_len=opt.max_len,num_class=opt.nclass,dropout=opt.dropout)
+        model_config.padding_idx = opt.pad_token
+        m_model = TextMRCNNModel(model_config).to(device)
     elif  "Transformer" in opt.model:
         model_config = TransformerConfig(opt.ntokens,opt.nemb,opt.nclass)
         model_config.device = device
