@@ -18,6 +18,7 @@ from model.textCNN import TextCNNModel,TextCNNConfig
 from model.DPCNN import DPCNNConfig,DPCNNModel
 from model.TextRNN import TextRNNConfig,TextRNNModel
 from model.TextRCNN import TextRCNNConfig,TextRCNNModel
+from model.TextMRCNN import TextMRCNNConfig,TextMRCNNModel
 from model.TextRNN_Att import TextRNNAttConfig,TextRNNAttModel
 from model.transformer import TransformerConfig,TransformerModel
 from model.bert import BERTConfig,BERTModel
@@ -33,7 +34,7 @@ def load_model(opt,device):
         model_setting = checkpoint["settings"]
 
         if "DPCNN_" in opt.models[index]:
-            model_config = DPCNNConfig(model_setting.ntokens,model_setting.nemb,model_setting.nclass)
+            model_config = DPCNNConfig(model_setting.ntokens,model_setting.nemb,model_setting.nclass,dropout=model_setting.dropout)
             model_config.padding_idx = model_setting.pad_token
             m_model = DPCNNModel(model_config).to(device)
         # TextRNN
@@ -42,7 +43,11 @@ def load_model(opt,device):
             model_config.padding_idx = model_setting.pad_token
             m_model = TextRNNModel(model_config).to(device)
         elif "TextRCNN_" in opt.models[index]:
-            model_config = TextRCNNConfig(n_vocab=model_setting.ntokens,embedding=model_setting.nemb,max_seq_len=60,num_class=model_setting.nclass)
+            model_config = TextRCNNConfig(n_vocab=model_setting.ntokens,embedding=model_setting.nemb,max_seq_len=60,num_class=model_setting.nclass,dropout=model_setting.dropout)
+            model_config.padding_idx = model_setting.pad_token
+            m_model = TextRCNNModel(model_config).to(device)
+        elif  "TextMRCNN_" in opt.models[index]:
+            model_config = TextMRCNNConfig(n_vocab=model_setting.ntokens,embedding=model_setting.nemb,max_seq_len=60,num_class=model_setting.nclass,dropout=model_setting.dropout)
             model_config.padding_idx = model_setting.pad_token
             m_model = TextRCNNModel(model_config).to(device)
         elif "TextRNNAtt_" in opt.models[index]:
@@ -55,11 +60,11 @@ def load_model(opt,device):
             model_config.padding_idx = model_setting.pad_token
             m_model = TransformerModel(model_config).to(device)
         elif  "BERT" in opt.models[index]:
-            model_config = BERTConfig(num_class = model_setting.nclass,pre_train_path=model_setting.bert_path)
+            model_config = BERTConfig(num_class = model_setting.nclass,pre_train_path=model_setting.bert_path,dropout=model_setting.dropout)
             m_model = BERTModel(model_config).to(device)
         else:
             # default TextCNN
-            model_config = TextCNNConfig(model_setting.ntokens,model_setting.nemb,model_setting.nclass)
+            model_config = TextCNNConfig(model_setting.ntokens,model_setting.nemb,model_setting.nclass,dropout=model_setting.dropout)
             model_config.padding_idx = model_setting.pad_token
             m_model = TextCNNModel(model_config).to(device)
 

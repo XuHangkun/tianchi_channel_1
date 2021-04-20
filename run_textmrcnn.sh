@@ -9,7 +9,7 @@ nvidia-smi
 
 ############ TRAIN ################
 # 5-fold train TextRCNN
-python ./code/train.py -model TextRCNN -epoch 30 -no_word2vec_pretrain -seed 7 \
+python ./code/train.py -model TextMRCNN -epoch 30 -no_word2vec_pretrain -seed 7 \
 -output_dir ./user_data/model_data/TextRCNN -lr 1.e-3 -input ./tcdata/train.csv
 
 # 5-fold train DPCNN
@@ -41,6 +41,6 @@ python ./code/train.py -model TextRCNN -epoch 30 -no_word2vec_pretrain -seed 7 \
 # -output ./prediction_result/result.csv
 
 python ./code/predict.py -input ./tcdata/testA.csv \
--models TextRCNN/TextRCNN_fold1 TextRCNN/TextRCNN_fold2 TextRCNN/TextRCNN_fold3 TextRCNN/TextRCNN_fold4 TextRCNN/TextRCNN_fold5 \
+-models TextRCNN/TextMRCNN_fold1 TextRCNN/TextMRCNN_fold2 TextRCNN/TextMRCNN_fold3 TextRCNN/TextMRCNN_fold4 TextRCNN/TextMRCNN_fold5 \
 -model_path ./user_data/model_data \
 -output ./result.csv
