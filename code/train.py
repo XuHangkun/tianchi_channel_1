@@ -64,6 +64,8 @@ def train_epoch(model, training_data, optimizer, opt, device,scheduler=None):
         acc = cal_accuracy(pred,label)
         loss.backward()
         optimizer.step()
+        if scheduler:
+            scheduler.step()
 
         losses.append(loss.item())
         acces.append(acc)
@@ -124,8 +126,6 @@ def train(model, training_data, validation_data, optimizer, device, opt,schedule
         start = time.time()
         train_loss,train_acc = train_epoch(model, training_data,
             optimizer, opt,device,scheduler=scheduler)
-        if scheduler:
-            scheduler.step()
         epoch_info += performance_info('Training',start,train_loss,train_acc)
         train_losses += [train_loss]
         train_accs += [train_acc]
