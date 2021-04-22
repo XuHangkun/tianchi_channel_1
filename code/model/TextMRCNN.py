@@ -82,7 +82,7 @@ class TextMRCNNModel(nn.Module):
     def complete_short_sentence(self,x):
         device = x.device
         if x.size(1) > self.max_seq_len:
-            x = torch.Tensor(x[:self.max_seq_len],requires_grad=False,device=device)
+            x = x[:,:self.max_seq_len]
         else:
             cat_size = (x.size(0),self.max_seq_len-x.size(1))
             pad_tensor = torch.full(cat_size,self.padding_idx,dtype=torch.long,requires_grad=False,device=device)

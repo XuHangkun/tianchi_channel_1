@@ -34,7 +34,7 @@ def load_model(opt,device):
         model_setting = checkpoint["settings"]
 
         if "DPCNN_" in opt.models[index]:
-            model_config = DPCNNConfig(model_setting.ntokens,model_setting.nemb,model_setting.nclass,dropout=model_setting.dropout)
+            model_config = DPCNNConfig(model_setting.ntokens,model_setting.nemb,model_setting.nclass,max_seq_len=model_setting.max_len,dropout=model_setting.dropout)
             model_config.padding_idx = model_setting.pad_token
             m_model = DPCNNModel(model_config).to(device)
         # TextRNN
@@ -43,11 +43,11 @@ def load_model(opt,device):
             model_config.padding_idx = model_setting.pad_token
             m_model = TextRNNModel(model_config).to(device)
         elif "TextRCNN_" in opt.models[index]:
-            model_config = TextRCNNConfig(n_vocab=model_setting.ntokens,embedding=model_setting.nemb,max_seq_len=60,num_class=model_setting.nclass,dropout=model_setting.dropout)
+            model_config = TextRCNNConfig(n_vocab=model_setting.ntokens,embedding=model_setting.nemb,max_seq_len=model_setting.max_len,num_class=model_setting.nclass,dropout=model_setting.dropout)
             model_config.padding_idx = model_setting.pad_token
             m_model = TextRCNNModel(model_config).to(device)
         elif  "TextMRCNN_" in opt.models[index]:
-            model_config = TextMRCNNConfig(n_vocab=model_setting.ntokens,embedding=model_setting.nemb,max_seq_len=60,num_class=model_setting.nclass,dropout=model_setting.dropout)
+            model_config = TextMRCNNConfig(n_vocab=model_setting.ntokens,embedding=model_setting.nemb,max_seq_len=model_setting.max_len,num_class=model_setting.nclass,dropout=model_setting.dropout)
             model_config.padding_idx = model_setting.pad_token
             m_model = TextMRCNNModel(model_config).to(device)
         elif "TextRNNAtt_" in opt.models[index]:
@@ -141,11 +141,6 @@ def main():
                 report.to(device)
             else:
                 report = [[int(x) for x in (data["report"][index]).split()]]
-                if len(report[0]) > 60:
-                    new_report = [[report[0][i] for i in range(60)]]
-                    report = new_report
-                else:
-                    report=[report[0]+[858 for i in range(60-len(report[0]))]]
                 report = torch.LongTensor(report).to(device)
                 #print(report.shape)
 

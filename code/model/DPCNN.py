@@ -8,7 +8,7 @@ import copy
 class DPCNNConfig(object):
 
     """配置参数"""
-    def __init__(self,n_vocab=859,embedding=200,num_class=29,max_seq_len=60,dropout=0.5):
+    def __init__(self,n_vocab=859,embedding=200,num_class=29,max_seq_len=70,dropout=0.5):
         self.model_name = 'DPCNN'
         self.dropout = dropout                                              # 随机失活
         self.n_vocab = n_vocab                                          # 词表大小，在运行时赋值
@@ -50,7 +50,7 @@ class DPCNNModel(nn.Module):
     def complete_short_sentence(self,x):
         device = x.device
         if x.size(1) > self.max_seq_len:
-            x = torch.Tensor(x[:self.max_seq_len],requires_grad=False,device=device)
+            x = x[:,:self.max_seq_len]
         else:
             cat_size = (x.size(0),self.max_seq_len-x.size(1))
             pad_tensor = torch.full(cat_size,self.padding_idx,dtype=torch.long,requires_grad=False,device=device)

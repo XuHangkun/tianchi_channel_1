@@ -8,15 +8,15 @@ import copy
 class TextRCNNConfig(object):
 
     """配置参数"""
-    def __init__(self, n_vocab=859, embedding=200,max_seq_len=60,num_class=17,dropout=0.5):
+    def __init__(self, n_vocab=859, embedding=200,max_seq_len=70,num_class=29,dropout=0.5):
         self.model_name = 'TextRCNN'
 
-        self.dropout = dropout                                              # 随机失活
+        self.dropout = dropout                                          # 随机失活
         self.num_classes = num_class                                    # 类别数
         self.n_vocab = n_vocab                                          # 词表大小，在运行时赋值
         self.padding_idx = self.n_vocab - 1
         self.embedding = embedding
-        self.hidden_size = 128                                          # lstm隐藏层
+        self.hidden_size = 256                                          # lstm隐藏层
         self.num_layers = 2                                             # lstm层数
         self.max_seq_len = max_seq_len
 
@@ -39,7 +39,7 @@ class TextRCNNModel(nn.Module):
         self.embed = nn.Embedding(config.n_vocab, config.embedding, padding_idx=config.n_vocab - 1)
         self.emb_dropout_layer = nn.Dropout(self.dropout)
         self.lstm = nn.LSTM(config.embedding, config.hidden_size, config.num_layers,
-                            bidirectional=True, batch_first=True, dropout=config.dropout)
+                            bidirectional=True, batch_first=True, dropout=0.1)
         self.W2 = nn.Linear(2 * self.hidden_size + self.embed_dim, self.hidden_size * 2)
         self.final_dropout_layer = nn.Dropout(self.dropout)
         self.fc = nn.Linear(config.hidden_size * 2, config.num_classes)
@@ -67,7 +67,7 @@ class TextRCNNModel(nn.Module):
     def complete_short_sentence(self,x):
         device = x.device
         if x.size(1) > self.max_seq_len:
-            x = torch.Tensor(x[:self.max_seq_len],requires_grad=False,device=device)
+            x = x[:,:self.max_seq_len]
         else:
             cat_size = (x.size(0),self.max_seq_len-x.size(1))
             pad_tensor = torch.full(cat_size,self.padding_idx,dtype=torch.long,requires_grad=False,device=device)
