@@ -106,7 +106,7 @@ class DPCNNModel(nn.Module):
 
 def test():
     import numpy as np
-    input = torch.LongTensor([range(4),range(4)])
+    input = torch.LongTensor([range(100)])
     print(input)
     config = DPCNNConfig()
     model = DPCNNModel(config)

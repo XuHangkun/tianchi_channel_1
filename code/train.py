@@ -184,7 +184,7 @@ def load_model(opt,device):
         model_config.padding_idx = opt.pad_token
         m_model = TextRNNAttModel(model_config).to(device)
     elif  "TextRCNN" in opt.model:
-        model_config = TextRCNNConfig(n_vocab=opt.ntokens,embedding=opt.nemb,max_seq_len=opt.max_len,num_class=opt.nclass,dropout=opt.dropout)
+        model_config = TextRCNNConfig(n_vocab=opt.ntokens,embedding=opt.nemb,max_seq_len=opt.max_len,num_class=opt.nclass,dropout=opt.dropout,lstm_layer=opt.lstm_layer)
         model_config.padding_idx = opt.pad_token
         m_model = TextRCNNModel(model_config).to(device)
     elif  "TextMRCNN" in opt.model:
@@ -225,7 +225,8 @@ def main():
     parser.add_argument('-ntokens', type = int, default= 858,help="number of tokens")
     parser.add_argument('-nemb', type=int, default=200,help="embeding size")
     parser.add_argument('-nclass', type=int, default=29,help="number of class")
-    parser.add_argument('-dropout', type=float, default=0.5,help="number of class")
+    parser.add_argument('-dropout', type=float, default=0.5,help="dropout rate of end layer")
+    parser.add_argument('-lstm_layer', type=int, default=2,help="number of lstm layer")
     parser.add_argument('-frazing_bert_encode',action="store_true", help="frazing bert encode when train")
     parser.add_argument('-bert_path',default=os.path.join(os.getenv('PROJTOP'),"user_data/bert"),help="path of pretrained BERT")
     parser.add_argument('-tokenizer_path',default=os.path.join(os.getenv('PROJTOP'),"user_data/bert"),help="path of tokenizer")

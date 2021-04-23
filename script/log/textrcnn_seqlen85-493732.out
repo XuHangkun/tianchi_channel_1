@@ -1,0 +1,547 @@
+Shell for /hpcfs/juno/junogpu/xuhangkun/SoftWare/VsCode/.local/share/virtualenvs/tianchi_channel_1-2IKVIXD7 already activated.
+No action taken to avoid nested environments.
+If the cuda is avaliable ?
+True
+Start getting data...
+Finish getting data ~ v ~
+[Info] Training performance will be written to file: ./user_data/model_data/TextRCNN/TextRCNN_train.csv
+Namespace(batch_size=128, bert_path='/hpcfs/juno/junogpu/xuhangkun/ML/MyselfProject/Test/tianchi_channel_1/user_data/bert', dropout=0.5, eda_alpha=0.0, epoch=100, fold_index=-1, fold_k=5, frazing_bert_encode=False, input='./tcdata/train.csv', label_smoothing=0.0, lr=0.0005, max_len=85, model='TextRCNN', n_aug=0.0, nclass=29, nemb=300, no_word2vec_pretrain=True, ntokens=859, output_dir='./user_data/model_data/TextRCNN', pad_token=858, save_mode='best', save_per_epoch=5, save_start_epoch=5, seed=None, stop_early=False, tokenizer_path='/hpcfs/juno/junogpu/xuhangkun/ML/MyselfProject/Test/tianchi_channel_1/user_data/bert', word2vec_path='/hpcfs/juno/junogpu/xuhangkun/ML/MyselfProject/Test/tianchi_channel_1/user_data/word_pretrain/word2vector.model')
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+0th fold (total : 5)
+Create model...
+TextRCNNModel(
+  (embed): Embedding(859, 300, padding_idx=858)
+  (emb_dropout_layer): Dropout(p=0.5, inplace=False)
+  (lstm): LSTM(300, 256, num_layers=2, batch_first=True, dropout=0.1, bidirectional=True)
+  (W2): Linear(in_features=812, out_features=512, bias=True)
+  (final_dropout_layer): Dropout(p=0.5, inplace=False)
+  (fc): Linear(in_features=512, out_features=29, bias=True)
+  (sigmoid): Sigmoid()
+)
+Start training...
+[ Epoch 0 ]  - Training     loss : 0.25178 , acc : 0.917 , elapse : 0.25973 min  - Validation   loss : 0.19326 , acc : 0.939 , elapse : 0.04530 min    - [Info] The checkpoint file has been updated.
+[ Epoch 1 ]  - Training     loss : 0.17429 , acc : 0.942 , elapse : 0.25587 min  - Validation   loss : 0.14244 , acc : 0.954 , elapse : 0.04519 min    - [Info] The checkpoint file has been updated.
+[ Epoch 2 ]  - Training     loss : 0.13405 , acc : 0.955 , elapse : 0.25505 min  - Validation   loss : 0.12378 , acc : 0.960 , elapse : 0.04499 min    - [Info] The checkpoint file has been updated.
+[ Epoch 3 ]  - Training     loss : 0.11611 , acc : 0.961 , elapse : 0.25685 min  - Validation   loss : 0.09625 , acc : 0.969 , elapse : 0.04559 min    - [Info] The checkpoint file has been updated.
+[ Epoch 4 ]  - Training     loss : 0.09630 , acc : 0.967 , elapse : 0.25888 min  - Validation   loss : 0.08534 , acc : 0.973 , elapse : 0.04517 min    - [Info] The checkpoint file has been updated.
+[ Epoch 5 ]  - Training     loss : 0.08875 , acc : 0.969 , elapse : 0.26618 min  - Validation   loss : 0.08259 , acc : 0.974 , elapse : 0.04536 min    - [Info] The checkpoint file has been updated.
+[ Epoch 6 ]  - Training     loss : 0.08543 , acc : 0.971 , elapse : 0.28133 min  - Validation   loss : 0.07394 , acc : 0.976 , elapse : 0.05922 min    - [Info] The checkpoint file has been updated.
+[ Epoch 7 ]  - Training     loss : 0.07622 , acc : 0.973 , elapse : 0.32063 min  - Validation   loss : 0.06679 , acc : 0.979 , elapse : 0.05812 min    - [Info] The checkpoint file has been updated.
+[ Epoch 8 ]  - Training     loss : 0.06850 , acc : 0.976 , elapse : 0.31170 min  - Validation   loss : 0.06213 , acc : 0.980 , elapse : 0.05694 min    - [Info] The checkpoint file has been updated.
+[ Epoch 9 ]  - Training     loss : 0.06342 , acc : 0.977 , elapse : 0.31217 min  - Validation   loss : 0.05955 , acc : 0.980 , elapse : 0.05716 min    - [Info] The checkpoint file has been updated.
+[ Epoch 10 ]  - Training     loss : 0.06092 , acc : 0.978 , elapse : 0.31069 min  - Validation   loss : 0.05742 , acc : 0.981 , elapse : 0.05771 min    - [Info] The checkpoint file has been updated.
+[ Epoch 11 ]  - Training     loss : 0.05941 , acc : 0.978 , elapse : 0.31080 min  - Validation   loss : 0.05695 , acc : 0.981 , elapse : 0.05643 min    - [Info] The checkpoint file has been updated.
+[ Epoch 12 ]  - Training     loss : 0.06091 , acc : 0.978 , elapse : 0.30854 min  - Validation   loss : 0.05752 , acc : 0.981 , elapse : 0.05649 min
+[ Epoch 13 ]  - Training     loss : 0.05688 , acc : 0.979 , elapse : 0.28181 min  - Validation   loss : 0.05381 , acc : 0.983 , elapse : 0.04520 min    - [Info] The checkpoint file has been updated.
+[ Epoch 14 ]  - Training     loss : 0.05277 , acc : 0.980 , elapse : 0.25725 min  - Validation   loss : 0.05067 , acc : 0.984 , elapse : 0.04521 min    - [Info] The checkpoint file has been updated.
+[ Epoch 15 ]  - Training     loss : 0.05064 , acc : 0.981 , elapse : 0.25589 min  - Validation   loss : 0.04940 , acc : 0.984 , elapse : 0.04554 min    - [Info] The checkpoint file has been updated.
+[ Epoch 16 ]  - Training     loss : 0.04720 , acc : 0.982 , elapse : 0.25424 min  - Validation   loss : 0.04637 , acc : 0.985 , elapse : 0.04507 min    - [Info] The checkpoint file has been updated.
+[ Epoch 17 ]  - Training     loss : 0.04410 , acc : 0.983 , elapse : 0.25681 min  - Validation   loss : 0.04468 , acc : 0.985 , elapse : 0.04537 min    - [Info] The checkpoint file has been updated.
+[ Epoch 18 ]  - Training     loss : 0.04198 , acc : 0.983 , elapse : 0.25541 min  - Validation   loss : 0.04399 , acc : 0.986 , elapse : 0.04516 min    - [Info] The checkpoint file has been updated.
+[ Epoch 19 ]  - Training     loss : 0.04048 , acc : 0.984 , elapse : 0.25618 min  - Validation   loss : 0.04308 , acc : 0.986 , elapse : 0.04548 min    - [Info] The checkpoint file has been updated.
+[ Epoch 20 ]  - Training     loss : 0.03911 , acc : 0.984 , elapse : 0.25771 min  - Validation   loss : 0.04219 , acc : 0.986 , elapse : 0.04521 min    - [Info] The checkpoint file has been updated.
+[ Epoch 21 ]  - Training     loss : 0.03795 , acc : 0.984 , elapse : 0.28953 min  - Validation   loss : 0.04224 , acc : 0.986 , elapse : 0.05889 min
+[ Epoch 22 ]  - Training     loss : 0.03712 , acc : 0.985 , elapse : 0.30530 min  - Validation   loss : 0.04208 , acc : 0.987 , elapse : 0.05673 min    - [Info] The checkpoint file has been updated.
+[ Epoch 23 ]  - Training     loss : 0.03637 , acc : 0.985 , elapse : 0.31229 min  - Validation   loss : 0.04181 , acc : 0.987 , elapse : 0.05648 min    - [Info] The checkpoint file has been updated.
+[ Epoch 24 ]  - Training     loss : 0.03814 , acc : 0.984 , elapse : 0.31146 min  - Validation   loss : 0.04286 , acc : 0.986 , elapse : 0.05708 min
+[ Epoch 25 ]  - Training     loss : 0.03935 , acc : 0.984 , elapse : 0.29008 min  - Validation   loss : 0.04293 , acc : 0.986 , elapse : 0.04489 min
+[ Epoch 26 ]  - Training     loss : 0.03773 , acc : 0.984 , elapse : 0.25655 min  - Validation   loss : 0.04185 , acc : 0.987 , elapse : 0.04513 min
+[ Epoch 27 ]  - Training     loss : 0.03573 , acc : 0.985 , elapse : 0.25608 min  - Validation   loss : 0.04079 , acc : 0.987 , elapse : 0.04495 min    - [Info] The checkpoint file has been updated.
+[ Epoch 28 ]  - Training     loss : 0.03446 , acc : 0.985 , elapse : 0.25643 min  - Validation   loss : 0.03937 , acc : 0.987 , elapse : 0.04620 min    - [Info] The checkpoint file has been updated.
+[ Epoch 29 ]  - Training     loss : 0.03249 , acc : 0.986 , elapse : 0.25865 min  - Validation   loss : 0.03960 , acc : 0.987 , elapse : 0.04544 min
+[ Epoch 30 ]  - Training     loss : 0.03028 , acc : 0.987 , elapse : 0.25671 min  - Validation   loss : 0.03770 , acc : 0.988 , elapse : 0.04523 min    - [Info] The checkpoint file has been updated.
+[ Epoch 31 ]  - Training     loss : 0.02930 , acc : 0.987 , elapse : 0.26345 min  - Validation   loss : 0.03623 , acc : 0.988 , elapse : 0.04521 min    - [Info] The checkpoint file has been updated.
+[ Epoch 32 ]  - Training     loss : 0.02786 , acc : 0.987 , elapse : 0.26637 min  - Validation   loss : 0.03539 , acc : 0.988 , elapse : 0.05295 min
+[ Epoch 33 ]  - Training     loss : 0.02702 , acc : 0.988 , elapse : 0.25772 min  - Validation   loss : 0.03694 , acc : 0.988 , elapse : 0.04538 min
+[ Epoch 34 ]  - Training     loss : 0.02599 , acc : 0.988 , elapse : 0.26120 min  - Validation   loss : 0.03458 , acc : 0.988 , elapse : 0.04539 min
+[ Epoch 35 ]  - Training     loss : 0.02508 , acc : 0.988 , elapse : 0.25622 min  - Validation   loss : 0.03422 , acc : 0.989 , elapse : 0.04503 min    - [Info] The checkpoint file has been updated.
+[ Epoch 36 ]  - Training     loss : 0.02396 , acc : 0.988 , elapse : 0.25709 min  - Validation   loss : 0.03554 , acc : 0.989 , elapse : 0.04588 min
+[ Epoch 37 ]  - Training     loss : 0.02384 , acc : 0.989 , elapse : 0.25935 min  - Validation   loss : 0.03371 , acc : 0.989 , elapse : 0.04520 min
+[ Epoch 38 ]  - Training     loss : 0.02287 , acc : 0.989 , elapse : 0.25516 min  - Validation   loss : 0.03310 , acc : 0.989 , elapse : 0.04482 min    - [Info] The checkpoint file has been updated.
+[ Epoch 39 ]  - Training     loss : 0.02243 , acc : 0.989 , elapse : 0.25572 min  - Validation   loss : 0.03261 , acc : 0.989 , elapse : 0.04529 min    - [Info] The checkpoint file has been updated.
+[ Epoch 40 ]  - Training     loss : 0.02158 , acc : 0.990 , elapse : 0.25708 min  - Validation   loss : 0.03208 , acc : 0.989 , elapse : 0.04550 min
+[ Epoch 41 ]  - Training     loss : 0.02111 , acc : 0.990 , elapse : 0.25711 min  - Validation   loss : 0.03223 , acc : 0.989 , elapse : 0.04539 min
+[ Epoch 42 ]  - Training     loss : 0.02056 , acc : 0.990 , elapse : 0.25665 min  - Validation   loss : 0.03242 , acc : 0.989 , elapse : 0.04533 min
+[ Epoch 43 ]  - Training     loss : 0.01967 , acc : 0.990 , elapse : 0.26053 min  - Validation   loss : 0.03254 , acc : 0.989 , elapse : 0.04534 min
+[ Epoch 44 ]  - Training     loss : 0.01999 , acc : 0.990 , elapse : 0.25658 min  - Validation   loss : 0.03254 , acc : 0.989 , elapse : 0.04514 min
+[ Epoch 45 ]  - Training     loss : 0.01980 , acc : 0.990 , elapse : 0.25664 min  - Validation   loss : 0.03192 , acc : 0.989 , elapse : 0.04548 min
+[ Epoch 46 ]  - Training     loss : 0.01965 , acc : 0.990 , elapse : 0.25852 min  - Validation   loss : 0.03201 , acc : 0.989 , elapse : 0.04557 min
+[ Epoch 47 ]  - Training     loss : 0.01950 , acc : 0.991 , elapse : 0.29309 min  - Validation   loss : 0.03188 , acc : 0.989 , elapse : 0.05582 min
+[ Epoch 48 ]  - Training     loss : 0.01955 , acc : 0.990 , elapse : 0.25937 min  - Validation   loss : 0.03190 , acc : 0.989 , elapse : 0.04553 min
+[ Epoch 49 ]  - Training     loss : 0.02144 , acc : 0.990 , elapse : 0.25950 min  - Validation   loss : 0.03301 , acc : 0.989 , elapse : 0.04592 min
+[ Epoch 50 ]  - Training     loss : 0.02255 , acc : 0.989 , elapse : 0.25704 min  - Validation   loss : 0.03329 , acc : 0.989 , elapse : 0.04554 min
+[ Epoch 51 ]  - Training     loss : 0.02116 , acc : 0.990 , elapse : 0.25685 min  - Validation   loss : 0.03412 , acc : 0.989 , elapse : 0.04552 min
+[ Epoch 52 ]  - Training     loss : 0.02063 , acc : 0.990 , elapse : 0.25934 min  - Validation   loss : 0.03374 , acc : 0.989 , elapse : 0.04592 min
+[ Epoch 53 ]  - Training     loss : 0.02024 , acc : 0.990 , elapse : 0.25870 min  - Validation   loss : 0.03467 , acc : 0.989 , elapse : 0.04513 min
+[ Epoch 54 ]  - Training     loss : 0.01949 , acc : 0.990 , elapse : 0.25803 min  - Validation   loss : 0.03261 , acc : 0.990 , elapse : 0.04548 min
+[ Epoch 55 ]  - Training     loss : 0.01902 , acc : 0.990 , elapse : 0.25792 min  - Validation   loss : 0.03287 , acc : 0.990 , elapse : 0.04540 min
+[ Epoch 56 ]  - Training     loss : 0.01860 , acc : 0.991 , elapse : 0.25789 min  - Validation   loss : 0.03183 , acc : 0.990 , elapse : 0.04591 min    - [Info] The checkpoint file has been updated.
+[ Epoch 57 ]  - Training     loss : 0.01758 , acc : 0.991 , elapse : 0.25828 min  - Validation   loss : 0.03049 , acc : 0.990 , elapse : 0.04575 min
+[ Epoch 58 ]  - Training     loss : 0.01730 , acc : 0.991 , elapse : 0.25937 min  - Validation   loss : 0.03065 , acc : 0.990 , elapse : 0.04531 min
+[ Epoch 59 ]  - Training     loss : 0.01675 , acc : 0.991 , elapse : 0.25631 min  - Validation   loss : 0.03113 , acc : 0.990 , elapse : 0.04543 min
+[ Epoch 60 ]  - Training     loss : 0.01632 , acc : 0.992 , elapse : 0.25569 min  - Validation   loss : 0.03003 , acc : 0.990 , elapse : 0.04513 min    - [Info] The checkpoint file has been updated.
+[ Epoch 61 ]  - Training     loss : 0.01581 , acc : 0.992 , elapse : 0.25666 min  - Validation   loss : 0.03089 , acc : 0.990 , elapse : 0.04518 min
+[ Epoch 62 ]  - Training     loss : 0.01484 , acc : 0.992 , elapse : 0.25614 min  - Validation   loss : 0.03009 , acc : 0.990 , elapse : 0.04498 min
+[ Epoch 63 ]  - Training     loss : 0.01452 , acc : 0.992 , elapse : 0.25572 min  - Validation   loss : 0.03137 , acc : 0.990 , elapse : 0.04497 min
+[ Epoch 64 ]  - Training     loss : 0.01439 , acc : 0.992 , elapse : 0.25968 min  - Validation   loss : 0.03124 , acc : 0.990 , elapse : 0.04514 min
+[ Epoch 65 ]  - Training     loss : 0.01376 , acc : 0.993 , elapse : 0.25637 min  - Validation   loss : 0.02976 , acc : 0.991 , elapse : 0.04540 min    - [Info] The checkpoint file has been updated.
+[ Epoch 66 ]  - Training     loss : 0.01358 , acc : 0.993 , elapse : 0.25677 min  - Validation   loss : 0.02980 , acc : 0.991 , elapse : 0.04563 min
+[ Epoch 67 ]  - Training     loss : 0.01296 , acc : 0.993 , elapse : 0.25861 min  - Validation   loss : 0.02918 , acc : 0.991 , elapse : 0.04544 min    - [Info] The checkpoint file has been updated.
+[ Epoch 68 ]  - Training     loss : 0.01259 , acc : 0.993 , elapse : 0.25649 min  - Validation   loss : 0.02961 , acc : 0.991 , elapse : 0.04517 min
+[ Epoch 69 ]  - Training     loss : 0.01221 , acc : 0.993 , elapse : 0.25728 min  - Validation   loss : 0.02968 , acc : 0.991 , elapse : 0.04614 min
+[ Epoch 70 ]  - Training     loss : 0.01149 , acc : 0.994 , elapse : 0.25957 min  - Validation   loss : 0.03131 , acc : 0.991 , elapse : 0.04505 min
+[ Epoch 71 ]  - Training     loss : 0.01134 , acc : 0.994 , elapse : 0.25497 min  - Validation   loss : 0.02888 , acc : 0.991 , elapse : 0.04508 min    - [Info] The checkpoint file has been updated.
+[ Epoch 72 ]  - Training     loss : 0.01099 , acc : 0.994 , elapse : 0.25653 min  - Validation   loss : 0.02906 , acc : 0.991 , elapse : 0.04521 min
+[ Epoch 73 ]  - Training     loss : 0.01108 , acc : 0.994 , elapse : 0.25618 min  - Validation   loss : 0.02982 , acc : 0.991 , elapse : 0.04552 min
+[ Epoch 74 ]  - Training     loss : 0.01071 , acc : 0.994 , elapse : 0.25720 min  - Validation   loss : 0.02898 , acc : 0.991 , elapse : 0.04549 min
+[ Epoch 75 ]  - Training     loss : 0.01045 , acc : 0.994 , elapse : 0.25591 min  - Validation   loss : 0.03030 , acc : 0.991 , elapse : 0.04519 min
+[ Epoch 76 ]  - Training     loss : 0.01020 , acc : 0.994 , elapse : 0.25727 min  - Validation   loss : 0.03001 , acc : 0.991 , elapse : 0.04553 min
+[ Epoch 77 ]  - Training     loss : 0.00963 , acc : 0.995 , elapse : 0.25609 min  - Validation   loss : 0.02969 , acc : 0.991 , elapse : 0.04553 min
+[ Epoch 78 ]  - Training     loss : 0.00961 , acc : 0.995 , elapse : 0.25662 min  - Validation   loss : 0.02901 , acc : 0.991 , elapse : 0.04540 min
+[ Epoch 79 ]  - Training     loss : 0.00940 , acc : 0.995 , elapse : 0.25787 min  - Validation   loss : 0.02928 , acc : 0.991 , elapse : 0.04535 min
+[ Epoch 80 ]  - Training     loss : 0.00916 , acc : 0.995 , elapse : 0.25608 min  - Validation   loss : 0.02917 , acc : 0.991 , elapse : 0.04493 min
+[ Epoch 81 ]  - Training     loss : 0.00916 , acc : 0.995 , elapse : 0.25721 min  - Validation   loss : 0.02909 , acc : 0.991 , elapse : 0.04516 min
+[ Epoch 82 ]  - Training     loss : 0.00896 , acc : 0.995 , elapse : 0.26176 min  - Validation   loss : 0.02803 , acc : 0.991 , elapse : 0.04557 min    - [Info] The checkpoint file has been updated.
+[ Epoch 83 ]  - Training     loss : 0.00866 , acc : 0.995 , elapse : 0.25941 min  - Validation   loss : 0.02867 , acc : 0.991 , elapse : 0.04542 min
+[ Epoch 84 ]  - Training     loss : 0.00825 , acc : 0.995 , elapse : 0.25701 min  - Validation   loss : 0.02876 , acc : 0.991 , elapse : 0.04533 min
+[ Epoch 85 ]  - Training     loss : 0.00822 , acc : 0.995 , elapse : 0.25716 min  - Validation   loss : 0.02845 , acc : 0.992 , elapse : 0.04558 min
+[ Epoch 86 ]  - Training     loss : 0.00821 , acc : 0.995 , elapse : 0.25928 min  - Validation   loss : 0.02856 , acc : 0.992 , elapse : 0.04736 min
+[ Epoch 87 ]  - Training     loss : 0.00813 , acc : 0.995 , elapse : 0.26711 min  - Validation   loss : 0.02873 , acc : 0.992 , elapse : 0.04850 min
+[ Epoch 88 ]  - Training     loss : 0.00811 , acc : 0.996 , elapse : 0.27426 min  - Validation   loss : 0.02870 , acc : 0.992 , elapse : 0.04802 min
+[ Epoch 89 ]  - Training     loss : 0.00809 , acc : 0.995 , elapse : 0.26820 min  - Validation   loss : 0.02893 , acc : 0.992 , elapse : 0.04794 min
+[ Epoch 90 ]  - Training     loss : 0.00815 , acc : 0.995 , elapse : 0.26862 min  - Validation   loss : 0.02789 , acc : 0.992 , elapse : 0.04809 min
+[ Epoch 91 ]  - Training     loss : 0.00811 , acc : 0.995 , elapse : 0.27652 min  - Validation   loss : 0.02832 , acc : 0.992 , elapse : 0.04850 min
+[ Epoch 92 ]  - Training     loss : 0.00803 , acc : 0.995 , elapse : 0.27440 min  - Validation   loss : 0.02839 , acc : 0.992 , elapse : 0.04836 min
+[ Epoch 93 ]  - Training     loss : 0.00781 , acc : 0.996 , elapse : 0.27361 min  - Validation   loss : 0.02836 , acc : 0.992 , elapse : 0.04866 min
+[ Epoch 94 ]  - Training     loss : 0.00778 , acc : 0.996 , elapse : 0.27106 min  - Validation   loss : 0.02828 , acc : 0.992 , elapse : 0.04629 min
+[ Epoch 95 ]  - Training     loss : 0.00769 , acc : 0.996 , elapse : 0.27245 min  - Validation   loss : 0.02826 , acc : 0.992 , elapse : 0.04616 min
+[ Epoch 96 ]  - Training     loss : 0.00786 , acc : 0.996 , elapse : 0.33235 min  - Validation   loss : 0.02827 , acc : 0.992 , elapse : 0.06347 min
+[ Epoch 97 ]  - Training     loss : 0.00768 , acc : 0.996 , elapse : 0.34167 min  - Validation   loss : 0.02829 , acc : 0.992 , elapse : 0.06485 min
+[ Epoch 98 ]  - Training     loss : 0.00868 , acc : 0.995 , elapse : 0.33939 min  - Validation   loss : 0.02956 , acc : 0.991 , elapse : 0.06472 min
+[ Epoch 99 ]  - Training     loss : 0.00998 , acc : 0.994 , elapse : 0.34064 min  - Validation   loss : 0.02989 , acc : 0.991 , elapse : 0.06194 min
+Finish training ~ v ~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+1th fold (total : 5)
+Create model...
+Start training...
+[ Epoch 0 ]  - Training     loss : 0.25521 , acc : 0.914 , elapse : 0.33845 min  - Validation   loss : 0.18473 , acc : 0.936 , elapse : 0.06405 min    - [Info] The checkpoint file has been updated.
+[ Epoch 1 ]  - Training     loss : 0.17353 , acc : 0.945 , elapse : 0.33842 min  - Validation   loss : 0.14463 , acc : 0.951 , elapse : 0.06435 min    - [Info] The checkpoint file has been updated.
+[ Epoch 2 ]  - Training     loss : 0.14169 , acc : 0.954 , elapse : 0.34212 min  - Validation   loss : 0.12967 , acc : 0.956 , elapse : 0.06365 min    - [Info] The checkpoint file has been updated.
+[ Epoch 3 ]  - Training     loss : 0.12400 , acc : 0.958 , elapse : 0.33913 min  - Validation   loss : 0.10153 , acc : 0.964 , elapse : 0.06550 min    - [Info] The checkpoint file has been updated.
+[ Epoch 4 ]  - Training     loss : 0.10130 , acc : 0.965 , elapse : 0.34072 min  - Validation   loss : 0.08838 , acc : 0.970 , elapse : 0.06435 min    - [Info] The checkpoint file has been updated.
+[ Epoch 5 ]  - Training     loss : 0.09366 , acc : 0.967 , elapse : 0.33959 min  - Validation   loss : 0.08605 , acc : 0.971 , elapse : 0.06343 min    - [Info] The checkpoint file has been updated.
+[ Epoch 6 ]  - Training     loss : 0.08852 , acc : 0.969 , elapse : 0.33853 min  - Validation   loss : 0.07480 , acc : 0.974 , elapse : 0.06530 min    - [Info] The checkpoint file has been updated.
+[ Epoch 7 ]  - Training     loss : 0.07725 , acc : 0.973 , elapse : 0.33779 min  - Validation   loss : 0.06630 , acc : 0.976 , elapse : 0.06335 min    - [Info] The checkpoint file has been updated.
+[ Epoch 8 ]  - Training     loss : 0.07058 , acc : 0.975 , elapse : 0.33815 min  - Validation   loss : 0.06208 , acc : 0.978 , elapse : 0.06247 min    - [Info] The checkpoint file has been updated.
+[ Epoch 9 ]  - Training     loss : 0.06539 , acc : 0.976 , elapse : 0.33984 min  - Validation   loss : 0.06030 , acc : 0.978 , elapse : 0.05474 min    - [Info] The checkpoint file has been updated.
+[ Epoch 10 ]  - Training     loss : 0.06230 , acc : 0.977 , elapse : 0.25785 min  - Validation   loss : 0.05822 , acc : 0.979 , elapse : 0.04535 min    - [Info] The checkpoint file has been updated.
+[ Epoch 11 ]  - Training     loss : 0.06047 , acc : 0.978 , elapse : 0.25784 min  - Validation   loss : 0.05799 , acc : 0.979 , elapse : 0.04581 min    - [Info] The checkpoint file has been updated.
+[ Epoch 12 ]  - Training     loss : 0.06125 , acc : 0.978 , elapse : 0.25999 min  - Validation   loss : 0.05573 , acc : 0.980 , elapse : 0.04579 min    - [Info] The checkpoint file has been updated.
+[ Epoch 13 ]  - Training     loss : 0.05781 , acc : 0.979 , elapse : 0.25760 min  - Validation   loss : 0.05308 , acc : 0.981 , elapse : 0.04617 min    - [Info] The checkpoint file has been updated.
+[ Epoch 14 ]  - Training     loss : 0.05463 , acc : 0.979 , elapse : 0.25695 min  - Validation   loss : 0.05039 , acc : 0.982 , elapse : 0.04557 min    - [Info] The checkpoint file has been updated.
+[ Epoch 15 ]  - Training     loss : 0.05076 , acc : 0.981 , elapse : 0.25774 min  - Validation   loss : 0.04862 , acc : 0.982 , elapse : 0.04558 min    - [Info] The checkpoint file has been updated.
+[ Epoch 16 ]  - Training     loss : 0.04713 , acc : 0.982 , elapse : 0.25528 min  - Validation   loss : 0.04711 , acc : 0.983 , elapse : 0.04555 min    - [Info] The checkpoint file has been updated.
+[ Epoch 17 ]  - Training     loss : 0.04480 , acc : 0.982 , elapse : 0.25572 min  - Validation   loss : 0.04557 , acc : 0.983 , elapse : 0.04539 min    - [Info] The checkpoint file has been updated.
+[ Epoch 18 ]  - Training     loss : 0.04387 , acc : 0.983 , elapse : 0.25669 min  - Validation   loss : 0.04486 , acc : 0.984 , elapse : 0.04556 min    - [Info] The checkpoint file has been updated.
+[ Epoch 19 ]  - Training     loss : 0.04169 , acc : 0.984 , elapse : 0.25554 min  - Validation   loss : 0.04369 , acc : 0.984 , elapse : 0.04520 min    - [Info] The checkpoint file has been updated.
+[ Epoch 20 ]  - Training     loss : 0.04034 , acc : 0.984 , elapse : 0.25556 min  - Validation   loss : 0.04283 , acc : 0.984 , elapse : 0.04504 min    - [Info] The checkpoint file has been updated.
+[ Epoch 21 ]  - Training     loss : 0.03886 , acc : 0.984 , elapse : 0.25586 min  - Validation   loss : 0.04242 , acc : 0.985 , elapse : 0.04511 min    - [Info] The checkpoint file has been updated.
+[ Epoch 22 ]  - Training     loss : 0.03823 , acc : 0.984 , elapse : 0.25485 min  - Validation   loss : 0.04215 , acc : 0.985 , elapse : 0.04516 min    - [Info] The checkpoint file has been updated.
+[ Epoch 23 ]  - Training     loss : 0.03735 , acc : 0.985 , elapse : 0.27038 min  - Validation   loss : 0.04213 , acc : 0.985 , elapse : 0.05735 min    - [Info] The checkpoint file has been updated.
+[ Epoch 24 ]  - Training     loss : 0.03912 , acc : 0.984 , elapse : 0.32081 min  - Validation   loss : 0.04372 , acc : 0.984 , elapse : 0.05694 min
+[ Epoch 25 ]  - Training     loss : 0.04034 , acc : 0.984 , elapse : 0.31173 min  - Validation   loss : 0.04449 , acc : 0.984 , elapse : 0.05718 min
+[ Epoch 26 ]  - Training     loss : 0.03839 , acc : 0.984 , elapse : 0.31107 min  - Validation   loss : 0.04131 , acc : 0.985 , elapse : 0.05700 min    - [Info] The checkpoint file has been updated.
+[ Epoch 27 ]  - Training     loss : 0.03697 , acc : 0.985 , elapse : 0.30920 min  - Validation   loss : 0.04023 , acc : 0.985 , elapse : 0.04598 min    - [Info] The checkpoint file has been updated.
+[ Epoch 28 ]  - Training     loss : 0.03489 , acc : 0.985 , elapse : 0.25644 min  - Validation   loss : 0.03930 , acc : 0.986 , elapse : 0.04514 min    - [Info] The checkpoint file has been updated.
+[ Epoch 29 ]  - Training     loss : 0.03361 , acc : 0.986 , elapse : 0.25701 min  - Validation   loss : 0.03953 , acc : 0.986 , elapse : 0.04522 min
+[ Epoch 30 ]  - Training     loss : 0.03139 , acc : 0.986 , elapse : 0.25456 min  - Validation   loss : 0.03766 , acc : 0.986 , elapse : 0.04566 min    - [Info] The checkpoint file has been updated.
+[ Epoch 31 ]  - Training     loss : 0.03106 , acc : 0.986 , elapse : 0.26069 min  - Validation   loss : 0.03723 , acc : 0.987 , elapse : 0.04551 min    - [Info] The checkpoint file has been updated.
+[ Epoch 32 ]  - Training     loss : 0.02955 , acc : 0.987 , elapse : 0.25662 min  - Validation   loss : 0.03640 , acc : 0.987 , elapse : 0.04552 min    - [Info] The checkpoint file has been updated.
+[ Epoch 33 ]  - Training     loss : 0.02789 , acc : 0.987 , elapse : 0.25645 min  - Validation   loss : 0.03588 , acc : 0.987 , elapse : 0.04631 min
+[ Epoch 34 ]  - Training     loss : 0.02703 , acc : 0.988 , elapse : 0.25839 min  - Validation   loss : 0.03578 , acc : 0.987 , elapse : 0.04477 min    - [Info] The checkpoint file has been updated.
+[ Epoch 35 ]  - Training     loss : 0.02589 , acc : 0.988 , elapse : 0.25755 min  - Validation   loss : 0.03566 , acc : 0.987 , elapse : 0.04581 min    - [Info] The checkpoint file has been updated.
+[ Epoch 36 ]  - Training     loss : 0.02499 , acc : 0.989 , elapse : 0.25709 min  - Validation   loss : 0.03438 , acc : 0.988 , elapse : 0.04547 min    - [Info] The checkpoint file has been updated.
+[ Epoch 37 ]  - Training     loss : 0.02447 , acc : 0.989 , elapse : 0.25710 min  - Validation   loss : 0.03385 , acc : 0.988 , elapse : 0.04574 min    - [Info] The checkpoint file has been updated.
+[ Epoch 38 ]  - Training     loss : 0.02355 , acc : 0.989 , elapse : 0.25820 min  - Validation   loss : 0.03381 , acc : 0.988 , elapse : 0.04548 min    - [Info] The checkpoint file has been updated.
+[ Epoch 39 ]  - Training     loss : 0.02292 , acc : 0.989 , elapse : 0.25806 min  - Validation   loss : 0.03330 , acc : 0.988 , elapse : 0.04539 min    - [Info] The checkpoint file has been updated.
+[ Epoch 40 ]  - Training     loss : 0.02195 , acc : 0.989 , elapse : 0.25989 min  - Validation   loss : 0.03278 , acc : 0.988 , elapse : 0.04582 min
+[ Epoch 41 ]  - Training     loss : 0.02184 , acc : 0.990 , elapse : 0.25808 min  - Validation   loss : 0.03304 , acc : 0.988 , elapse : 0.04594 min
+[ Epoch 42 ]  - Training     loss : 0.02119 , acc : 0.990 , elapse : 0.25815 min  - Validation   loss : 0.03302 , acc : 0.989 , elapse : 0.04609 min
+[ Epoch 43 ]  - Training     loss : 0.02065 , acc : 0.990 , elapse : 0.25921 min  - Validation   loss : 0.03297 , acc : 0.988 , elapse : 0.04589 min
+[ Epoch 44 ]  - Training     loss : 0.02061 , acc : 0.990 , elapse : 0.25717 min  - Validation   loss : 0.03266 , acc : 0.988 , elapse : 0.04554 min
+[ Epoch 45 ]  - Training     loss : 0.02043 , acc : 0.990 , elapse : 0.25740 min  - Validation   loss : 0.03278 , acc : 0.989 , elapse : 0.04568 min
+[ Epoch 46 ]  - Training     loss : 0.02069 , acc : 0.990 , elapse : 0.25920 min  - Validation   loss : 0.03250 , acc : 0.989 , elapse : 0.04565 min    - [Info] The checkpoint file has been updated.
+[ Epoch 47 ]  - Training     loss : 0.02021 , acc : 0.990 , elapse : 0.25720 min  - Validation   loss : 0.03255 , acc : 0.989 , elapse : 0.04536 min
+[ Epoch 48 ]  - Training     loss : 0.02049 , acc : 0.990 , elapse : 0.25534 min  - Validation   loss : 0.03253 , acc : 0.989 , elapse : 0.04521 min
+[ Epoch 49 ]  - Training     loss : 0.02227 , acc : 0.990 , elapse : 0.25580 min  - Validation   loss : 0.03388 , acc : 0.988 , elapse : 0.04513 min
+[ Epoch 50 ]  - Training     loss : 0.02309 , acc : 0.989 , elapse : 0.25532 min  - Validation   loss : 0.03341 , acc : 0.988 , elapse : 0.04501 min
+[ Epoch 51 ]  - Training     loss : 0.02165 , acc : 0.990 , elapse : 0.25544 min  - Validation   loss : 0.03291 , acc : 0.989 , elapse : 0.04522 min
+[ Epoch 52 ]  - Training     loss : 0.02128 , acc : 0.990 , elapse : 0.25852 min  - Validation   loss : 0.03237 , acc : 0.988 , elapse : 0.04546 min
+[ Epoch 53 ]  - Training     loss : 0.02131 , acc : 0.990 , elapse : 0.25663 min  - Validation   loss : 0.03326 , acc : 0.989 , elapse : 0.04546 min
+[ Epoch 54 ]  - Training     loss : 0.02034 , acc : 0.990 , elapse : 0.25654 min  - Validation   loss : 0.03295 , acc : 0.989 , elapse : 0.04555 min
+[ Epoch 55 ]  - Training     loss : 0.01960 , acc : 0.990 , elapse : 0.25746 min  - Validation   loss : 0.03218 , acc : 0.989 , elapse : 0.04550 min
+[ Epoch 56 ]  - Training     loss : 0.01919 , acc : 0.991 , elapse : 0.25685 min  - Validation   loss : 0.03248 , acc : 0.989 , elapse : 0.04534 min
+[ Epoch 57 ]  - Training     loss : 0.01858 , acc : 0.991 , elapse : 0.25694 min  - Validation   loss : 0.03104 , acc : 0.989 , elapse : 0.04545 min    - [Info] The checkpoint file has been updated.
+[ Epoch 58 ]  - Training     loss : 0.01781 , acc : 0.991 , elapse : 0.25849 min  - Validation   loss : 0.03111 , acc : 0.989 , elapse : 0.04585 min
+[ Epoch 59 ]  - Training     loss : 0.01744 , acc : 0.991 , elapse : 0.25674 min  - Validation   loss : 0.03089 , acc : 0.989 , elapse : 0.04525 min    - [Info] The checkpoint file has been updated.
+[ Epoch 60 ]  - Training     loss : 0.01622 , acc : 0.992 , elapse : 0.25599 min  - Validation   loss : 0.03159 , acc : 0.990 , elapse : 0.04563 min
+[ Epoch 61 ]  - Training     loss : 0.01594 , acc : 0.992 , elapse : 0.25918 min  - Validation   loss : 0.03044 , acc : 0.990 , elapse : 0.04570 min    - [Info] The checkpoint file has been updated.
+[ Epoch 62 ]  - Training     loss : 0.01512 , acc : 0.992 , elapse : 0.25677 min  - Validation   loss : 0.03119 , acc : 0.990 , elapse : 0.04541 min
+[ Epoch 63 ]  - Training     loss : 0.01530 , acc : 0.992 , elapse : 0.25592 min  - Validation   loss : 0.03187 , acc : 0.990 , elapse : 0.04549 min
+[ Epoch 64 ]  - Training     loss : 0.01465 , acc : 0.993 , elapse : 0.25892 min  - Validation   loss : 0.03091 , acc : 0.989 , elapse : 0.04540 min
+[ Epoch 65 ]  - Training     loss : 0.01419 , acc : 0.993 , elapse : 0.25731 min  - Validation   loss : 0.02993 , acc : 0.990 , elapse : 0.04502 min    - [Info] The checkpoint file has been updated.
+[ Epoch 66 ]  - Training     loss : 0.01353 , acc : 0.993 , elapse : 0.25577 min  - Validation   loss : 0.03127 , acc : 0.990 , elapse : 0.04521 min
+[ Epoch 67 ]  - Training     loss : 0.01345 , acc : 0.993 , elapse : 0.25709 min  - Validation   loss : 0.02998 , acc : 0.991 , elapse : 0.04561 min
+[ Epoch 68 ]  - Training     loss : 0.01302 , acc : 0.993 , elapse : 0.25596 min  - Validation   loss : 0.02945 , acc : 0.990 , elapse : 0.04502 min
+[ Epoch 69 ]  - Training     loss : 0.01284 , acc : 0.993 , elapse : 0.25548 min  - Validation   loss : 0.02894 , acc : 0.990 , elapse : 0.04591 min
+[ Epoch 70 ]  - Training     loss : 0.01225 , acc : 0.994 , elapse : 0.25783 min  - Validation   loss : 0.03027 , acc : 0.991 , elapse : 0.04572 min
+[ Epoch 71 ]  - Training     loss : 0.01166 , acc : 0.994 , elapse : 0.25629 min  - Validation   loss : 0.02958 , acc : 0.990 , elapse : 0.04509 min
+[ Epoch 72 ]  - Training     loss : 0.01158 , acc : 0.994 , elapse : 0.25623 min  - Validation   loss : 0.02979 , acc : 0.990 , elapse : 0.04635 min
+[ Epoch 73 ]  - Training     loss : 0.01120 , acc : 0.994 , elapse : 0.26034 min  - Validation   loss : 0.02979 , acc : 0.991 , elapse : 0.04525 min
+[ Epoch 74 ]  - Training     loss : 0.01090 , acc : 0.994 , elapse : 0.25735 min  - Validation   loss : 0.03013 , acc : 0.991 , elapse : 0.04579 min
+[ Epoch 75 ]  - Training     loss : 0.01067 , acc : 0.994 , elapse : 0.25801 min  - Validation   loss : 0.02989 , acc : 0.991 , elapse : 0.04571 min
+[ Epoch 76 ]  - Training     loss : 0.01030 , acc : 0.994 , elapse : 0.26017 min  - Validation   loss : 0.02990 , acc : 0.991 , elapse : 0.04583 min
+[ Epoch 77 ]  - Training     loss : 0.01025 , acc : 0.994 , elapse : 0.25841 min  - Validation   loss : 0.02896 , acc : 0.991 , elapse : 0.04586 min
+[ Epoch 78 ]  - Training     loss : 0.00961 , acc : 0.995 , elapse : 0.27569 min  - Validation   loss : 0.02872 , acc : 0.991 , elapse : 0.05929 min    - [Info] The checkpoint file has been updated.
+[ Epoch 79 ]  - Training     loss : 0.00965 , acc : 0.995 , elapse : 0.31557 min  - Validation   loss : 0.02929 , acc : 0.991 , elapse : 0.05800 min
+[ Epoch 80 ]  - Training     loss : 0.00958 , acc : 0.995 , elapse : 0.30758 min  - Validation   loss : 0.02925 , acc : 0.991 , elapse : 0.06228 min
+[ Epoch 81 ]  - Training     loss : 0.00936 , acc : 0.995 , elapse : 0.33084 min  - Validation   loss : 0.02865 , acc : 0.991 , elapse : 0.06105 min
+[ Epoch 82 ]  - Training     loss : 0.00919 , acc : 0.995 , elapse : 0.32874 min  - Validation   loss : 0.02928 , acc : 0.991 , elapse : 0.06184 min
+[ Epoch 83 ]  - Training     loss : 0.00917 , acc : 0.995 , elapse : 0.32720 min  - Validation   loss : 0.02943 , acc : 0.991 , elapse : 0.06089 min
+[ Epoch 84 ]  - Training     loss : 0.00896 , acc : 0.995 , elapse : 0.32700 min  - Validation   loss : 0.02966 , acc : 0.991 , elapse : 0.06097 min
+[ Epoch 85 ]  - Training     loss : 0.00869 , acc : 0.995 , elapse : 0.32398 min  - Validation   loss : 0.03010 , acc : 0.991 , elapse : 0.06043 min
+[ Epoch 86 ]  - Training     loss : 0.00873 , acc : 0.995 , elapse : 0.27820 min  - Validation   loss : 0.02964 , acc : 0.991 , elapse : 0.04568 min
+[ Epoch 87 ]  - Training     loss : 0.00847 , acc : 0.995 , elapse : 0.25782 min  - Validation   loss : 0.02942 , acc : 0.991 , elapse : 0.04540 min
+[ Epoch 88 ]  - Training     loss : 0.00856 , acc : 0.995 , elapse : 0.25776 min  - Validation   loss : 0.02935 , acc : 0.991 , elapse : 0.04571 min
+[ Epoch 89 ]  - Training     loss : 0.00821 , acc : 0.995 , elapse : 0.25787 min  - Validation   loss : 0.02908 , acc : 0.991 , elapse : 0.04562 min
+[ Epoch 90 ]  - Training     loss : 0.00824 , acc : 0.995 , elapse : 0.26042 min  - Validation   loss : 0.02948 , acc : 0.991 , elapse : 0.04576 min
+[ Epoch 91 ]  - Training     loss : 0.00834 , acc : 0.995 , elapse : 0.25745 min  - Validation   loss : 0.02950 , acc : 0.991 , elapse : 0.04542 min
+[ Epoch 92 ]  - Training     loss : 0.00830 , acc : 0.995 , elapse : 0.25692 min  - Validation   loss : 0.02933 , acc : 0.991 , elapse : 0.04567 min
+[ Epoch 93 ]  - Training     loss : 0.00822 , acc : 0.995 , elapse : 0.26015 min  - Validation   loss : 0.02929 , acc : 0.991 , elapse : 0.04575 min
+[ Epoch 94 ]  - Training     loss : 0.00830 , acc : 0.996 , elapse : 0.25780 min  - Validation   loss : 0.02917 , acc : 0.991 , elapse : 0.04521 min
+[ Epoch 95 ]  - Training     loss : 0.00819 , acc : 0.995 , elapse : 0.25721 min  - Validation   loss : 0.02918 , acc : 0.991 , elapse : 0.04567 min
+[ Epoch 96 ]  - Training     loss : 0.00802 , acc : 0.996 , elapse : 0.25938 min  - Validation   loss : 0.02915 , acc : 0.991 , elapse : 0.04557 min
+[ Epoch 97 ]  - Training     loss : 0.00826 , acc : 0.996 , elapse : 0.25810 min  - Validation   loss : 0.02912 , acc : 0.991 , elapse : 0.04528 min
+[ Epoch 98 ]  - Training     loss : 0.00917 , acc : 0.995 , elapse : 0.25653 min  - Validation   loss : 0.03098 , acc : 0.991 , elapse : 0.04547 min
+[ Epoch 99 ]  - Training     loss : 0.01018 , acc : 0.994 , elapse : 0.25806 min  - Validation   loss : 0.02990 , acc : 0.991 , elapse : 0.04586 min
+Finish training ~ v ~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+2th fold (total : 5)
+Create model...
+Start training...
+[ Epoch 0 ]  - Training     loss : 0.25644 , acc : 0.915 , elapse : 0.25892 min  - Validation   loss : 0.19490 , acc : 0.935 , elapse : 0.04569 min    - [Info] The checkpoint file has been updated.
+[ Epoch 1 ]  - Training     loss : 0.18028 , acc : 0.942 , elapse : 0.25632 min  - Validation   loss : 0.14960 , acc : 0.952 , elapse : 0.04563 min    - [Info] The checkpoint file has been updated.
+[ Epoch 2 ]  - Training     loss : 0.14255 , acc : 0.953 , elapse : 0.25840 min  - Validation   loss : 0.13023 , acc : 0.958 , elapse : 0.04556 min    - [Info] The checkpoint file has been updated.
+[ Epoch 3 ]  - Training     loss : 0.12263 , acc : 0.959 , elapse : 0.25783 min  - Validation   loss : 0.10161 , acc : 0.968 , elapse : 0.04531 min    - [Info] The checkpoint file has been updated.
+[ Epoch 4 ]  - Training     loss : 0.10186 , acc : 0.966 , elapse : 0.25683 min  - Validation   loss : 0.09115 , acc : 0.971 , elapse : 0.04540 min    - [Info] The checkpoint file has been updated.
+[ Epoch 5 ]  - Training     loss : 0.09415 , acc : 0.968 , elapse : 0.25899 min  - Validation   loss : 0.08812 , acc : 0.972 , elapse : 0.04552 min    - [Info] The checkpoint file has been updated.
+[ Epoch 6 ]  - Training     loss : 0.09049 , acc : 0.970 , elapse : 0.25800 min  - Validation   loss : 0.07806 , acc : 0.975 , elapse : 0.04525 min    - [Info] The checkpoint file has been updated.
+[ Epoch 7 ]  - Training     loss : 0.07994 , acc : 0.973 , elapse : 0.25673 min  - Validation   loss : 0.06987 , acc : 0.977 , elapse : 0.04563 min    - [Info] The checkpoint file has been updated.
+[ Epoch 8 ]  - Training     loss : 0.07205 , acc : 0.975 , elapse : 0.26157 min  - Validation   loss : 0.06493 , acc : 0.979 , elapse : 0.04576 min    - [Info] The checkpoint file has been updated.
+[ Epoch 9 ]  - Training     loss : 0.06666 , acc : 0.976 , elapse : 0.25861 min  - Validation   loss : 0.06164 , acc : 0.979 , elapse : 0.04554 min    - [Info] The checkpoint file has been updated.
+[ Epoch 10 ]  - Training     loss : 0.06431 , acc : 0.977 , elapse : 0.25803 min  - Validation   loss : 0.05958 , acc : 0.980 , elapse : 0.04572 min    - [Info] The checkpoint file has been updated.
+[ Epoch 11 ]  - Training     loss : 0.06250 , acc : 0.978 , elapse : 0.27882 min  - Validation   loss : 0.05900 , acc : 0.981 , elapse : 0.05784 min    - [Info] The checkpoint file has been updated.
+[ Epoch 12 ]  - Training     loss : 0.06326 , acc : 0.977 , elapse : 0.30406 min  - Validation   loss : 0.05709 , acc : 0.981 , elapse : 0.05560 min    - [Info] The checkpoint file has been updated.
+[ Epoch 13 ]  - Training     loss : 0.06045 , acc : 0.978 , elapse : 0.30348 min  - Validation   loss : 0.05363 , acc : 0.982 , elapse : 0.05672 min    - [Info] The checkpoint file has been updated.
+[ Epoch 14 ]  - Training     loss : 0.05611 , acc : 0.980 , elapse : 0.31170 min  - Validation   loss : 0.05107 , acc : 0.983 , elapse : 0.05673 min    - [Info] The checkpoint file has been updated.
+[ Epoch 15 ]  - Training     loss : 0.05282 , acc : 0.981 , elapse : 0.30165 min  - Validation   loss : 0.04901 , acc : 0.984 , elapse : 0.04546 min    - [Info] The checkpoint file has been updated.
+[ Epoch 16 ]  - Training     loss : 0.04946 , acc : 0.982 , elapse : 0.25539 min  - Validation   loss : 0.04810 , acc : 0.984 , elapse : 0.04509 min    - [Info] The checkpoint file has been updated.
+[ Epoch 17 ]  - Training     loss : 0.04688 , acc : 0.982 , elapse : 0.25570 min  - Validation   loss : 0.04580 , acc : 0.985 , elapse : 0.04518 min    - [Info] The checkpoint file has been updated.
+[ Epoch 18 ]  - Training     loss : 0.04454 , acc : 0.983 , elapse : 0.25505 min  - Validation   loss : 0.04466 , acc : 0.985 , elapse : 0.04529 min    - [Info] The checkpoint file has been updated.
+[ Epoch 19 ]  - Training     loss : 0.04268 , acc : 0.983 , elapse : 0.25647 min  - Validation   loss : 0.04435 , acc : 0.986 , elapse : 0.04567 min    - [Info] The checkpoint file has been updated.
+[ Epoch 20 ]  - Training     loss : 0.04151 , acc : 0.984 , elapse : 0.25740 min  - Validation   loss : 0.04304 , acc : 0.986 , elapse : 0.04521 min    - [Info] The checkpoint file has been updated.
+[ Epoch 21 ]  - Training     loss : 0.03991 , acc : 0.984 , elapse : 0.25651 min  - Validation   loss : 0.04284 , acc : 0.986 , elapse : 0.04513 min    - [Info] The checkpoint file has been updated.
+[ Epoch 22 ]  - Training     loss : 0.03967 , acc : 0.985 , elapse : 0.25656 min  - Validation   loss : 0.04267 , acc : 0.986 , elapse : 0.04577 min    - [Info] The checkpoint file has been updated.
+[ Epoch 23 ]  - Training     loss : 0.03915 , acc : 0.984 , elapse : 0.25764 min  - Validation   loss : 0.04249 , acc : 0.986 , elapse : 0.04561 min
+[ Epoch 24 ]  - Training     loss : 0.03972 , acc : 0.984 , elapse : 0.25646 min  - Validation   loss : 0.04458 , acc : 0.985 , elapse : 0.04609 min
+[ Epoch 25 ]  - Training     loss : 0.04157 , acc : 0.984 , elapse : 0.25681 min  - Validation   loss : 0.04431 , acc : 0.985 , elapse : 0.04626 min
+[ Epoch 26 ]  - Training     loss : 0.03955 , acc : 0.984 , elapse : 0.25864 min  - Validation   loss : 0.04290 , acc : 0.986 , elapse : 0.04535 min
+[ Epoch 27 ]  - Training     loss : 0.03766 , acc : 0.985 , elapse : 0.25521 min  - Validation   loss : 0.04239 , acc : 0.986 , elapse : 0.04558 min    - [Info] The checkpoint file has been updated.
+[ Epoch 28 ]  - Training     loss : 0.03631 , acc : 0.985 , elapse : 0.25644 min  - Validation   loss : 0.04207 , acc : 0.986 , elapse : 0.04582 min    - [Info] The checkpoint file has been updated.
+[ Epoch 29 ]  - Training     loss : 0.03470 , acc : 0.986 , elapse : 0.25731 min  - Validation   loss : 0.04073 , acc : 0.987 , elapse : 0.04523 min    - [Info] The checkpoint file has been updated.
+[ Epoch 30 ]  - Training     loss : 0.03269 , acc : 0.986 , elapse : 0.25618 min  - Validation   loss : 0.03960 , acc : 0.987 , elapse : 0.04494 min    - [Info] The checkpoint file has been updated.
+[ Epoch 31 ]  - Training     loss : 0.03193 , acc : 0.986 , elapse : 0.25666 min  - Validation   loss : 0.04050 , acc : 0.987 , elapse : 0.04556 min
+[ Epoch 32 ]  - Training     loss : 0.03009 , acc : 0.987 , elapse : 0.25779 min  - Validation   loss : 0.03849 , acc : 0.987 , elapse : 0.04519 min    - [Info] The checkpoint file has been updated.
+[ Epoch 33 ]  - Training     loss : 0.02898 , acc : 0.987 , elapse : 0.25517 min  - Validation   loss : 0.03732 , acc : 0.988 , elapse : 0.04544 min    - [Info] The checkpoint file has been updated.
+[ Epoch 34 ]  - Training     loss : 0.02784 , acc : 0.988 , elapse : 0.25613 min  - Validation   loss : 0.03743 , acc : 0.988 , elapse : 0.04591 min
+[ Epoch 35 ]  - Training     loss : 0.02624 , acc : 0.988 , elapse : 0.25774 min  - Validation   loss : 0.03701 , acc : 0.988 , elapse : 0.04533 min    - [Info] The checkpoint file has been updated.
+[ Epoch 36 ]  - Training     loss : 0.02600 , acc : 0.988 , elapse : 0.25524 min  - Validation   loss : 0.03812 , acc : 0.988 , elapse : 0.04557 min
+[ Epoch 37 ]  - Training     loss : 0.02525 , acc : 0.989 , elapse : 0.25585 min  - Validation   loss : 0.03685 , acc : 0.988 , elapse : 0.04537 min    - [Info] The checkpoint file has been updated.
+[ Epoch 38 ]  - Training     loss : 0.02426 , acc : 0.989 , elapse : 0.27496 min  - Validation   loss : 0.03697 , acc : 0.988 , elapse : 0.04514 min
+[ Epoch 39 ]  - Training     loss : 0.02355 , acc : 0.989 , elapse : 0.25608 min  - Validation   loss : 0.03687 , acc : 0.988 , elapse : 0.04481 min
+[ Epoch 40 ]  - Training     loss : 0.02289 , acc : 0.989 , elapse : 0.25608 min  - Validation   loss : 0.03668 , acc : 0.988 , elapse : 0.04574 min    - [Info] The checkpoint file has been updated.
+[ Epoch 41 ]  - Training     loss : 0.02249 , acc : 0.990 , elapse : 0.26029 min  - Validation   loss : 0.03657 , acc : 0.988 , elapse : 0.04553 min    - [Info] The checkpoint file has been updated.
+[ Epoch 42 ]  - Training     loss : 0.02164 , acc : 0.990 , elapse : 0.25618 min  - Validation   loss : 0.03616 , acc : 0.988 , elapse : 0.04561 min
+[ Epoch 43 ]  - Training     loss : 0.02118 , acc : 0.990 , elapse : 0.25648 min  - Validation   loss : 0.03631 , acc : 0.989 , elapse : 0.04555 min
+[ Epoch 44 ]  - Training     loss : 0.02101 , acc : 0.990 , elapse : 0.25838 min  - Validation   loss : 0.03635 , acc : 0.989 , elapse : 0.04584 min
+[ Epoch 45 ]  - Training     loss : 0.02068 , acc : 0.990 , elapse : 0.25717 min  - Validation   loss : 0.03615 , acc : 0.989 , elapse : 0.04598 min    - [Info] The checkpoint file has been updated.
+[ Epoch 46 ]  - Training     loss : 0.02140 , acc : 0.990 , elapse : 0.25652 min  - Validation   loss : 0.03619 , acc : 0.989 , elapse : 0.04550 min
+[ Epoch 47 ]  - Training     loss : 0.02091 , acc : 0.990 , elapse : 0.25956 min  - Validation   loss : 0.03617 , acc : 0.989 , elapse : 0.04519 min
+[ Epoch 48 ]  - Training     loss : 0.02024 , acc : 0.991 , elapse : 0.25708 min  - Validation   loss : 0.03621 , acc : 0.989 , elapse : 0.04534 min
+[ Epoch 49 ]  - Training     loss : 0.02290 , acc : 0.989 , elapse : 0.25695 min  - Validation   loss : 0.03713 , acc : 0.988 , elapse : 0.04568 min
+[ Epoch 50 ]  - Training     loss : 0.02354 , acc : 0.989 , elapse : 0.25724 min  - Validation   loss : 0.03623 , acc : 0.988 , elapse : 0.04551 min
+[ Epoch 51 ]  - Training     loss : 0.02229 , acc : 0.989 , elapse : 0.25570 min  - Validation   loss : 0.03680 , acc : 0.988 , elapse : 0.04526 min
+[ Epoch 52 ]  - Training     loss : 0.02225 , acc : 0.990 , elapse : 0.25551 min  - Validation   loss : 0.03816 , acc : 0.988 , elapse : 0.04537 min
+[ Epoch 53 ]  - Training     loss : 0.02178 , acc : 0.990 , elapse : 0.25670 min  - Validation   loss : 0.03614 , acc : 0.989 , elapse : 0.04543 min    - [Info] The checkpoint file has been updated.
+[ Epoch 54 ]  - Training     loss : 0.02049 , acc : 0.990 , elapse : 0.25571 min  - Validation   loss : 0.03668 , acc : 0.989 , elapse : 0.04552 min
+[ Epoch 55 ]  - Training     loss : 0.02027 , acc : 0.990 , elapse : 0.25713 min  - Validation   loss : 0.03541 , acc : 0.989 , elapse : 0.04596 min    - [Info] The checkpoint file has been updated.
+[ Epoch 56 ]  - Training     loss : 0.01954 , acc : 0.991 , elapse : 0.25791 min  - Validation   loss : 0.03651 , acc : 0.989 , elapse : 0.04539 min
+[ Epoch 57 ]  - Training     loss : 0.01925 , acc : 0.991 , elapse : 0.25687 min  - Validation   loss : 0.03631 , acc : 0.989 , elapse : 0.04609 min
+[ Epoch 58 ]  - Training     loss : 0.01856 , acc : 0.991 , elapse : 0.25735 min  - Validation   loss : 0.03710 , acc : 0.989 , elapse : 0.04561 min
+[ Epoch 59 ]  - Training     loss : 0.01771 , acc : 0.991 , elapse : 0.25833 min  - Validation   loss : 0.03689 , acc : 0.989 , elapse : 0.04572 min
+[ Epoch 60 ]  - Training     loss : 0.01682 , acc : 0.992 , elapse : 0.25667 min  - Validation   loss : 0.03545 , acc : 0.989 , elapse : 0.04567 min
+[ Epoch 61 ]  - Training     loss : 0.01669 , acc : 0.992 , elapse : 0.25632 min  - Validation   loss : 0.03528 , acc : 0.989 , elapse : 0.04607 min
+[ Epoch 62 ]  - Training     loss : 0.01614 , acc : 0.992 , elapse : 0.25824 min  - Validation   loss : 0.03622 , acc : 0.990 , elapse : 0.04533 min
+[ Epoch 63 ]  - Training     loss : 0.01572 , acc : 0.992 , elapse : 0.25694 min  - Validation   loss : 0.03592 , acc : 0.989 , elapse : 0.04570 min
+[ Epoch 64 ]  - Training     loss : 0.01510 , acc : 0.992 , elapse : 0.25726 min  - Validation   loss : 0.03538 , acc : 0.990 , elapse : 0.04629 min
+[ Epoch 65 ]  - Training     loss : 0.01433 , acc : 0.993 , elapse : 0.25858 min  - Validation   loss : 0.03628 , acc : 0.990 , elapse : 0.04501 min
+[ Epoch 66 ]  - Training     loss : 0.01386 , acc : 0.993 , elapse : 0.25673 min  - Validation   loss : 0.03660 , acc : 0.990 , elapse : 0.04525 min
+[ Epoch 67 ]  - Training     loss : 0.01376 , acc : 0.993 , elapse : 0.25720 min  - Validation   loss : 0.03590 , acc : 0.990 , elapse : 0.04582 min
+[ Epoch 68 ]  - Training     loss : 0.01317 , acc : 0.993 , elapse : 0.25988 min  - Validation   loss : 0.03598 , acc : 0.990 , elapse : 0.04555 min
+[ Epoch 69 ]  - Training     loss : 0.01285 , acc : 0.993 , elapse : 0.25607 min  - Validation   loss : 0.03614 , acc : 0.990 , elapse : 0.04562 min
+[ Epoch 70 ]  - Training     loss : 0.01258 , acc : 0.994 , elapse : 0.25721 min  - Validation   loss : 0.03593 , acc : 0.990 , elapse : 0.04588 min
+[ Epoch 71 ]  - Training     loss : 0.01201 , acc : 0.994 , elapse : 0.25908 min  - Validation   loss : 0.03567 , acc : 0.990 , elapse : 0.04562 min
+[ Epoch 72 ]  - Training     loss : 0.01201 , acc : 0.994 , elapse : 0.25573 min  - Validation   loss : 0.03695 , acc : 0.990 , elapse : 0.04556 min
+[ Epoch 73 ]  - Training     loss : 0.01125 , acc : 0.994 , elapse : 0.25677 min  - Validation   loss : 0.03696 , acc : 0.990 , elapse : 0.04547 min
+[ Epoch 74 ]  - Training     loss : 0.01109 , acc : 0.994 , elapse : 0.26134 min  - Validation   loss : 0.03608 , acc : 0.990 , elapse : 0.04541 min
+[ Epoch 75 ]  - Training     loss : 0.01085 , acc : 0.994 , elapse : 0.25678 min  - Validation   loss : 0.03550 , acc : 0.991 , elapse : 0.04516 min
+[ Epoch 76 ]  - Training     loss : 0.01072 , acc : 0.994 , elapse : 0.25718 min  - Validation   loss : 0.03565 , acc : 0.990 , elapse : 0.04566 min
+[ Epoch 77 ]  - Training     loss : 0.01013 , acc : 0.995 , elapse : 0.25954 min  - Validation   loss : 0.03639 , acc : 0.991 , elapse : 0.04532 min
+[ Epoch 78 ]  - Training     loss : 0.01009 , acc : 0.995 , elapse : 0.25663 min  - Validation   loss : 0.03632 , acc : 0.990 , elapse : 0.04577 min
+[ Epoch 79 ]  - Training     loss : 0.00956 , acc : 0.995 , elapse : 0.25724 min  - Validation   loss : 0.03572 , acc : 0.990 , elapse : 0.04570 min
+[ Epoch 80 ]  - Training     loss : 0.00953 , acc : 0.995 , elapse : 0.26006 min  - Validation   loss : 0.03558 , acc : 0.990 , elapse : 0.04563 min
+[ Epoch 81 ]  - Training     loss : 0.00956 , acc : 0.995 , elapse : 0.25634 min  - Validation   loss : 0.03591 , acc : 0.991 , elapse : 0.04560 min
+[ Epoch 82 ]  - Training     loss : 0.00923 , acc : 0.995 , elapse : 0.25707 min  - Validation   loss : 0.03642 , acc : 0.990 , elapse : 0.04569 min
+[ Epoch 83 ]  - Training     loss : 0.00928 , acc : 0.995 , elapse : 0.25782 min  - Validation   loss : 0.03664 , acc : 0.990 , elapse : 0.04463 min
+[ Epoch 84 ]  - Training     loss : 0.00875 , acc : 0.995 , elapse : 0.25546 min  - Validation   loss : 0.03627 , acc : 0.991 , elapse : 0.04513 min
+[ Epoch 85 ]  - Training     loss : 0.00860 , acc : 0.995 , elapse : 0.25428 min  - Validation   loss : 0.03634 , acc : 0.991 , elapse : 0.04526 min
+[ Epoch 86 ]  - Training     loss : 0.00865 , acc : 0.995 , elapse : 0.25530 min  - Validation   loss : 0.03649 , acc : 0.991 , elapse : 0.04504 min
+[ Epoch 87 ]  - Training     loss : 0.00837 , acc : 0.995 , elapse : 0.25456 min  - Validation   loss : 0.03611 , acc : 0.991 , elapse : 0.04512 min
+[ Epoch 88 ]  - Training     loss : 0.00853 , acc : 0.995 , elapse : 0.25546 min  - Validation   loss : 0.03612 , acc : 0.991 , elapse : 0.04530 min
+[ Epoch 89 ]  - Training     loss : 0.00821 , acc : 0.995 , elapse : 0.25618 min  - Validation   loss : 0.03607 , acc : 0.991 , elapse : 0.04536 min
+[ Epoch 90 ]  - Training     loss : 0.00822 , acc : 0.996 , elapse : 0.25515 min  - Validation   loss : 0.03610 , acc : 0.991 , elapse : 0.04583 min
+[ Epoch 91 ]  - Training     loss : 0.00832 , acc : 0.995 , elapse : 0.25618 min  - Validation   loss : 0.03586 , acc : 0.991 , elapse : 0.04544 min
+[ Epoch 92 ]  - Training     loss : 0.00818 , acc : 0.996 , elapse : 0.25719 min  - Validation   loss : 0.03572 , acc : 0.991 , elapse : 0.04556 min
+[ Epoch 93 ]  - Training     loss : 0.00822 , acc : 0.996 , elapse : 0.25577 min  - Validation   loss : 0.03598 , acc : 0.991 , elapse : 0.04575 min
+[ Epoch 94 ]  - Training     loss : 0.00830 , acc : 0.996 , elapse : 0.25583 min  - Validation   loss : 0.03603 , acc : 0.991 , elapse : 0.04528 min
+[ Epoch 95 ]  - Training     loss : 0.00814 , acc : 0.996 , elapse : 0.25647 min  - Validation   loss : 0.03600 , acc : 0.991 , elapse : 0.04572 min
+[ Epoch 96 ]  - Training     loss : 0.00840 , acc : 0.996 , elapse : 0.25729 min  - Validation   loss : 0.03600 , acc : 0.991 , elapse : 0.04617 min
+[ Epoch 97 ]  - Training     loss : 0.00813 , acc : 0.996 , elapse : 0.25673 min  - Validation   loss : 0.03602 , acc : 0.991 , elapse : 0.04533 min
+[ Epoch 98 ]  - Training     loss : 0.00929 , acc : 0.995 , elapse : 0.25743 min  - Validation   loss : 0.03758 , acc : 0.990 , elapse : 0.04545 min
+[ Epoch 99 ]  - Training     loss : 0.01026 , acc : 0.995 , elapse : 0.25629 min  - Validation   loss : 0.03810 , acc : 0.990 , elapse : 0.04527 min
+Finish training ~ v ~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+3th fold (total : 5)
+Create model...
+Start training...
+[ Epoch 0 ]  - Training     loss : 0.25247 , acc : 0.917 , elapse : 0.25671 min  - Validation   loss : 0.20064 , acc : 0.933 , elapse : 0.04522 min    - [Info] The checkpoint file has been updated.
+[ Epoch 1 ]  - Training     loss : 0.17794 , acc : 0.943 , elapse : 0.25566 min  - Validation   loss : 0.15049 , acc : 0.951 , elapse : 0.04529 min    - [Info] The checkpoint file has been updated.
+[ Epoch 2 ]  - Training     loss : 0.14074 , acc : 0.954 , elapse : 0.25571 min  - Validation   loss : 0.13421 , acc : 0.957 , elapse : 0.04633 min    - [Info] The checkpoint file has been updated.
+[ Epoch 3 ]  - Training     loss : 0.12372 , acc : 0.959 , elapse : 0.26154 min  - Validation   loss : 0.10806 , acc : 0.965 , elapse : 0.04539 min    - [Info] The checkpoint file has been updated.
+[ Epoch 4 ]  - Training     loss : 0.10148 , acc : 0.966 , elapse : 0.25534 min  - Validation   loss : 0.09471 , acc : 0.970 , elapse : 0.04562 min    - [Info] The checkpoint file has been updated.
+[ Epoch 5 ]  - Training     loss : 0.09360 , acc : 0.968 , elapse : 0.25641 min  - Validation   loss : 0.09176 , acc : 0.971 , elapse : 0.04568 min    - [Info] The checkpoint file has been updated.
+[ Epoch 6 ]  - Training     loss : 0.09026 , acc : 0.969 , elapse : 0.25736 min  - Validation   loss : 0.08203 , acc : 0.974 , elapse : 0.04546 min    - [Info] The checkpoint file has been updated.
+[ Epoch 7 ]  - Training     loss : 0.07912 , acc : 0.972 , elapse : 0.25805 min  - Validation   loss : 0.07411 , acc : 0.977 , elapse : 0.04529 min    - [Info] The checkpoint file has been updated.
+[ Epoch 8 ]  - Training     loss : 0.07307 , acc : 0.974 , elapse : 0.25645 min  - Validation   loss : 0.06981 , acc : 0.978 , elapse : 0.04507 min    - [Info] The checkpoint file has been updated.
+[ Epoch 9 ]  - Training     loss : 0.06823 , acc : 0.976 , elapse : 0.25729 min  - Validation   loss : 0.06544 , acc : 0.979 , elapse : 0.04598 min    - [Info] The checkpoint file has been updated.
+[ Epoch 10 ]  - Training     loss : 0.06436 , acc : 0.977 , elapse : 0.25724 min  - Validation   loss : 0.06412 , acc : 0.980 , elapse : 0.04555 min    - [Info] The checkpoint file has been updated.
+[ Epoch 11 ]  - Training     loss : 0.06301 , acc : 0.977 , elapse : 0.25622 min  - Validation   loss : 0.06349 , acc : 0.980 , elapse : 0.04542 min    - [Info] The checkpoint file has been updated.
+[ Epoch 12 ]  - Training     loss : 0.06401 , acc : 0.977 , elapse : 0.25619 min  - Validation   loss : 0.06227 , acc : 0.981 , elapse : 0.04563 min    - [Info] The checkpoint file has been updated.
+[ Epoch 13 ]  - Training     loss : 0.06031 , acc : 0.978 , elapse : 0.25659 min  - Validation   loss : 0.05686 , acc : 0.982 , elapse : 0.04561 min    - [Info] The checkpoint file has been updated.
+[ Epoch 14 ]  - Training     loss : 0.05724 , acc : 0.979 , elapse : 0.25564 min  - Validation   loss : 0.05582 , acc : 0.983 , elapse : 0.04549 min    - [Info] The checkpoint file has been updated.
+[ Epoch 15 ]  - Training     loss : 0.05245 , acc : 0.980 , elapse : 0.25539 min  - Validation   loss : 0.05278 , acc : 0.984 , elapse : 0.04544 min    - [Info] The checkpoint file has been updated.
+[ Epoch 16 ]  - Training     loss : 0.05019 , acc : 0.981 , elapse : 0.25638 min  - Validation   loss : 0.05205 , acc : 0.984 , elapse : 0.04541 min    - [Info] The checkpoint file has been updated.
+[ Epoch 17 ]  - Training     loss : 0.04668 , acc : 0.982 , elapse : 0.25585 min  - Validation   loss : 0.05005 , acc : 0.985 , elapse : 0.04501 min    - [Info] The checkpoint file has been updated.
+[ Epoch 18 ]  - Training     loss : 0.04476 , acc : 0.983 , elapse : 0.25607 min  - Validation   loss : 0.04873 , acc : 0.985 , elapse : 0.04507 min    - [Info] The checkpoint file has been updated.
+[ Epoch 19 ]  - Training     loss : 0.04310 , acc : 0.983 , elapse : 0.25719 min  - Validation   loss : 0.04820 , acc : 0.985 , elapse : 0.04498 min    - [Info] The checkpoint file has been updated.
+[ Epoch 20 ]  - Training     loss : 0.04159 , acc : 0.984 , elapse : 0.25493 min  - Validation   loss : 0.04670 , acc : 0.986 , elapse : 0.04525 min    - [Info] The checkpoint file has been updated.
+[ Epoch 21 ]  - Training     loss : 0.04098 , acc : 0.984 , elapse : 0.25468 min  - Validation   loss : 0.04633 , acc : 0.986 , elapse : 0.04527 min    - [Info] The checkpoint file has been updated.
+[ Epoch 22 ]  - Training     loss : 0.03953 , acc : 0.984 , elapse : 0.25570 min  - Validation   loss : 0.04630 , acc : 0.986 , elapse : 0.04533 min    - [Info] The checkpoint file has been updated.
+[ Epoch 23 ]  - Training     loss : 0.03933 , acc : 0.984 , elapse : 0.25604 min  - Validation   loss : 0.04611 , acc : 0.986 , elapse : 0.04561 min    - [Info] The checkpoint file has been updated.
+[ Epoch 24 ]  - Training     loss : 0.03985 , acc : 0.984 , elapse : 0.25659 min  - Validation   loss : 0.04701 , acc : 0.985 , elapse : 0.04555 min
+[ Epoch 25 ]  - Training     loss : 0.04167 , acc : 0.984 , elapse : 0.25845 min  - Validation   loss : 0.04675 , acc : 0.985 , elapse : 0.04557 min
+[ Epoch 26 ]  - Training     loss : 0.03954 , acc : 0.984 , elapse : 0.25586 min  - Validation   loss : 0.04447 , acc : 0.986 , elapse : 0.04525 min    - [Info] The checkpoint file has been updated.
+[ Epoch 27 ]  - Training     loss : 0.03862 , acc : 0.984 , elapse : 0.25607 min  - Validation   loss : 0.04447 , acc : 0.986 , elapse : 0.04527 min
+[ Epoch 28 ]  - Training     loss : 0.03623 , acc : 0.985 , elapse : 0.25837 min  - Validation   loss : 0.04277 , acc : 0.987 , elapse : 0.04553 min    - [Info] The checkpoint file has been updated.
+[ Epoch 29 ]  - Training     loss : 0.03437 , acc : 0.986 , elapse : 0.25578 min  - Validation   loss : 0.04173 , acc : 0.987 , elapse : 0.04564 min    - [Info] The checkpoint file has been updated.
+[ Epoch 30 ]  - Training     loss : 0.03286 , acc : 0.986 , elapse : 0.25552 min  - Validation   loss : 0.04138 , acc : 0.987 , elapse : 0.04542 min    - [Info] The checkpoint file has been updated.
+[ Epoch 31 ]  - Training     loss : 0.03130 , acc : 0.986 , elapse : 0.25657 min  - Validation   loss : 0.04071 , acc : 0.988 , elapse : 0.04543 min    - [Info] The checkpoint file has been updated.
+[ Epoch 32 ]  - Training     loss : 0.03009 , acc : 0.987 , elapse : 0.25630 min  - Validation   loss : 0.03936 , acc : 0.988 , elapse : 0.04566 min    - [Info] The checkpoint file has been updated.
+[ Epoch 33 ]  - Training     loss : 0.02899 , acc : 0.987 , elapse : 0.25519 min  - Validation   loss : 0.03821 , acc : 0.988 , elapse : 0.04501 min    - [Info] The checkpoint file has been updated.
+[ Epoch 34 ]  - Training     loss : 0.02788 , acc : 0.988 , elapse : 0.25556 min  - Validation   loss : 0.03848 , acc : 0.988 , elapse : 0.04553 min
+[ Epoch 35 ]  - Training     loss : 0.02674 , acc : 0.988 , elapse : 0.25569 min  - Validation   loss : 0.03747 , acc : 0.988 , elapse : 0.04523 min    - [Info] The checkpoint file has been updated.
+[ Epoch 36 ]  - Training     loss : 0.02594 , acc : 0.988 , elapse : 0.25571 min  - Validation   loss : 0.03751 , acc : 0.988 , elapse : 0.04507 min
+[ Epoch 37 ]  - Training     loss : 0.02498 , acc : 0.989 , elapse : 0.25511 min  - Validation   loss : 0.03714 , acc : 0.988 , elapse : 0.04549 min    - [Info] The checkpoint file has been updated.
+[ Epoch 38 ]  - Training     loss : 0.02414 , acc : 0.989 , elapse : 0.25569 min  - Validation   loss : 0.03628 , acc : 0.989 , elapse : 0.04529 min    - [Info] The checkpoint file has been updated.
+[ Epoch 39 ]  - Training     loss : 0.02371 , acc : 0.989 , elapse : 0.25538 min  - Validation   loss : 0.03613 , acc : 0.989 , elapse : 0.04513 min    - [Info] The checkpoint file has been updated.
+[ Epoch 40 ]  - Training     loss : 0.02332 , acc : 0.989 , elapse : 0.25829 min  - Validation   loss : 0.03593 , acc : 0.989 , elapse : 0.04560 min
+[ Epoch 41 ]  - Training     loss : 0.02207 , acc : 0.990 , elapse : 0.25494 min  - Validation   loss : 0.03594 , acc : 0.989 , elapse : 0.04577 min
+[ Epoch 42 ]  - Training     loss : 0.02181 , acc : 0.990 , elapse : 0.25620 min  - Validation   loss : 0.03568 , acc : 0.989 , elapse : 0.04592 min    - [Info] The checkpoint file has been updated.
+[ Epoch 43 ]  - Training     loss : 0.02121 , acc : 0.990 , elapse : 0.25721 min  - Validation   loss : 0.03548 , acc : 0.989 , elapse : 0.04550 min    - [Info] The checkpoint file has been updated.
+[ Epoch 44 ]  - Training     loss : 0.02080 , acc : 0.990 , elapse : 0.29216 min  - Validation   loss : 0.03546 , acc : 0.989 , elapse : 0.05608 min    - [Info] The checkpoint file has been updated.
+[ Epoch 45 ]  - Training     loss : 0.02109 , acc : 0.990 , elapse : 0.30716 min  - Validation   loss : 0.03525 , acc : 0.989 , elapse : 0.05812 min    - [Info] The checkpoint file has been updated.
+[ Epoch 46 ]  - Training     loss : 0.02089 , acc : 0.990 , elapse : 0.33372 min  - Validation   loss : 0.03531 , acc : 0.989 , elapse : 0.06105 min
+[ Epoch 47 ]  - Training     loss : 0.02053 , acc : 0.990 , elapse : 0.32646 min  - Validation   loss : 0.03528 , acc : 0.989 , elapse : 0.06224 min
+[ Epoch 48 ]  - Training     loss : 0.02083 , acc : 0.990 , elapse : 0.32735 min  - Validation   loss : 0.03525 , acc : 0.989 , elapse : 0.05927 min
+[ Epoch 49 ]  - Training     loss : 0.02287 , acc : 0.989 , elapse : 0.32156 min  - Validation   loss : 0.03632 , acc : 0.989 , elapse : 0.05891 min
+[ Epoch 50 ]  - Training     loss : 0.02415 , acc : 0.989 , elapse : 0.25886 min  - Validation   loss : 0.03808 , acc : 0.989 , elapse : 0.04540 min
+[ Epoch 51 ]  - Training     loss : 0.02289 , acc : 0.989 , elapse : 0.25620 min  - Validation   loss : 0.03697 , acc : 0.989 , elapse : 0.04529 min
+[ Epoch 52 ]  - Training     loss : 0.02243 , acc : 0.990 , elapse : 0.25532 min  - Validation   loss : 0.03605 , acc : 0.989 , elapse : 0.04491 min
+[ Epoch 53 ]  - Training     loss : 0.02150 , acc : 0.990 , elapse : 0.25612 min  - Validation   loss : 0.03681 , acc : 0.989 , elapse : 0.04510 min
+[ Epoch 54 ]  - Training     loss : 0.02058 , acc : 0.990 , elapse : 0.25740 min  - Validation   loss : 0.03714 , acc : 0.989 , elapse : 0.04604 min
+[ Epoch 55 ]  - Training     loss : 0.01982 , acc : 0.990 , elapse : 0.25803 min  - Validation   loss : 0.03732 , acc : 0.989 , elapse : 0.04586 min
+[ Epoch 56 ]  - Training     loss : 0.02015 , acc : 0.990 , elapse : 0.25766 min  - Validation   loss : 0.03572 , acc : 0.989 , elapse : 0.04561 min
+[ Epoch 57 ]  - Training     loss : 0.01907 , acc : 0.991 , elapse : 0.25810 min  - Validation   loss : 0.03559 , acc : 0.989 , elapse : 0.04509 min
+[ Epoch 58 ]  - Training     loss : 0.01853 , acc : 0.991 , elapse : 0.25542 min  - Validation   loss : 0.03441 , acc : 0.990 , elapse : 0.04539 min    - [Info] The checkpoint file has been updated.
+[ Epoch 59 ]  - Training     loss : 0.01784 , acc : 0.991 , elapse : 0.25692 min  - Validation   loss : 0.03492 , acc : 0.990 , elapse : 0.04532 min
+[ Epoch 60 ]  - Training     loss : 0.01693 , acc : 0.992 , elapse : 0.25940 min  - Validation   loss : 0.03561 , acc : 0.990 , elapse : 0.04568 min
+[ Epoch 61 ]  - Training     loss : 0.01659 , acc : 0.992 , elapse : 0.25736 min  - Validation   loss : 0.03552 , acc : 0.990 , elapse : 0.04518 min
+[ Epoch 62 ]  - Training     loss : 0.01661 , acc : 0.992 , elapse : 0.25673 min  - Validation   loss : 0.03556 , acc : 0.990 , elapse : 0.04566 min
+[ Epoch 63 ]  - Training     loss : 0.01582 , acc : 0.992 , elapse : 0.26184 min  - Validation   loss : 0.03498 , acc : 0.990 , elapse : 0.04637 min
+[ Epoch 64 ]  - Training     loss : 0.01506 , acc : 0.992 , elapse : 0.25702 min  - Validation   loss : 0.03440 , acc : 0.990 , elapse : 0.04563 min    - [Info] The checkpoint file has been updated.
+[ Epoch 65 ]  - Training     loss : 0.01469 , acc : 0.993 , elapse : 0.25688 min  - Validation   loss : 0.03383 , acc : 0.990 , elapse : 0.04574 min    - [Info] The checkpoint file has been updated.
+[ Epoch 66 ]  - Training     loss : 0.01417 , acc : 0.993 , elapse : 0.26225 min  - Validation   loss : 0.03430 , acc : 0.990 , elapse : 0.04581 min
+[ Epoch 67 ]  - Training     loss : 0.01385 , acc : 0.993 , elapse : 0.25927 min  - Validation   loss : 0.03393 , acc : 0.991 , elapse : 0.04537 min
+[ Epoch 68 ]  - Training     loss : 0.01362 , acc : 0.993 , elapse : 0.25622 min  - Validation   loss : 0.03389 , acc : 0.991 , elapse : 0.04538 min
+[ Epoch 69 ]  - Training     loss : 0.01315 , acc : 0.993 , elapse : 0.25751 min  - Validation   loss : 0.03494 , acc : 0.991 , elapse : 0.04582 min
+[ Epoch 70 ]  - Training     loss : 0.01243 , acc : 0.993 , elapse : 0.25773 min  - Validation   loss : 0.03445 , acc : 0.991 , elapse : 0.04494 min
+[ Epoch 71 ]  - Training     loss : 0.01242 , acc : 0.994 , elapse : 0.25669 min  - Validation   loss : 0.03409 , acc : 0.991 , elapse : 0.04567 min
+[ Epoch 72 ]  - Training     loss : 0.01176 , acc : 0.994 , elapse : 0.26235 min  - Validation   loss : 0.03333 , acc : 0.991 , elapse : 0.04529 min
+[ Epoch 73 ]  - Training     loss : 0.01127 , acc : 0.994 , elapse : 0.25726 min  - Validation   loss : 0.03410 , acc : 0.991 , elapse : 0.04548 min
+[ Epoch 74 ]  - Training     loss : 0.01107 , acc : 0.994 , elapse : 0.25608 min  - Validation   loss : 0.03364 , acc : 0.991 , elapse : 0.04557 min
+[ Epoch 75 ]  - Training     loss : 0.01126 , acc : 0.994 , elapse : 0.25856 min  - Validation   loss : 0.03321 , acc : 0.991 , elapse : 0.04533 min    - [Info] The checkpoint file has been updated.
+[ Epoch 76 ]  - Training     loss : 0.01075 , acc : 0.994 , elapse : 0.25765 min  - Validation   loss : 0.03396 , acc : 0.991 , elapse : 0.04534 min
+[ Epoch 77 ]  - Training     loss : 0.01052 , acc : 0.995 , elapse : 0.25644 min  - Validation   loss : 0.03318 , acc : 0.991 , elapse : 0.04565 min    - [Info] The checkpoint file has been updated.
+[ Epoch 78 ]  - Training     loss : 0.01027 , acc : 0.995 , elapse : 0.25884 min  - Validation   loss : 0.03334 , acc : 0.991 , elapse : 0.04558 min
+[ Epoch 79 ]  - Training     loss : 0.00998 , acc : 0.995 , elapse : 0.25799 min  - Validation   loss : 0.03361 , acc : 0.991 , elapse : 0.04533 min
+[ Epoch 80 ]  - Training     loss : 0.01001 , acc : 0.995 , elapse : 0.25783 min  - Validation   loss : 0.03324 , acc : 0.991 , elapse : 0.04565 min
+[ Epoch 81 ]  - Training     loss : 0.00958 , acc : 0.995 , elapse : 0.25934 min  - Validation   loss : 0.03273 , acc : 0.991 , elapse : 0.04543 min    - [Info] The checkpoint file has been updated.
+[ Epoch 82 ]  - Training     loss : 0.00925 , acc : 0.995 , elapse : 0.25743 min  - Validation   loss : 0.03321 , acc : 0.991 , elapse : 0.04571 min
+[ Epoch 83 ]  - Training     loss : 0.00934 , acc : 0.995 , elapse : 0.25780 min  - Validation   loss : 0.03321 , acc : 0.991 , elapse : 0.04598 min
+[ Epoch 84 ]  - Training     loss : 0.00913 , acc : 0.995 , elapse : 0.25978 min  - Validation   loss : 0.03314 , acc : 0.991 , elapse : 0.04562 min
+[ Epoch 85 ]  - Training     loss : 0.00913 , acc : 0.995 , elapse : 0.25716 min  - Validation   loss : 0.03334 , acc : 0.991 , elapse : 0.04565 min
+[ Epoch 86 ]  - Training     loss : 0.00901 , acc : 0.995 , elapse : 0.25657 min  - Validation   loss : 0.03381 , acc : 0.991 , elapse : 0.04536 min
+[ Epoch 87 ]  - Training     loss : 0.00883 , acc : 0.995 , elapse : 0.25787 min  - Validation   loss : 0.03351 , acc : 0.991 , elapse : 0.04509 min
+[ Epoch 88 ]  - Training     loss : 0.00874 , acc : 0.995 , elapse : 0.25732 min  - Validation   loss : 0.03367 , acc : 0.991 , elapse : 0.04478 min
+[ Epoch 89 ]  - Training     loss : 0.00873 , acc : 0.995 , elapse : 0.25620 min  - Validation   loss : 0.03307 , acc : 0.991 , elapse : 0.04526 min
+[ Epoch 90 ]  - Training     loss : 0.00871 , acc : 0.995 , elapse : 0.25736 min  - Validation   loss : 0.03356 , acc : 0.991 , elapse : 0.04567 min
+[ Epoch 91 ]  - Training     loss : 0.00850 , acc : 0.995 , elapse : 0.25704 min  - Validation   loss : 0.03352 , acc : 0.991 , elapse : 0.04561 min
+[ Epoch 92 ]  - Training     loss : 0.00841 , acc : 0.995 , elapse : 0.25700 min  - Validation   loss : 0.03328 , acc : 0.991 , elapse : 0.04573 min
+[ Epoch 93 ]  - Training     loss : 0.00836 , acc : 0.995 , elapse : 0.26029 min  - Validation   loss : 0.03327 , acc : 0.991 , elapse : 0.04586 min
+[ Epoch 94 ]  - Training     loss : 0.00842 , acc : 0.995 , elapse : 0.25764 min  - Validation   loss : 0.03330 , acc : 0.991 , elapse : 0.04543 min
+[ Epoch 95 ]  - Training     loss : 0.00836 , acc : 0.995 , elapse : 0.25734 min  - Validation   loss : 0.03325 , acc : 0.991 , elapse : 0.04572 min
+[ Epoch 96 ]  - Training     loss : 0.00857 , acc : 0.995 , elapse : 0.25814 min  - Validation   loss : 0.03327 , acc : 0.991 , elapse : 0.04594 min
+[ Epoch 97 ]  - Training     loss : 0.00837 , acc : 0.995 , elapse : 0.25765 min  - Validation   loss : 0.03328 , acc : 0.991 , elapse : 0.04532 min
+[ Epoch 98 ]  - Training     loss : 0.00978 , acc : 0.995 , elapse : 0.25670 min  - Validation   loss : 0.03466 , acc : 0.991 , elapse : 0.04537 min
+[ Epoch 99 ]  - Training     loss : 0.01035 , acc : 0.994 , elapse : 0.25851 min  - Validation   loss : 0.03497 , acc : 0.991 , elapse : 0.04582 min
+Finish training ~ v ~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+4th fold (total : 5)
+Create model...
+Start training...
+[ Epoch 0 ]  - Training     loss : 0.25314 , acc : 0.918 , elapse : 0.25662 min  - Validation   loss : 0.19830 , acc : 0.937 , elapse : 0.04518 min    - [Info] The checkpoint file has been updated.
+[ Epoch 1 ]  - Training     loss : 0.18117 , acc : 0.943 , elapse : 0.25867 min  - Validation   loss : 0.15409 , acc : 0.950 , elapse : 0.04550 min    - [Info] The checkpoint file has been updated.
+[ Epoch 2 ]  - Training     loss : 0.14771 , acc : 0.952 , elapse : 0.26036 min  - Validation   loss : 0.13639 , acc : 0.956 , elapse : 0.04558 min    - [Info] The checkpoint file has been updated.
+[ Epoch 3 ]  - Training     loss : 0.12761 , acc : 0.958 , elapse : 0.25802 min  - Validation   loss : 0.10540 , acc : 0.965 , elapse : 0.04528 min    - [Info] The checkpoint file has been updated.
+[ Epoch 4 ]  - Training     loss : 0.10458 , acc : 0.964 , elapse : 0.25645 min  - Validation   loss : 0.09182 , acc : 0.970 , elapse : 0.04614 min    - [Info] The checkpoint file has been updated.
+[ Epoch 5 ]  - Training     loss : 0.09543 , acc : 0.967 , elapse : 0.25851 min  - Validation   loss : 0.08904 , acc : 0.972 , elapse : 0.04567 min    - [Info] The checkpoint file has been updated.
+[ Epoch 6 ]  - Training     loss : 0.09178 , acc : 0.968 , elapse : 0.25652 min  - Validation   loss : 0.07945 , acc : 0.975 , elapse : 0.04513 min    - [Info] The checkpoint file has been updated.
+[ Epoch 7 ]  - Training     loss : 0.08083 , acc : 0.972 , elapse : 0.25571 min  - Validation   loss : 0.06962 , acc : 0.978 , elapse : 0.04511 min    - [Info] The checkpoint file has been updated.
+[ Epoch 8 ]  - Training     loss : 0.07337 , acc : 0.975 , elapse : 0.25663 min  - Validation   loss : 0.06471 , acc : 0.980 , elapse : 0.04527 min    - [Info] The checkpoint file has been updated.
+[ Epoch 9 ]  - Training     loss : 0.06854 , acc : 0.976 , elapse : 0.25709 min  - Validation   loss : 0.06178 , acc : 0.981 , elapse : 0.04499 min    - [Info] The checkpoint file has been updated.
+[ Epoch 10 ]  - Training     loss : 0.06494 , acc : 0.977 , elapse : 0.25534 min  - Validation   loss : 0.06040 , acc : 0.981 , elapse : 0.04493 min    - [Info] The checkpoint file has been updated.
+[ Epoch 11 ]  - Training     loss : 0.06401 , acc : 0.978 , elapse : 0.25720 min  - Validation   loss : 0.05993 , acc : 0.981 , elapse : 0.04545 min    - [Info] The checkpoint file has been updated.
+[ Epoch 12 ]  - Training     loss : 0.06420 , acc : 0.977 , elapse : 0.25780 min  - Validation   loss : 0.05936 , acc : 0.982 , elapse : 0.04522 min    - [Info] The checkpoint file has been updated.
+[ Epoch 13 ]  - Training     loss : 0.06213 , acc : 0.978 , elapse : 0.25685 min  - Validation   loss : 0.05588 , acc : 0.982 , elapse : 0.04550 min    - [Info] The checkpoint file has been updated.
+[ Epoch 14 ]  - Training     loss : 0.05737 , acc : 0.979 , elapse : 0.25786 min  - Validation   loss : 0.05350 , acc : 0.983 , elapse : 0.04556 min    - [Info] The checkpoint file has been updated.
+[ Epoch 15 ]  - Training     loss : 0.05419 , acc : 0.980 , elapse : 0.25701 min  - Validation   loss : 0.05069 , acc : 0.984 , elapse : 0.04525 min    - [Info] The checkpoint file has been updated.
+[ Epoch 16 ]  - Training     loss : 0.05213 , acc : 0.981 , elapse : 0.25764 min  - Validation   loss : 0.04920 , acc : 0.985 , elapse : 0.04562 min    - [Info] The checkpoint file has been updated.
+[ Epoch 17 ]  - Training     loss : 0.04910 , acc : 0.982 , elapse : 0.25817 min  - Validation   loss : 0.04856 , acc : 0.985 , elapse : 0.04529 min    - [Info] The checkpoint file has been updated.
+[ Epoch 18 ]  - Training     loss : 0.04709 , acc : 0.983 , elapse : 0.25693 min  - Validation   loss : 0.04688 , acc : 0.985 , elapse : 0.04537 min    - [Info] The checkpoint file has been updated.
+[ Epoch 19 ]  - Training     loss : 0.04518 , acc : 0.983 , elapse : 0.25602 min  - Validation   loss : 0.04578 , acc : 0.986 , elapse : 0.04530 min    - [Info] The checkpoint file has been updated.
+[ Epoch 20 ]  - Training     loss : 0.04419 , acc : 0.983 , elapse : 0.25715 min  - Validation   loss : 0.04471 , acc : 0.986 , elapse : 0.04534 min    - [Info] The checkpoint file has been updated.
+[ Epoch 21 ]  - Training     loss : 0.04216 , acc : 0.984 , elapse : 0.25702 min  - Validation   loss : 0.04474 , acc : 0.986 , elapse : 0.04534 min
+[ Epoch 22 ]  - Training     loss : 0.04126 , acc : 0.984 , elapse : 0.25601 min  - Validation   loss : 0.04449 , acc : 0.986 , elapse : 0.04521 min
+[ Epoch 23 ]  - Training     loss : 0.04125 , acc : 0.984 , elapse : 0.25651 min  - Validation   loss : 0.04435 , acc : 0.986 , elapse : 0.04507 min    - [Info] The checkpoint file has been updated.
+[ Epoch 24 ]  - Training     loss : 0.04256 , acc : 0.984 , elapse : 0.25585 min  - Validation   loss : 0.04588 , acc : 0.986 , elapse : 0.04485 min
+[ Epoch 25 ]  - Training     loss : 0.04383 , acc : 0.983 , elapse : 0.25601 min  - Validation   loss : 0.04403 , acc : 0.987 , elapse : 0.04506 min    - [Info] The checkpoint file has been updated.
+[ Epoch 26 ]  - Training     loss : 0.04106 , acc : 0.984 , elapse : 0.25893 min  - Validation   loss : 0.04322 , acc : 0.987 , elapse : 0.04515 min    - [Info] The checkpoint file has been updated.
+[ Epoch 27 ]  - Training     loss : 0.03962 , acc : 0.984 , elapse : 0.25645 min  - Validation   loss : 0.04357 , acc : 0.987 , elapse : 0.04524 min
+[ Epoch 28 ]  - Training     loss : 0.03776 , acc : 0.985 , elapse : 0.25643 min  - Validation   loss : 0.04185 , acc : 0.987 , elapse : 0.04542 min    - [Info] The checkpoint file has been updated.
+[ Epoch 29 ]  - Training     loss : 0.03604 , acc : 0.986 , elapse : 0.25852 min  - Validation   loss : 0.04086 , acc : 0.988 , elapse : 0.04512 min    - [Info] The checkpoint file has been updated.
+[ Epoch 30 ]  - Training     loss : 0.03427 , acc : 0.986 , elapse : 0.25791 min  - Validation   loss : 0.04062 , acc : 0.988 , elapse : 0.04492 min    - [Info] The checkpoint file has been updated.
+[ Epoch 31 ]  - Training     loss : 0.03376 , acc : 0.986 , elapse : 0.25668 min  - Validation   loss : 0.03964 , acc : 0.988 , elapse : 0.04549 min    - [Info] The checkpoint file has been updated.
+[ Epoch 32 ]  - Training     loss : 0.03214 , acc : 0.987 , elapse : 0.25767 min  - Validation   loss : 0.03891 , acc : 0.988 , elapse : 0.04585 min    - [Info] The checkpoint file has been updated.
+[ Epoch 33 ]  - Training     loss : 0.03043 , acc : 0.987 , elapse : 0.25666 min  - Validation   loss : 0.03789 , acc : 0.989 , elapse : 0.04483 min    - [Info] The checkpoint file has been updated.
+[ Epoch 34 ]  - Training     loss : 0.02984 , acc : 0.987 , elapse : 0.25591 min  - Validation   loss : 0.03885 , acc : 0.988 , elapse : 0.04504 min
+[ Epoch 35 ]  - Training     loss : 0.02851 , acc : 0.988 , elapse : 0.25972 min  - Validation   loss : 0.03750 , acc : 0.989 , elapse : 0.04580 min    - [Info] The checkpoint file has been updated.
+[ Epoch 36 ]  - Training     loss : 0.02767 , acc : 0.988 , elapse : 0.25625 min  - Validation   loss : 0.03713 , acc : 0.989 , elapse : 0.04562 min    - [Info] The checkpoint file has been updated.
+[ Epoch 37 ]  - Training     loss : 0.02643 , acc : 0.988 , elapse : 0.25592 min  - Validation   loss : 0.03690 , acc : 0.989 , elapse : 0.04576 min    - [Info] The checkpoint file has been updated.
+[ Epoch 38 ]  - Training     loss : 0.02546 , acc : 0.989 , elapse : 0.26002 min  - Validation   loss : 0.03680 , acc : 0.989 , elapse : 0.04510 min    - [Info] The checkpoint file has been updated.
+[ Epoch 39 ]  - Training     loss : 0.02464 , acc : 0.989 , elapse : 0.25644 min  - Validation   loss : 0.03592 , acc : 0.989 , elapse : 0.04511 min    - [Info] The checkpoint file has been updated.
+[ Epoch 40 ]  - Training     loss : 0.02398 , acc : 0.989 , elapse : 0.25514 min  - Validation   loss : 0.03560 , acc : 0.990 , elapse : 0.04548 min    - [Info] The checkpoint file has been updated.
+[ Epoch 41 ]  - Training     loss : 0.02345 , acc : 0.989 , elapse : 0.25728 min  - Validation   loss : 0.03558 , acc : 0.989 , elapse : 0.04555 min
+[ Epoch 42 ]  - Training     loss : 0.02341 , acc : 0.989 , elapse : 0.25707 min  - Validation   loss : 0.03592 , acc : 0.989 , elapse : 0.04505 min
+[ Epoch 43 ]  - Training     loss : 0.02256 , acc : 0.990 , elapse : 0.25609 min  - Validation   loss : 0.03602 , acc : 0.989 , elapse : 0.04520 min
+[ Epoch 44 ]  - Training     loss : 0.02240 , acc : 0.990 , elapse : 0.25894 min  - Validation   loss : 0.03547 , acc : 0.990 , elapse : 0.04544 min
+[ Epoch 45 ]  - Training     loss : 0.02225 , acc : 0.990 , elapse : 0.25717 min  - Validation   loss : 0.03523 , acc : 0.990 , elapse : 0.04518 min
+[ Epoch 46 ]  - Training     loss : 0.02192 , acc : 0.990 , elapse : 0.25519 min  - Validation   loss : 0.03525 , acc : 0.990 , elapse : 0.04507 min
+[ Epoch 47 ]  - Training     loss : 0.02208 , acc : 0.990 , elapse : 0.25792 min  - Validation   loss : 0.03524 , acc : 0.990 , elapse : 0.04521 min
+[ Epoch 48 ]  - Training     loss : 0.02201 , acc : 0.990 , elapse : 0.25663 min  - Validation   loss : 0.03525 , acc : 0.990 , elapse : 0.04520 min
+[ Epoch 49 ]  - Training     loss : 0.02387 , acc : 0.989 , elapse : 0.25608 min  - Validation   loss : 0.03671 , acc : 0.989 , elapse : 0.04541 min
+[ Epoch 50 ]  - Training     loss : 0.02484 , acc : 0.989 , elapse : 0.25871 min  - Validation   loss : 0.03446 , acc : 0.990 , elapse : 0.04566 min
+[ Epoch 51 ]  - Training     loss : 0.02450 , acc : 0.989 , elapse : 0.25771 min  - Validation   loss : 0.03523 , acc : 0.989 , elapse : 0.04540 min
+[ Epoch 52 ]  - Training     loss : 0.02391 , acc : 0.989 , elapse : 0.25816 min  - Validation   loss : 0.03559 , acc : 0.990 , elapse : 0.04540 min
+[ Epoch 53 ]  - Training     loss : 0.02237 , acc : 0.990 , elapse : 0.25804 min  - Validation   loss : 0.03474 , acc : 0.990 , elapse : 0.04532 min
+[ Epoch 54 ]  - Training     loss : 0.02214 , acc : 0.990 , elapse : 0.25680 min  - Validation   loss : 0.03462 , acc : 0.990 , elapse : 0.04489 min
+[ Epoch 55 ]  - Training     loss : 0.02112 , acc : 0.990 , elapse : 0.25608 min  - Validation   loss : 0.03480 , acc : 0.990 , elapse : 0.04518 min
+[ Epoch 56 ]  - Training     loss : 0.02102 , acc : 0.990 , elapse : 0.25646 min  - Validation   loss : 0.03525 , acc : 0.990 , elapse : 0.04588 min
+[ Epoch 57 ]  - Training     loss : 0.02004 , acc : 0.991 , elapse : 0.27623 min  - Validation   loss : 0.03470 , acc : 0.990 , elapse : 0.04488 min
+[ Epoch 58 ]  - Training     loss : 0.01963 , acc : 0.991 , elapse : 0.26670 min  - Validation   loss : 0.03429 , acc : 0.990 , elapse : 0.05713 min
+[ Epoch 59 ]  - Training     loss : 0.01903 , acc : 0.991 , elapse : 0.32595 min  - Validation   loss : 0.03284 , acc : 0.990 , elapse : 0.06065 min    - [Info] The checkpoint file has been updated.
+[ Epoch 60 ]  - Training     loss : 0.01792 , acc : 0.991 , elapse : 0.29249 min  - Validation   loss : 0.03241 , acc : 0.990 , elapse : 0.04505 min
+[ Epoch 61 ]  - Training     loss : 0.01823 , acc : 0.991 , elapse : 0.27014 min  - Validation   loss : 0.03319 , acc : 0.990 , elapse : 0.05585 min
+[ Epoch 62 ]  - Training     loss : 0.01703 , acc : 0.992 , elapse : 0.25715 min  - Validation   loss : 0.03288 , acc : 0.990 , elapse : 0.04537 min
+[ Epoch 63 ]  - Training     loss : 0.01652 , acc : 0.992 , elapse : 0.29358 min  - Validation   loss : 0.03394 , acc : 0.990 , elapse : 0.06080 min
+[ Epoch 64 ]  - Training     loss : 0.01599 , acc : 0.992 , elapse : 0.28242 min  - Validation   loss : 0.03286 , acc : 0.991 , elapse : 0.04537 min
+[ Epoch 65 ]  - Training     loss : 0.01571 , acc : 0.992 , elapse : 0.25586 min  - Validation   loss : 0.03201 , acc : 0.991 , elapse : 0.04524 min
+[ Epoch 66 ]  - Training     loss : 0.01517 , acc : 0.992 , elapse : 0.27793 min  - Validation   loss : 0.03340 , acc : 0.991 , elapse : 0.04645 min
+[ Epoch 67 ]  - Training     loss : 0.01443 , acc : 0.993 , elapse : 0.25567 min  - Validation   loss : 0.03241 , acc : 0.991 , elapse : 0.04535 min
+[ Epoch 68 ]  - Training     loss : 0.01398 , acc : 0.993 , elapse : 0.30914 min  - Validation   loss : 0.03277 , acc : 0.991 , elapse : 0.06048 min
+[ Epoch 69 ]  - Training     loss : 0.01378 , acc : 0.993 , elapse : 0.26278 min  - Validation   loss : 0.03262 , acc : 0.991 , elapse : 0.04609 min
+[ Epoch 70 ]  - Training     loss : 0.01345 , acc : 0.993 , elapse : 0.25693 min  - Validation   loss : 0.03238 , acc : 0.991 , elapse : 0.04586 min
+[ Epoch 71 ]  - Training     loss : 0.01345 , acc : 0.993 , elapse : 0.28344 min  - Validation   loss : 0.03294 , acc : 0.991 , elapse : 0.04497 min
+[ Epoch 72 ]  - Training     loss : 0.01255 , acc : 0.993 , elapse : 0.26059 min  - Validation   loss : 0.03191 , acc : 0.991 , elapse : 0.05625 min
+[ Epoch 73 ]  - Training     loss : 0.01264 , acc : 0.994 , elapse : 0.32019 min  - Validation   loss : 0.03325 , acc : 0.991 , elapse : 0.06168 min
+[ Epoch 74 ]  - Training     loss : 0.01211 , acc : 0.994 , elapse : 0.32880 min  - Validation   loss : 0.03369 , acc : 0.991 , elapse : 0.04647 min
+[ Epoch 75 ]  - Training     loss : 0.01180 , acc : 0.994 , elapse : 0.26908 min  - Validation   loss : 0.03215 , acc : 0.991 , elapse : 0.05757 min
+[ Epoch 76 ]  - Training     loss : 0.01135 , acc : 0.994 , elapse : 0.26253 min  - Validation   loss : 0.03321 , acc : 0.991 , elapse : 0.04520 min
+[ Epoch 77 ]  - Training     loss : 0.01112 , acc : 0.994 , elapse : 0.29303 min  - Validation   loss : 0.03271 , acc : 0.991 , elapse : 0.05906 min
+[ Epoch 78 ]  - Training     loss : 0.01121 , acc : 0.994 , elapse : 0.32051 min  - Validation   loss : 0.03281 , acc : 0.991 , elapse : 0.04557 min
+[ Epoch 79 ]  - Training     loss : 0.01081 , acc : 0.994 , elapse : 0.25700 min  - Validation   loss : 0.03368 , acc : 0.991 , elapse : 0.04548 min
+[ Epoch 80 ]  - Training     loss : 0.01053 , acc : 0.995 , elapse : 0.27789 min  - Validation   loss : 0.03306 , acc : 0.991 , elapse : 0.04545 min
+[ Epoch 81 ]  - Training     loss : 0.01031 , acc : 0.994 , elapse : 0.25696 min  - Validation   loss : 0.03289 , acc : 0.991 , elapse : 0.05036 min
+[ Epoch 82 ]  - Training     loss : 0.01010 , acc : 0.995 , elapse : 0.30753 min  - Validation   loss : 0.03265 , acc : 0.992 , elapse : 0.06112 min
+[ Epoch 83 ]  - Training     loss : 0.01025 , acc : 0.995 , elapse : 0.30837 min  - Validation   loss : 0.03255 , acc : 0.992 , elapse : 0.04514 min
+[ Epoch 84 ]  - Training     loss : 0.00984 , acc : 0.995 , elapse : 0.25606 min  - Validation   loss : 0.03242 , acc : 0.992 , elapse : 0.04728 min
+[ Epoch 85 ]  - Training     loss : 0.00983 , acc : 0.995 , elapse : 0.28179 min  - Validation   loss : 0.03285 , acc : 0.992 , elapse : 0.04512 min
+[ Epoch 86 ]  - Training     loss : 0.00969 , acc : 0.995 , elapse : 0.27031 min  - Validation   loss : 0.03216 , acc : 0.992 , elapse : 0.05811 min
+[ Epoch 87 ]  - Training     loss : 0.00960 , acc : 0.995 , elapse : 0.31508 min  - Validation   loss : 0.03254 , acc : 0.992 , elapse : 0.06043 min
+[ Epoch 88 ]  - Training     loss : 0.00937 , acc : 0.995 , elapse : 0.25768 min  - Validation   loss : 0.03267 , acc : 0.992 , elapse : 0.04521 min
+[ Epoch 89 ]  - Training     loss : 0.00916 , acc : 0.995 , elapse : 0.26449 min  - Validation   loss : 0.03270 , acc : 0.992 , elapse : 0.05561 min
+[ Epoch 90 ]  - Training     loss : 0.00928 , acc : 0.995 , elapse : 0.26223 min  - Validation   loss : 0.03255 , acc : 0.992 , elapse : 0.04548 min
+[ Epoch 91 ]  - Training     loss : 0.00911 , acc : 0.995 , elapse : 0.28919 min  - Validation   loss : 0.03268 , acc : 0.992 , elapse : 0.05936 min
+[ Epoch 92 ]  - Training     loss : 0.00917 , acc : 0.995 , elapse : 0.31289 min  - Validation   loss : 0.03263 , acc : 0.992 , elapse : 0.05934 min
+[ Epoch 93 ]  - Training     loss : 0.00901 , acc : 0.995 , elapse : 0.30566 min  - Validation   loss : 0.03257 , acc : 0.992 , elapse : 0.04540 min
+[ Epoch 94 ]  - Training     loss : 0.00933 , acc : 0.995 , elapse : 0.25616 min  - Validation   loss : 0.03251 , acc : 0.992 , elapse : 0.04538 min
+[ Epoch 95 ]  - Training     loss : 0.00933 , acc : 0.995 , elapse : 0.25609 min  - Validation   loss : 0.03253 , acc : 0.992 , elapse : 0.04487 min
+[ Epoch 96 ]  - Training     loss : 0.00903 , acc : 0.995 , elapse : 0.25620 min  - Validation   loss : 0.03251 , acc : 0.992 , elapse : 0.04526 min
+[ Epoch 97 ]  - Training     loss : 0.00905 , acc : 0.995 , elapse : 0.27145 min  - Validation   loss : 0.03251 , acc : 0.992 , elapse : 0.05440 min
+[ Epoch 98 ]  - Training     loss : 0.01050 , acc : 0.995 , elapse : 0.25557 min  - Validation   loss : 0.03385 , acc : 0.991 , elapse : 0.04517 min
+[ Epoch 99 ]  - Training     loss : 0.01120 , acc : 0.994 , elapse : 0.30761 min  - Validation   loss : 0.03450 , acc : 0.991 , elapse : 0.06041 min
+Finish training ~ v ~
+min losses: [0.027893230377230793, 0.02865337341791019, 0.03528119091060944, 0.03272938888403587, 0.0319055431173183] mean losses: 0.03129254534142092
+max accs: [0.991657125538793, 0.9911435883620693, 0.9908320985991379, 0.9914971713362067, 0.9917160560344828] mean accs: 0.9913692079741379
+Empty DataFrame
+Columns: [pred, label]
+Index: []

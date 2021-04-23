@@ -57,7 +57,7 @@ class TextMRCNNModel(nn.Module):
         embed = self.embed(x)  # [batch_size, seq_len, embeding]=[64, 32, 64]
         embed = self.emb_dropout_layer(embed)
 
-        # first 
+        # first
         out_1, _ = self.lstm_1(embed)
         out_1 = torch.cat((embed, out_1), 2)
         out_1 =  torch.tanh(self.W2_1(out_1))
@@ -102,7 +102,7 @@ class TextMRCNNModel(nn.Module):
 
 def test():
     import numpy as np
-    input = torch.LongTensor([range(5),range(5),range(5)])
+    input = torch.LongTensor([range(100)])
     print(input)
     config = TextMRCNNConfig()
     model = TextMRCNNModel(config)

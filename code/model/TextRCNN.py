@@ -8,7 +8,7 @@ import copy
 class TextRCNNConfig(object):
 
     """配置参数"""
-    def __init__(self, n_vocab=859, embedding=200,max_seq_len=70,num_class=29,dropout=0.5):
+    def __init__(self, n_vocab=859,embedding=200,max_seq_len=115,num_class=29,dropout=0.5,lstm_layer=2):
         self.model_name = 'TextRCNN'
 
         self.dropout = dropout                                          # 随机失活
@@ -17,7 +17,7 @@ class TextRCNNConfig(object):
         self.padding_idx = self.n_vocab - 1
         self.embedding = embedding
         self.hidden_size = 256                                          # lstm隐藏层
-        self.num_layers = 2                                             # lstm层数
+        self.num_layers = lstm_layer                                    # lstm层数
         self.max_seq_len = max_seq_len
 
 
@@ -87,7 +87,7 @@ class TextRCNNModel(nn.Module):
 
 def test():
     import numpy as np
-    input = torch.LongTensor([range(5),range(5),range(5)])
+    input = torch.LongTensor([range(100)])
     print(input)
     config = TextRCNNConfig()
     model = TextRCNNModel(config)
