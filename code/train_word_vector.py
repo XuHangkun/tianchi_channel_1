@@ -20,7 +20,7 @@ import pickle
 
 parser = argparse.ArgumentParser()
 parser.add_argument('-word_size',default=300,type=int,help="dimension of a word vector")
-parser.add_argument('-epoch',type=int,default=100,help="epoch")
+parser.add_argument('-epoch',type=int,default=200,help="epoch")
 parser.add_argument('-batch_size',type=int,default=128,help="epoch")
 parser.add_argument('-corpus_dir',default=os.path.join(os.getenv('PROJTOP'),'tcdata'),help="dir of corpus")
 parser.add_argument('-output',default=os.path.join(os.getenv('PROJTOP'),'user_data/word_pretrain/word2vector.model'),help="dimension of a word vector")
@@ -42,8 +42,8 @@ for corpus_file,tag in zip(corpus_input,corpus_input_tag):
 
 # Train the word2vec model
 print('train the word2vec model')
-model = gensim.models.Word2Vec(reports, min_count=1,size=opt.word_size,hs=1)
-model.train(reports,epochs=100,total_examples=len(reports))
+model = gensim.models.Word2Vec(reports, min_count=1,vector_size=opt.word_size,hs=1)
+model.train(reports,epochs=opt.epoch,total_examples=len(reports))
 print(model.wv)
 
 # Train Glovec
@@ -61,9 +61,9 @@ info = {
         "wv":{
             }
         }
-for word in model.wv.vocab:
+print(model.wv.key_to_index)
+for word in model.wv.key_to_index:
     info["wv"][word] = torch.Tensor(model.wv[word])
-    print(info["wv"][word])
 
 f = open(opt.output,'wb')
 pickle.dump(info,f)

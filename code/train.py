@@ -184,7 +184,11 @@ def load_model(opt,device):
         model_config.padding_idx = opt.pad_token
         m_model = TextRNNAttModel(model_config).to(device)
     elif  "TextRCNN" in opt.model:
-        model_config = TextRCNNConfig(n_vocab=opt.ntokens,embedding=opt.nemb,max_seq_len=opt.max_len,num_class=opt.nclass,dropout=opt.dropout,lstm_layer=opt.lstm_layer)
+        model_config = TextRCNNConfig(n_vocab=opt.ntokens,embedding=opt.nemb,
+                max_seq_len=opt.max_len,num_class=opt.nclass,
+                dropout=opt.dropout,lstm_layer=opt.lstm_layer,
+                hidden_size=opt.hidden_size,lstm_dropout=opt.lstm_dropout
+                )
         model_config.padding_idx = opt.pad_token
         m_model = TextRCNNModel(model_config).to(device)
     elif  "TextMRCNN" in opt.model:
@@ -210,8 +214,8 @@ def load_model(opt,device):
 def main():
     parser = argparse.ArgumentParser()
     # parameters of training
-    parser.add_argument('-epoch', type=int, default=30,help="epochs you want to run")
-    parser.add_argument('-max_len',type=int,default=60,help="mac length of the sentence")
+    parser.add_argument('-epoch', type=int, default=100,help="epochs you want to run")
+    parser.add_argument('-max_len',type=int,default=100,help="mac length of the sentence")
     parser.add_argument('-batch_size', type=int, default=128,help="size of batch")
     parser.add_argument('-stop_early',action="store_true", help="stop early")
     parser.add_argument('-fold_k', type=int, default=5,help="number of fold")
@@ -223,7 +227,9 @@ def main():
         # choices=["BERT","TextCNN","DPCNN","TextRNN","TextAttRNN","TextRCNN","Transformer"],
         help="Net work for learning")
     parser.add_argument('-ntokens', type = int, default= 858,help="number of tokens")
-    parser.add_argument('-nemb', type=int, default=200,help="embeding size")
+    parser.add_argument('-nemb', type=int, default=100,help="embeding size")
+    parser.add_argument('-hidden_size', type=int, default=256,help="hidden size")
+    parser.add_argument('-lstm_dropout', type=float, default=0.1,help="dropout rate of lstm layer")
     parser.add_argument('-nclass', type=int, default=29,help="number of class")
     parser.add_argument('-dropout', type=float, default=0.5,help="dropout rate of end layer")
     parser.add_argument('-lstm_layer', type=int, default=2,help="number of lstm layer")
