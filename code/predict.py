@@ -52,7 +52,12 @@ def load_model(opt,device):
             model_config.padding_idx = model_setting.pad_token
             m_model = TextRCNNModel(model_config).to(device)
         elif  "TextMRCNN_" in opt.models[index]:
-            model_config = TextMRCNNConfig(n_vocab=model_setting.ntokens,embedding=model_setting.nemb,max_seq_len=model_setting.max_len,num_class=model_setting.nclass,dropout=model_setting.dropout)
+            model_config = TextMRCNNConfig(n_vocab=model_setting.ntokens,
+                    embedding=model_setting.nemb,max_seq_len=model_setting.max_len,
+                    num_class=model_setting.nclass,dropout=model_setting.dropout,
+                    lstm_layer=model_setting.lstm_layer,hidden_size=model_setting.hidden_size,
+                    lstm_dropout=model_setting.lstm_dropout
+                    )
             model_config.padding_idx = model_setting.pad_token
             m_model = TextMRCNNModel(model_config).to(device)
         elif "TextRNNAtt_" in opt.models[index]:

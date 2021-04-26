@@ -45,6 +45,8 @@ class TextRCNNModel(nn.Module):
         self.emb_dropout_layer = nn.Dropout(self.dropout)
         self.lstm = nn.LSTM(config.embedding, config.hidden_size, config.num_layers,
                             bidirectional=True, batch_first=True, dropout=self.lstm_dropout)
+        #self.w = nn.Parameter(torch.zeros(self.hidden_size * 2), requires_grad=True)
+        #self.tanh = nn.Tanh()
         self.W2 = nn.Linear(2 * self.hidden_size + self.embed_dim, self.hidden_size * 2)
         self.final_dropout_layer = nn.Dropout(self.dropout)
         self.fc = nn.Linear(config.hidden_size * 2, config.num_classes)
@@ -60,7 +62,12 @@ class TextRCNNModel(nn.Module):
         embed = self.embed(x)  # [batch_size, seq_len, embeding]=[64, 32, 64]
         embed = self.emb_dropout_layer(embed)
         out, _ = self.lstm(embed)
+
+        # Add a attention
+        #alpha = F.softmax(torch.matmul(out, self.w), dim=1).unsqueeze(-1)
         out = torch.cat((embed, out), 2)
+        #out = out * alpha
+
         out =  torch.tanh(self.W2(out))
         out = out.permute(0, 2, 1)
         out = F.max_pool1d(out, out.size()[2]).squeeze(2)

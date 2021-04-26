@@ -16,6 +16,7 @@ class BERTConfig:
         self.pre_train_path = pre_train_path
         self.frazing_encode = frazing_encode
         self.dropout = dropout
+
 class BERTModel(nn.Module):
     def __init__(self, config):
         """

@@ -8,17 +8,21 @@ import copy
 class TextMRCNNConfig(object):
 
     """配置参数"""
-    def __init__(self, n_vocab=859, embedding=200,max_seq_len=60,num_class=17,dropout=0.5):
-        self.model_name = 'TextRCNN'
+    def __init__(self, n_vocab=859,embedding=100,
+            max_seq_len=100,num_class=29,dropout=0.5,lstm_layer=2,
+            hidden_size=256,lstm_dropout=0.1
+            ):
+        self.model_name = 'MTextRCNN'
 
         self.dropout = dropout                                              # 随机失活
         self.num_classes = num_class                                    # 类别数
         self.n_vocab = n_vocab                                          # 词表大小，在运行时赋值
         self.padding_idx = self.n_vocab - 1
         self.embedding = embedding
-        self.hidden_size = 128                                          # lstm隐藏层
-        self.num_layers = 2                                             # lstm层数
+        self.hidden_size = hidden_size                                          # lstm隐藏层
+        self.num_layers = lstm_layer                                             # lstm层数
         self.max_seq_len = max_seq_len
+        self.lstm_dropout=lstm_dropout
 
 
 '''Recurrent Convolutional Neural Networks for Text Classification'''
@@ -35,13 +39,16 @@ class TextMRCNNModel(nn.Module):
         self.hidden_size = config.hidden_size
         self.dropout = config.dropout                                              # 随机失活
         self.padding_idx = config.padding_idx
+        self.lstm_dropout = config.lstm_dropout
 
-        self.embed = nn.Embedding(config.n_vocab, config.embedding, padding_idx=config.n_vocab - 1)
-        self.emb_dropout_layer = nn.Dropout(self.dropout)
+        self.embed_1 = nn.Embedding(config.n_vocab, config.embedding, padding_idx=config.n_vocab - 1)
+        self.emb_dropout_layer_1 = nn.Dropout(self.dropout)
+        self.embed_2 = nn.Embedding(config.n_vocab, config.embedding, padding_idx=config.n_vocab - 1)
+        self.emb_dropout_layer_2 = nn.Dropout(self.dropout)
         self.lstm_1 = nn.LSTM(config.embedding, config.hidden_size, config.num_layers,
-                            bidirectional=True, batch_first=True, dropout=config.dropout)
+                            bidirectional=True, batch_first=True, dropout=self.lstm_dropout)
         self.lstm_2 = nn.LSTM(config.embedding, config.hidden_size, config.num_layers,
-                            bidirectional=True, batch_first=True, dropout=config.dropout)
+                            bidirectional=True, batch_first=True, dropout=self.lstm_dropout)
         self.W2_1 = nn.Linear(2 * self.hidden_size + self.embed_dim, self.hidden_size * 2)
         self.W2_2 = nn.Linear(2 * self.hidden_size + self.embed_dim, self.hidden_size * 2)
 
@@ -53,13 +60,12 @@ class TextMRCNNModel(nn.Module):
 
     def forward(self, x):
         x = self.complete_short_sentence(x)
-        #x, _ = x
-        embed = self.embed(x)  # [batch_size, seq_len, embeding]=[64, 32, 64]
-        embed = self.emb_dropout_layer(embed)
 
-        # first
-        out_1, _ = self.lstm_1(embed)
-        out_1 = torch.cat((embed, out_1), 2)
+        #x, _ = x
+        embed_1 = self.embed_1(x)  # [batch_size, seq_len, embeding]=[64, 32, 64]
+        embed_1 = self.emb_dropout_layer_1(embed_1)
+        out_1, _ = self.lstm_1(embed_1)
+        out_1 = torch.cat((embed_1, out_1), 2)
         out_1 =  torch.tanh(self.W2_1(out_1))
         out_1 = out_1.permute(0, 2, 1)
         out_1 = F.max_pool1d(out_1, out_1.size()[2]).squeeze(2)
@@ -67,8 +73,10 @@ class TextMRCNNModel(nn.Module):
         out_1 = self.fc_1(out_1)
 
         # second
-        out_2, _ = self.lstm_2(embed)
-        out_2 = torch.cat((embed, out_2), 2)
+        embed_2 = self.embed_2(x)  # [batch_size, seq_len, embeding]=[64, 32, 64]
+        embed_2 = self.emb_dropout_layer_2(embed_2)
+        out_2, _ = self.lstm_2(embed_2)
+        out_2 = torch.cat((embed_2, out_2), 2)
         out_2 =  torch.tanh(self.W2_2(out_2))
         out_2 = out_2.permute(0, 2, 1)
         out_2 = F.max_pool1d(out_2, out_2.size()[2]).squeeze(2)

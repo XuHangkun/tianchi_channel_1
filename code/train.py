@@ -192,7 +192,11 @@ def load_model(opt,device):
         model_config.padding_idx = opt.pad_token
         m_model = TextRCNNModel(model_config).to(device)
     elif  "TextMRCNN" in opt.model:
-        model_config = TextMRCNNConfig(n_vocab=opt.ntokens,embedding=opt.nemb,max_seq_len=opt.max_len,num_class=opt.nclass,dropout=opt.dropout)
+        model_config = TextMRCNNConfig(n_vocab=opt.ntokens,embedding=opt.nemb,
+                max_seq_len=opt.max_len,num_class=opt.nclass,
+                dropout=opt.dropout,lstm_layer=opt.lstm_layer,
+                hidden_size=opt.hidden_size,lstm_dropout=opt.lstm_dropout
+                )
         model_config.padding_idx = opt.pad_token
         m_model = TextMRCNNModel(model_config).to(device)
     elif  "Transformer" in opt.model:

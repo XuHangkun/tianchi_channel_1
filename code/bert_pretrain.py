@@ -9,6 +9,7 @@ import argparse
 # Define the
 parser = argparse.ArgumentParser(description="Bert Pretrain")
 parser.add_argument('-epoch',type=int,default=100,help="epoch")
+parser.add_argument('-hidden_size',type=int,default=768,help="hidden size")
 parser.add_argument('-batch_size',type=int,default=128,help="epoch")
 parser.add_argument('-corpus_dir',default=os.path.join(os.getenv('PROJTOP'),'tcdata'),help="dir of corpus")
 parser.add_argument('-out_dir',default=os.path.join(os.getenv('PROJTOP'),'user_data/bert'),help="out dir of tokenizer and pretrained model")
@@ -44,11 +45,17 @@ tokenizer.add_tokens(tokens)
 tokenizer.save_model(args.out_dir)
 
 from transformers import RobertaTokenizerFast
-tokenizer = RobertaTokenizerFast.from_pretrained(args.out_dir, max_len=70)
+tokenizer = RobertaTokenizerFast.from_pretrained(args.out_dir, max_len=100)
 tokens = [str(i) for i in range(857,-1,-1)]
 tokenizer.add_tokens(tokens)
 #print(tokenizer.vocab)
 vocab_size = len(tokenizer.vocab)
+print("<pad>:%d,<mask>:%d,<s>:%d,</s>:%d,<unk>:%d"%(tokenizer.vocab["<pad>"],
+    tokenizer.vocab["<mask>"],
+    tokenizer.vocab["<s>"],
+    tokenizer.vocab["</s>"],
+    tokenizer.vocab["<unk>"]))
+print("total tokens: %d"%(vocab_size))
 
 from transformers import LineByLineTextDataset
 dataset = LineByLineTextDataset(
@@ -66,10 +73,12 @@ from transformers import RobertaConfig,RobertaForMaskedLM
 
 config = RobertaConfig(
     vocab_size=vocab_size,
-    max_position_embeddings=514,
+    hidden_size=args.hidden_size,
+    max_position_embeddings=512,
     num_attention_heads=12,
     num_hidden_layers=6,
     type_vocab_size=1,
+    pad_token_id=tokenizer.vocab["<pad>"]
 )
 model = RobertaForMaskedLM(config=config).to(device)
 
