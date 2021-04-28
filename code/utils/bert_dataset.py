@@ -111,8 +111,8 @@ class ReportDataset(Dataset):
 
     def tokenizer(self,text):
         rep = [int(x) for x in text.split()]
-        if len(rep) >self.max_len:
-            rep = rep[:self.max_len]
+        #if len(rep) >self.max_len:
+        #    rep = rep[:self.max_len]
         return rep
 
 
