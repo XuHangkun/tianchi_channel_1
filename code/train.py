@@ -368,7 +368,7 @@ def main():
             print(m_model)
 
         # the optimizer
-        optimizer = optim.Adam(m_model.parameters(),lr=opt.lr,betas=(0.9, 0.98), eps=1e-05)
+        optimizer = optim.AdamW(m_model.parameters(),lr=opt.lr,betas=(0.9, 0.98), eps=1e-05)
         lr_scheduler = torch.optim.lr_scheduler.CosineAnnealingWarmRestarts(optimizer,T_0=3,T_mult=2,eta_min=1.e-6,last_epoch=-1)
 
         # train the model

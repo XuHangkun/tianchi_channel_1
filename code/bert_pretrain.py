@@ -53,6 +53,7 @@ parser.add_argument('-hidden_size',type=int,default=768,help="hidden size")
 parser.add_argument('-batch_size',type=int,default=128,help="epoch")
 parser.add_argument('-corpus_dir',default=os.path.join(os.getenv('PROJTOP'),'tcdata'),help="dir of corpus")
 parser.add_argument('-out_dir',default=os.path.join(os.getenv('PROJTOP'),'user_data/bert'),help="out dir of tokenizer and pretrained model")
+parser.add_argument('-not_do_eda',action="store_true",help="out dir of tokenizer and pretrained model")
 args = parser.parse_args()
 print(args)
 
@@ -74,7 +75,10 @@ for corpus_file,tag in zip(corpus_input,corpus_input_tag):
         report = train_df["report"][i]
         all_reports.append(report)
 # Do data angumentation here
-all_reports = easy_data_augmentation(all_reports)
+if args.not_do_eda:
+    pass
+else:
+    all_reports = easy_data_augmentation(all_reports)
 
 # write the data
 reports_f = open(reports_path,"w")

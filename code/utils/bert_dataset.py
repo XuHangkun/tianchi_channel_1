@@ -18,7 +18,7 @@ class ReportDataset(Dataset):
     """
     Dataset of medical report
     """
-    def __init__(self,df,nclass=29,max_len=70,label_smoothing=0,eda_alpha=0.1,n_aug=2):
+    def __init__(self,df,nclass=29,max_len=100,label_smoothing=0,eda_alpha=0.1,n_aug=4):
         """
         create a dataset from dataFrame, ['id','report','label']
         args:
@@ -34,10 +34,10 @@ class ReportDataset(Dataset):
         self.n_aug = n_aug
         super(ReportDataset,self).__init__()
         # generate texts
-        self.texts = df['report'].values
+        self.texts = list(df['report'].values)
         # self.preprocess_text()
         # generate the labels
-        self.labels = df['label'].values
+        self.labels = list(df['label'].values)
         self.preprocess_label()
 
         # do data enhancement
@@ -59,6 +59,7 @@ class ReportDataset(Dataset):
             sentence = ""
             for word in words:
                 sentence += "%s "%(word)
+            sentence.strip()
             return sentence
 
         if self.n_aug == 0:
@@ -72,10 +73,10 @@ class ReportDataset(Dataset):
                     true_aug = 1
             for j in range(true_aug):
                 # randomly delete some words
-                self.enhanced_texts.append(RandomDelete(self.texts[i],self.eda_alpha))
+                self.enhanced_texts.append(concat_words(RandomDelete(self.texts[i].split(),self.eda_alpha)))
                 self.enhanced_labels.append(self.labels[i])
                 # randomly swap some words
-                self.enhanced_texts.append(RandomSwap(self.texts[i],self.eda_alpha))
+                self.enhanced_texts.append(concat_words(RandomSwap(self.texts[i].split(),self.eda_alpha)))
                 self.enhanced_labels.append(self.labels[i])
         self.texts += self.enhanced_texts
         self.labels += self.enhanced_labels
@@ -148,6 +149,7 @@ def test():
     import os
     train_df = pd.read_csv(os.path.join(os.getenv('PROJTOP'),'tcdata/train.csv'),sep="\|,\|",names=["id","report","label"],index_col=0)
     data = ReportDataset(train_df)
+    print("Data Number : %d"%(len(data)))
     count = 0
     for index in range(10):
         text,label = data[index]
