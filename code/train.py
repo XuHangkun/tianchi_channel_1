@@ -287,7 +287,7 @@ def main():
     # The dataset format of BERT model and others are quite different, so we write the dataset class respectively
     if "BERT" in opt.model:
         from utils.bert_kFoldData import KFoldDataLoader
-        tokenizer = RobertaTokenizerFast.from_pretrained(opt.tokenizer_path, max_len=70)
+        tokenizer = RobertaTokenizerFast.from_pretrained(opt.tokenizer_path, max_len=opt.max_len)
         tokens = [str(i) for i in range(857,-1,-1)]
         tokenizer.add_tokens(tokens)
         k_fold_data_loader = KFoldDataLoader(

@@ -39,9 +39,11 @@ class ReportDataset(Dataset):
         # generate the labels
         self.labels = df['label'].values
         self.preprocess_label()
-        #self.enhanced_texts = []
-        #self.enhanced_labels = []
-        #self.easy_data_augmentation()
+
+        # do data enhancement
+        self.enhanced_texts = []
+        self.enhanced_labels = []
+        self.easy_data_augmentation()
 
     def preprocess_text(self):
         texts = []
@@ -53,6 +55,12 @@ class ReportDataset(Dataset):
         """
         Data Enhancement
         """
+        def concat_words(words):
+            sentence = ""
+            for word in words:
+                sentence += "%s "%(word)
+            return sentence
+
         if self.n_aug == 0:
             return
         for i in range(len(self.texts)):

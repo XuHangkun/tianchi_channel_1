@@ -120,8 +120,8 @@ class ReportDataset(Dataset):
         split the sentence and map the tokens to word index
         """
         rep = [int(x) for x in text.split()]
-        if len(rep) >self.max_len:
-            rep = rep[:self.max_len]
+        #if len(rep) >self.max_len:
+        #    rep = rep[:self.max_len]
         return rep
 
 

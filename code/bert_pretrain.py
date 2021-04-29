@@ -5,6 +5,46 @@ import torch
 import pandas as pd
 from torch.utils.data import Dataset
 import argparse
+from utils.EDA import RandomDelete,RandomSwap
+import numpy as np
+
+def easy_data_augmentation(texts,eda_alpha=0.1,n_aug=4):
+    """
+    Data Enhancement, randomly delete partial words or swap the words
+    For evergy sentence, we need to change eda_alpha*sentence_len words.
+    """
+    def concat_words(words):
+        sentence = ""
+        for word in words:
+            sentence += "%s "%(word)
+        return sentence
+
+    enhanced_texts = []
+    if n_aug == 0:
+        return
+    for i in range(len(texts)):
+        true_aug = 0
+        if n_aug >1:
+            true_aug = int(n_aug)
+        elif n_aug >= 0:
+            if np.random.random() < n_aug:
+                true_aug = 1
+        for j in range(true_aug):
+            # randomly delete some words
+            enhanced_texts.append(concat_words(RandomDelete(texts[i].split(),eda_alpha)))
+            # randomly swap some words
+            enhanced_texts.append(concat_words(RandomSwap(texts[i].split(),eda_alpha)))
+    texts += enhanced_texts
+    # randomly break up the data
+    for i in range(len(texts)):
+        text_1_index = int(np.random.random()*len(texts))
+        text_2_index = int(np.random.random()*len(texts))
+        x = texts[text_1_index]
+        texts[text_1_index] = texts[text_2_index]
+        texts[text_2_index] = x
+
+    return texts
+
 
 # Define the
 parser = argparse.ArgumentParser(description="Bert Pretrain")
@@ -21,9 +61,9 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 # Generate the corpus
 # Read train.csv and save the report
 reports_path = os.path.join(os.getenv('PROJTOP'),'user_data/bert/reports.txt')
-reports_f = open(reports_path,"w")
 corpus_input = ["track1_round1_train_20210222.csv","track1_round1_testA_20210222.csv","track1_round1_testB.csv","train.csv"]
 corpus_input_tag = [0,1,1,0]
+all_reports = []
 for corpus_file,tag in zip(corpus_input,corpus_input_tag):
     if tag:
         train_df = pd.read_csv(os.path.join(args.corpus_dir,corpus_file),sep="\|,\|",names=["id","report"],index_col=0)
@@ -32,8 +72,14 @@ for corpus_file,tag in zip(corpus_input,corpus_input_tag):
 
     for i in range(len(train_df)):
         report = train_df["report"][i]
-        reports_f.write("%s\n"%(report))
+        all_reports.append(report)
+# Do data angumentation here
+all_reports = easy_data_augmentation(all_reports)
 
+# write the data
+reports_f = open(reports_path,"w")
+for report in all_reports:
+    reports_f.write("%s\n"%(report))
 reports_f.close()
 
 # Initialize a tokenizer

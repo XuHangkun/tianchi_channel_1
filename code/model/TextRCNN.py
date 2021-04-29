@@ -5,6 +5,19 @@ import torch.nn.functional as F
 import numpy as np
 import copy
 
+class HanAtt(nn.Module):
+
+    def __init__(self, input_size, output_size):
+        super(HanAtt, self).__init__()
+        self.W = nn.Linear(input_size, output_size)
+        self.u = nn.Linear(output_size, 1)
+
+    def forward(self, x):
+        u = torch.tanh(self.W(x))
+        a = F.softmax(self.u(u), dim=1)
+        x = x*a
+        return x
+
 class TextRCNNConfig(object):
 
     """配置参数"""
@@ -45,6 +58,7 @@ class TextRCNNModel(nn.Module):
         self.emb_dropout_layer = nn.Dropout(self.dropout)
         self.lstm = nn.LSTM(config.embedding, config.hidden_size, config.num_layers,
                             bidirectional=True, batch_first=True, dropout=self.lstm_dropout)
+        #self.han_att = HanAtt(2 * config.hidden_size, 2 * config.hidden_size)
         #self.w = nn.Parameter(torch.zeros(self.hidden_size * 2), requires_grad=True)
         #self.tanh = nn.Tanh()
         self.W2 = nn.Linear(2 * self.hidden_size + self.embed_dim, self.hidden_size * 2)
@@ -62,6 +76,9 @@ class TextRCNNModel(nn.Module):
         embed = self.embed(x)  # [batch_size, seq_len, embeding]=[64, 32, 64]
         embed = self.emb_dropout_layer(embed)
         out, _ = self.lstm(embed)
+
+        # Add attention here
+        #out = self.han_att(out)
 
         # Add a attention
         #alpha = F.softmax(torch.matmul(out, self.w), dim=1).unsqueeze(-1)
@@ -99,10 +116,12 @@ class TextRCNNModel(nn.Module):
 
 def test():
     import numpy as np
+    from torchsummary import summary
     input = torch.LongTensor([range(100)])
     print(input)
-    config = TextRCNNConfig()
+    config = TextRCNNConfig(hidden_size=1024)
     model = TextRCNNModel(config)
+    print(summary(model,input_size=(128,100),batch_size=128,dtypes=torch.long))
     output = model(input)
     print(output)
 

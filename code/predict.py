@@ -116,7 +116,7 @@ def main():
             break
     if contain_bert:
         # tokenizer for bert model
-        tokenizer = RobertaTokenizerFast.from_pretrained(opt.tokenizer_path, max_len=70)
+        tokenizer = RobertaTokenizerFast.from_pretrained(opt.tokenizer_path, max_len=100)
         tokens = [str(i) for i in range(857,-1,-1)]
         tokenizer.add_tokens(tokens)
     else:
