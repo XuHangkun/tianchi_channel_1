@@ -1,0 +1,33 @@
+Shell for /hpcfs/juno/junogpu/xuhangkun/SoftWare/VsCode/.local/share/virtualenvs/tianchi_channel_1-2IKVIXD7 already activated.
+No action taken to avoid nested environments.
+If the cuda is avaliable ?
+True
+Start getting data...
+Finish getting data ~ v ~
+[Info] Training performance will be written to file: ./user_data/model_data/TextRCNN/TextRCNN_fold3_train.csv
+Namespace(batch_size=128, bert_path='/hpcfs/juno/junogpu/xuhangkun/ML/MyselfProject/Test/tianchi_channel_1/user_data/bert', dropout=0.5, eda_alpha=0.1, epoch=15, fold_index=3, fold_k=5, frazing_bert_encode=False, hidden_size=1024, input='./tcdata/train.csv', label_smoothing=0.0, lr=0.0005, lstm_dropout=0.1, lstm_layer=2, max_len=100, model='TextRCNN', n_aug=4.0, nclass=29, nemb=100, no_word2vec_pretrain=True, ntokens=859, output_dir='./user_data/model_data/TextRCNN', pad_token=858, save_mode='best', save_per_epoch=5, save_start_epoch=5, seed=None, stop_early=False, tokenizer_path='/hpcfs/juno/junogpu/xuhangkun/ML/MyselfProject/Test/tianchi_channel_1/user_data/bert', word2vec_path='/hpcfs/juno/junogpu/xuhangkun/ML/MyselfProject/Test/tianchi_channel_1/user_data/word_pretrain/word2vector.model')
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+2th fold (total : 5)
+Create model...
+Start training...
+[ Epoch 0 ]  - Training     loss : 0.15513 , acc : 0.949 , elapse : 7.02331 min  - Validation   loss : 0.10789 , acc : 0.964 , elapse : 0.08673 min    - [Info] The checkpoint file has been updated.
+[ Epoch 1 ]  - Training     loss : 0.10971 , acc : 0.961 , elapse : 7.13262 min  - Validation   loss : 0.09080 , acc : 0.968 , elapse : 0.09682 min    - [Info] The checkpoint file has been updated.
+[ Epoch 2 ]  - Training     loss : 0.09884 , acc : 0.964 , elapse : 7.52806 min  - Validation   loss : 0.08484 , acc : 0.969 , elapse : 0.10140 min    - [Info] The checkpoint file has been updated.
+[ Epoch 3 ]  - Training     loss : 0.09277 , acc : 0.966 , elapse : 7.14012 min  - Validation   loss : 0.07173 , acc : 0.975 , elapse : 0.08669 min    - [Info] The checkpoint file has been updated.
+[ Epoch 4 ]  - Training     loss : 0.07782 , acc : 0.972 , elapse : 7.03784 min  - Validation   loss : 0.06594 , acc : 0.978 , elapse : 0.08650 min    - [Info] The checkpoint file has been updated.
+[ Epoch 5 ]  - Training     loss : 0.07479 , acc : 0.973 , elapse : 7.03392 min  - Validation   loss : 0.06410 , acc : 0.978 , elapse : 0.08664 min    - [Info] The checkpoint file has been updated.
+[ Epoch 6 ]  - Training     loss : 0.07055 , acc : 0.975 , elapse : 7.03138 min  - Validation   loss : 0.05885 , acc : 0.980 , elapse : 0.08694 min    - [Info] The checkpoint file has been updated.
+[ Epoch 7 ]  - Training     loss : 0.06271 , acc : 0.978 , elapse : 7.03518 min  - Validation   loss : 0.05285 , acc : 0.982 , elapse : 0.08699 min    - [Info] The checkpoint file has been updated.
+[ Epoch 8 ]  - Training     loss : 0.05652 , acc : 0.980 , elapse : 7.03351 min  - Validation   loss : 0.04938 , acc : 0.983 , elapse : 0.08618 min    - [Info] The checkpoint file has been updated.
+[ Epoch 9 ]  - Training     loss : 0.05201 , acc : 0.981 , elapse : 7.04204 min  - Validation   loss : 0.04769 , acc : 0.984 , elapse : 0.08706 min    - [Info] The checkpoint file has been updated.
+[ Epoch 10 ]  - Training     loss : 0.05071 , acc : 0.982 , elapse : 7.03360 min  - Validation   loss : 0.05043 , acc : 0.984 , elapse : 0.08690 min
+[ Epoch 11 ]  - Training     loss : 0.05469 , acc : 0.981 , elapse : 7.03568 min  - Validation   loss : 0.04875 , acc : 0.984 , elapse : 0.08639 min
+[ Epoch 12 ]  - Training     loss : 0.05139 , acc : 0.982 , elapse : 7.03613 min  - Validation   loss : 0.04628 , acc : 0.985 , elapse : 0.08613 min    - [Info] The checkpoint file has been updated.
+[ Epoch 13 ]  - Training     loss : 0.04700 , acc : 0.983 , elapse : 7.03427 min  - Validation   loss : 0.04361 , acc : 0.986 , elapse : 0.08709 min    - [Info] The checkpoint file has been updated.
+[ Epoch 14 ]  - Training     loss : 0.04358 , acc : 0.984 , elapse : 7.03891 min  - Validation   loss : 0.03915 , acc : 0.987 , elapse : 0.08739 min    - [Info] The checkpoint file has been updated.
+Finish training ~ v ~
+min losses: [0.03914647921919823] mean losses: 0.03914647921919823
+max accs: [0.9871363146551724] mean accs: 0.9871363146551724
+Empty DataFrame
+Columns: [pred, label]
+Index: []
