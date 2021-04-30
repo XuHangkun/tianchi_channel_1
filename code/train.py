@@ -60,8 +60,14 @@ def train_epoch(model, training_data, optimizer, opt, device,scheduler=None):
         # predict and calculate the loss, accuracy
         optimizer.zero_grad()
         pred = model(report)    #prediction
-        loss = 0.6*F.binary_cross_entropy(pred[:17],label[:17]) +  0.4*F.binary_cross_entropy(pred[17:],label[17:])
-        acc = cal_accuracy(pred,label)
+        if opt.model_task == 0:
+            loss = 0.6*F.binary_cross_entropy(pred[:,:17],label[:,:17]) +  0.4*F.binary_cross_entropy(pred[:,17:],label[:,17:])
+        elif opt.model_task == 1:
+            loss = F.binary_cross_entropy(pred,label[:,:17])
+        elif opt.model_task == 2:
+            loss = F.binary_cross_entropy(pred,label[:,17:])
+
+        acc = cal_accuracy(pred,label,opt.model_task)
         loss.backward()
         optimizer.step()
         if scheduler:
@@ -94,9 +100,14 @@ def eval_epoch(model, validation_data, opt,device):
 
         # predict and calculate the loss, accuracy
         pred = model(report)    #prediction, we do not use mask now!
-        loss = 0.6*F.binary_cross_entropy(pred[:17],label[:17]) +  0.4*F.binary_cross_entropy(pred[17:],label[17:])
+        if opt.model_task == 0:
+            loss = 0.6*F.binary_cross_entropy(pred[:,:17],label[:,:17]) +  0.4*F.binary_cross_entropy(pred[:,17:],label[:,17:])
+        elif opt.model_task == 1:
+            loss = F.binary_cross_entropy(pred,label[:,:17])
+        elif opt.model_task == 2:
+            loss = F.binary_cross_entropy(pred,label[:,17:])
         losses.append(loss.item())
-        acc = cal_accuracy(pred,label)
+        acc = cal_accuracy(pred,label,opt.model_task)
         acces.append(acc)
 
     loss_per_seq = sum(losses)/len(losses)
@@ -218,6 +229,8 @@ def load_model(opt,device):
 def main():
     parser = argparse.ArgumentParser()
     # parameters of training
+    # 1 for task 1, 2 for task 2, 0 for both tasks
+    parser.add_argument('-model_task', type=int, default=0,choices=[0,1,2],help="type of model")
     parser.add_argument('-epoch', type=int, default=100,help="epochs you want to run")
     parser.add_argument('-max_len',type=int,default=100,help="mac length of the sentence")
     parser.add_argument('-batch_size', type=int, default=128,help="size of batch")
@@ -273,6 +286,13 @@ def main():
         np.random.seed(opt.seed)
         random.seed(opt.seed)
 
+    if opt.model_task == 0:
+        opt.nclass = 29
+    elif opt.model_task == 1:
+        opt.nclass = 17
+    elif opt.model_task == 2:
+        opt.nclass = 12
+
     if opt.output_dir and not os.path.exists(opt.output_dir):
         os.makedirs(opt.output_dir)
 
@@ -309,7 +329,7 @@ def main():
                                 df=train_df,
                                 batch_size = opt.batch_size,
                                 k = opt.fold_k,
-                                nclass = opt.nclass,
+                                nclass = 29,
                                 max_len = opt.max_len,
                                 label_smoothing = opt.label_smoothing,
                                 eda_alpha = opt.eda_alpha,
