@@ -15,15 +15,54 @@ import torch
 import argparse
 # from glove import Glove
 # from glove import Corpus
+from utils.EDA import RandomDelete,RandomSwap
 import pickle
+import numpy as np
 
+def easy_data_augmentation(texts,eda_alpha=0.1,n_aug=4):
+    """
+    Data Enhancement, randomly delete partial words or swap the words
+    For evergy sentence, we need to change eda_alpha*sentence_len words.
+    """
+    def concat_words(words):
+        sentence = ""
+        for word in words:
+            sentence += "%s "%(word)
+        return sentence
+
+    enhanced_texts = []
+    if n_aug == 0:
+        return
+    for i in range(len(texts)):
+        true_aug = 0
+        if n_aug >1:
+            true_aug = int(n_aug)
+        elif n_aug >= 0:
+            if np.random.random() < n_aug:
+                true_aug = 1
+        for j in range(true_aug):
+            # randomly delete some words
+            enhanced_texts.append(RandomDelete(texts[i],eda_alpha))
+            # randomly swap some words
+            enhanced_texts.append(RandomSwap(texts[i],eda_alpha))
+    texts += enhanced_texts
+    # randomly break up the data
+    for i in range(len(texts)):
+        text_1_index = int(np.random.random()*len(texts))
+        text_2_index = int(np.random.random()*len(texts))
+        x = texts[text_1_index]
+        texts[text_1_index] = texts[text_2_index]
+        texts[text_2_index] = x
+
+    return texts
 
 parser = argparse.ArgumentParser()
-parser.add_argument('-word_size',default=300,type=int,help="dimension of a word vector")
-parser.add_argument('-epoch',type=int,default=200,help="epoch")
+parser.add_argument('-word_size',default=100,type=int,help="dimension of a word vector")
+parser.add_argument('-epoch',type=int,default=20,help="epoch")
 parser.add_argument('-batch_size',type=int,default=128,help="epoch")
 parser.add_argument('-corpus_dir',default=os.path.join(os.getenv('PROJTOP'),'tcdata'),help="dir of corpus")
 parser.add_argument('-output',default=os.path.join(os.getenv('PROJTOP'),'user_data/word_pretrain/word2vector.model'),help="dimension of a word vector")
+parser.add_argument('-not_do_eda',action="store_true",help="out dir of tokenizer and pretrained model")
 opt = parser.parse_args()
 
 # read csv data
@@ -38,6 +77,12 @@ for corpus_file,tag in zip(corpus_input,corpus_input_tag):
         train_df = pd.read_csv(os.path.join(opt.corpus_dir,corpus_file),sep="\|,\|",names=["id","report","label"],index_col=0)
     for i in range(len(train_df)):
         reports.append(train_df["report"][i].split())
+
+# Do data angumentation here
+if opt.not_do_eda:
+    pass
+else:
+    reports = easy_data_augmentation(reports)
 # print(reports)
 
 # Train the word2vec model

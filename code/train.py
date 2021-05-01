@@ -382,8 +382,10 @@ def main():
             word_vec_file = open(opt.word2vec_path,'rb')
             word2vec_model = pickle.load(word_vec_file)
             print("use pretrained word2vector model")
-            m_model.use_pretrain_word2vec(word2vec_model)
+            tmp_value = m_model.use_pretrain_word2vec(word2vec_model)
             word_vec_file.close()
+            if tmp_value:
+                print("Word vector is been used!")
         if k_index == 0:
             print(m_model)
 
