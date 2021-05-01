@@ -106,7 +106,7 @@ info = {
         "wv":{
             }
         }
-print(model.wv.key_to_index)
+# print(model.wv.key_to_index)
 for word in model.wv.key_to_index:
     info["wv"][word] = torch.Tensor(model.wv[word])
 
