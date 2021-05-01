@@ -90,16 +90,14 @@ def main():
     prediction according to trained model
     """
     parser = argparse.ArgumentParser(description="Prediction")
-    parser.add_argument('-models',default=["TextCNN_fold1","TextCNN_fold2","TextCNN_fold3","TextCNN_fold4","TextCNN_fold5",
-                            "TextRCNN_fold1","TextRCNN_fold2","TextRCNN_fold3","TextRCNN_fold4","TextRCNN_fold5",
-                            "DPCNN_fold1","DPCNN_fold2","DPCNN_fold3","DPCNN_fold4","DPCNN_fold5"],
+    parser.add_argument('-models',default=["TextRCNN/TextRCNN_fold1"],
                             nargs="+",help="Net workS for learning")
     parser.add_argument('-model_path', type = str,
                         default=os.path.join(os.getenv('PROJTOP'),'user_data/model_data'),
                         help='Path to model weight file')
     parser.add_argument('-tokenizer_path',default=os.path.join(os.getenv('PROJTOP'),"user_data/bert"),help="path of tokenizer")
     parser.add_argument('-input', type=str,
-        default=os.path.join(os.getenv('PROJTOP'),'tcdata/medical_nlp_round1_data/test.csv'),help="path for test.csv")
+        default=os.path.join(os.getenv('PROJTOP'),'tcdata/testA.csv'),help="path for test.csv")
     parser.add_argument('-output', type = str,
                         default=os.path.join(os.getenv('PROJTOP'),'prediction_result/result.csv'),
                         help='output csv file')
@@ -150,9 +148,12 @@ def main():
                 report = tokenizer(report,padding=True, truncation=True, return_tensors="pt")
                 report.to(device)
             else:
-                report = [[int(x) for x in (data["report"][index]).split()]]
-                report = torch.LongTensor(report).to(device)
-                #print(report.shape)
+                report = [model.padding_idx for x in range(model.max_seq_len)]
+                for word_index,word in enumerate((data["report"][index]).split()):
+                    if word_index >= model.max_seq_len:
+                        break
+                    report[word_index] = int(word)
+                report = torch.LongTensor([report]).to(device)
 
             pred = model(report).squeeze()  # shape [17,1] --> [5]
             preds.append(pred)

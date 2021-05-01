@@ -28,7 +28,8 @@ from model.TextRCNN import TextRCNNConfig,TextRCNNModel
 from model.TextMRCNN import TextMRCNNConfig,TextMRCNNModel
 from model.TextRNN_Att import TextRNNAttConfig,TextRNNAttModel
 from model.transformer import TransformerConfig,TransformerModel
-from model.bert import BERTConfig,BERTModel
+#from model.bert import BERTConfig,BERTModel
+from model.bert_textrcnn import BERTConfig,BERTModel
 from transformers import RobertaTokenizerFast
 import torch.optim as optim
 import torch.nn.functional as F
@@ -113,7 +114,6 @@ def eval_epoch(model, validation_data, opt,device):
     loss_per_seq = sum(losses)/len(losses)
     acc_per_seq = sum(acces)/len(acces)
     return loss_per_seq,acc_per_seq
-
 
 def train(model, training_data, validation_data, optimizer, device, opt,scheduler=None):
     """
@@ -268,7 +268,7 @@ def main():
                         help="path of word2vector model")
 
     # parameters of saving data
-    parser.add_argument('-input', type=str,
+    parser.add_argument('-input', type=str, nargs="+",
         default=os.path.join(os.getenv('PROJTOP'),'tcdata/train.csv'),help="path for train.csv")
     parser.add_argument('-output_dir', type=str,
         default=os.path.join(os.getenv('PROJTOP'),'user_data/model_data'),help="the path to save the trained model")
@@ -302,7 +302,14 @@ def main():
     print(torch.cuda.is_available())
 
     print("Start getting data...")
-    train_df = pd.read_csv(opt.input,sep="\|,\|",names=["id","report","label"],index_col=0)
+    train_dfs = []
+    for input_file in opt.input:
+        df = pd.read_csv(input_file,sep="\|,\|",names=["id","report","label"],index_col=0)
+        train_dfs.append(df)
+    train_df = pd.concat(train_dfs).reset_index(drop=True)
+    print(train_df)
+
+
     #train_df = train_df.sample(frac=1).reset_index(drop=True)
     # The dataset format of BERT model and others are quite different, so we write the dataset class respectively
     if "BERT" in opt.model:
