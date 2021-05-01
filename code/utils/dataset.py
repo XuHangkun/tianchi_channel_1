@@ -96,7 +96,10 @@ class ReportDataset(Dataset):
         labels = []
         for label in self.labels:
             label_tensor = [0.0 for i in range(self.nclass)]
-            label_area,label_ill = str(label).split(',')
+            label = str(label)
+            if "," not in label:
+                label += ","
+            label_area,label_ill = label.split(',')
             # label area
             if label_area == '' or label_area == 'nan':
                 pass
