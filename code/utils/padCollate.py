@@ -20,22 +20,33 @@ def pad_tensor(vec, pad, dim,pad_idx):
     return:
         a new tensor padded to 'pad' in dimension 'dim'
     """
+    #
+    remove_element = torch.tensor([693,328,380,698])
+    vec_new = torch.IntTensor([])
+    for element in vec:
+        if element not in remove_element:
+            element = element.unsqueeze(0)
+            vec_new = torch.cat((vec_new,element),0)
+    vec = vec_new
+
     pad_size = list(vec.shape)
     pad_size[dim] = pad - vec.shape[dim]
     vec_pad_z = torch.Tensor()
+    '''
     if math.ceil(pad/2) <= vec.shape[dim]:
-        vec_pad = vec[0:pad_size[dim]]
+        #vec_pad = vec[0:pad_size[dim]]# Replenish information from front to back
+        vec_pad = vec[vec.shape[dim]*2-pad:pad]
     else:
-        vec_pad_z = vec
+        vec_pad_cat = vec
         index = pad//vec.shape[dim]-1
         for i in range(index):
-            vec_pad_z = torch.cat([vec_pad_z,vec])
-        vec = vec_pad_z
-        pad_size_z = pad%vec.shape[dim]
-        vec_pad = vec[0:pad_size_z]
-    #print(vec.shape[dim])
-    return torch.cat([vec,vec_pad], dim=dim)
-    #return torch.cat([vec, pad_idx*torch.ones(*pad_size,dtype=torch.long)], dim=dim)
+            vec_pad_cat = torch.cat([vec_pad_cat,vec])
+        vec = vec_pad_cat
+        pad_remain_size = pad%vec.shape[dim]
+        vec_pad = vec[0:pad_remain_size]
+    '''
+    #return torch.cat([vec,vec_pad], dim=dim)
+    return torch.cat([vec, pad_idx*torch.ones(*pad_size,dtype=torch.long)], dim=dim)
 
 class PadCollate:
     """
@@ -82,9 +93,8 @@ class PadCollate:
 def test():
     import numpy as np
     pad = PadCollate()
-    batch = [(np.array([1.0,2,3,4,5,6,39,11,17,15]),np.array([1,0,0])),
-            (np.array([1,2,3,4]),np.array([1,1,0]))
-            ]
+    batch = [(np.array([1.0,2,3,4,5,6,693,11,328,15,380, 53,698, 57, 59, 2, 27, 43, 4, 30, 34, 1, 32, 58, 21, 17, 15, 38, 31, 20, 11, 40, 35, 39, 36, 3, 5, 41, 26, 13, 50, 12, 0, 44, 29, 45, 22, 48, 54, 25, 28, 51, 19, 14, 252, 49, 9, 16, 46, 47, 7,42, 11110]),np.array([1,0,0])),
+            (np.array([1,2,3,4,5,6,7]),np.array([1,1,0]))]
     print(pad(batch))
 
 if __name__ == '__main__':
