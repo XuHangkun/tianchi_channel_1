@@ -78,7 +78,7 @@ class ReportDataset(Dataset):
         self.texts += self.enhanced_texts
         self.labels += self.enhanced_labels
         # randomly break up the data
-        for i in range(len(self.texts)):
+        for i in range(3*len(self.texts)):
             text_1_index = int(np.random.random()*len(self.texts))
             text_2_index = int(np.random.random()*len(self.texts))
             x = self.texts[text_1_index]

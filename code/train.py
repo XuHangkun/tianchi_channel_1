@@ -181,6 +181,11 @@ def load_model(opt,device):
         the model
     """
     m_model = None
+    if opt.model_path:
+        model_weight_path = opt.model_path
+        checkpoint = torch.load(model_weight_path,map_location=device)
+        model_setting = checkpoint["settings"]
+
     if "DPCNN" in opt.model:
         model_config = DPCNNConfig(n_vocab=opt.ntokens,embedding=opt.nemb,num_class=opt.nclass,max_seq_len=opt.max_len,dropout=opt.dropout)
         model_config.padding_idx = opt.pad_token
@@ -195,13 +200,25 @@ def load_model(opt,device):
         model_config.padding_idx = opt.pad_token
         m_model = TextRNNAttModel(model_config).to(device)
     elif  "TextRCNN" in opt.model:
-        model_config = TextRCNNConfig(n_vocab=opt.ntokens,embedding=opt.nemb,
-                max_seq_len=opt.max_len,num_class=opt.nclass,
-                dropout=opt.dropout,lstm_layer=opt.lstm_layer,
-                hidden_size=opt.hidden_size,lstm_dropout=opt.lstm_dropout
-                )
-        model_config.padding_idx = opt.pad_token
-        m_model = TextRCNNModel(model_config).to(device)
+        if not opt.model_path:
+            model_config = TextRCNNConfig(n_vocab=opt.ntokens,embedding=opt.nemb,
+                    max_seq_len=opt.max_len,num_class=opt.nclass,
+                    dropout=opt.dropout,lstm_layer=opt.lstm_layer,
+                    hidden_size=opt.hidden_size,lstm_dropout=opt.lstm_dropout
+                    )
+            model_config.padding_idx = opt.pad_token
+            m_model = TextRCNNModel(model_config).to(device)
+        else:
+            model_config = TextRCNNConfig(n_vocab=model_setting.ntokens,
+                    embedding=model_setting.nemb,max_seq_len=model_setting.max_len,
+                    num_class=model_setting.nclass,dropout=model_setting.dropout,
+                    lstm_layer=model_setting.lstm_layer,hidden_size=model_setting.hidden_size,
+                    lstm_dropout=model_setting.lstm_dropout
+                    )
+            m_model = TextRCNNModel(model_config).to(device)
+            m_model.load_state_dict(checkpoint['model'])
+            print("Use Pre-trained TextRCNN")
+
     elif  "TextMRCNN" in opt.model:
         model_config = TextMRCNNConfig(n_vocab=opt.ntokens,embedding=opt.nemb,
                 max_seq_len=opt.max_len,num_class=opt.nclass,
@@ -253,6 +270,8 @@ def main():
     parser.add_argument('-frazing_bert_encode',action="store_true", help="frazing bert encode when train")
     parser.add_argument('-bert_path',default=os.path.join(os.getenv('PROJTOP'),"user_data/bert"),help="path of pretrained BERT")
     parser.add_argument('-tokenizer_path',default=os.path.join(os.getenv('PROJTOP'),"user_data/bert"),help="path of tokenizer")
+    parser.add_argument('-model_path', type = str, default = None,help='Path to model weight file')
+    parser.add_argument('-is_pretrain', action="store_true" , help='Path to model weight file')
 
     # data enhancement, not do this defaultly
     parser.add_argument('-eda_alpha',type=float,default=0.0,help="alpha of eda")
@@ -382,7 +401,10 @@ def main():
         # create the model
         print("Create model...")
         m_model = load_model(opt,device)
-        opt.model = "%s_fold%d"%(model_name,k_index+1)
+        if opt.is_pretrain:
+            opt.model = model_name
+        else:
+            opt.model = "%s_fold%d"%(model_name,k_index+1)
 
         # load the pretrained word vector or not
         if not opt.no_word2vec_pretrain and ("BERT" not in model_name):
@@ -410,6 +432,9 @@ def main():
         min_valid_losses.append(min(valid_losses))
         max_valid_accs.append(max(valid_accs))
         print("Finish training ~ v ~")
+        # only need a pretrain model
+        if opt.is_pretrain:
+            break
 
     # save the train info
     train_info_df = pd.DataFrame(train_info)
