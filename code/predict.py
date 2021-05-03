@@ -141,6 +141,7 @@ def main():
         if not opt.is_test:
             results["label"].append(data["label"][index])
         preds = []
+        remove_element = ['693','328','380','698']
         for model,model_name in zip(models,opt.models):
 
             if "BERT" in model_name:
@@ -149,10 +150,21 @@ def main():
                 report.to(device)
             else:
                 report = [model.padding_idx for x in range(model.max_seq_len)]
-                for word_index,word in enumerate((data["report"][index]).split()):
+
+                if type(data["report"][index]) == str:
+                    data["report"][index] = (data["report"][index]).split()
+                processed_data = []
+                for element in data["report"][index]:
+                    if element not in remove_element:
+                        processed_data.append(element)
+
+                for word_index,word in enumerate(processed_data):
+                #for word_index,word in enumerate((data["report"][index]).split()):
                     if word_index >= model.max_seq_len:
                         break
+
                     report[word_index] = int(word)
+                #print(report)    
                 report = torch.LongTensor([report]).to(device)
 
             pred = model(report).squeeze()  # shape [17,1] --> [5]
