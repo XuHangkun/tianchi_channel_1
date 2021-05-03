@@ -23,8 +23,6 @@ print(args)
 
 data_task1 = pd.read_csv(args.task1_file,sep="\|,\|",names=["id","report"],index_col=0)
 data_task2 = pd.read_csv(args.task2_file,sep="\|,\|",names=["id","report"],index_col=0)
-print(data_task1)
-print(data_task2)
 
 assert len(data_task1) == len(data_task2)
 
