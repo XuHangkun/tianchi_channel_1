@@ -18,7 +18,7 @@ class ReportDataset(Dataset):
     """
     Dataset of medical report
     """
-    def __init__(self,df,nclass=29,max_len=70,label_smoothing=0,eda_alpha=0.1,n_aug=2):
+    def __init__(self,df,nclass=29,max_len=70,label_smoothing=0,eda_alpha=0.1,n_aug=2,pretrain=False):
         """
         create a dataset from dataFrame, ['id','report','label']
         args:
@@ -32,6 +32,7 @@ class ReportDataset(Dataset):
         self.label_smoothing = label_smoothing
         self.eda_alpha = eda_alpha
         self.n_aug = n_aug
+        self.pretrain = pretrain
         super(ReportDataset,self).__init__()
         # generate texts
         self.texts = df['report'].values
@@ -59,7 +60,7 @@ class ReportDataset(Dataset):
         Data Enhancement, randomly delete partial words or swap the words
         For evergy sentence, we need to change eda_alpha*sentence_len words.
         """
-        if self.n_aug == 0:
+        if self.n_aug == 0 or self.n_aug < 0.1:
             return
         for i in range(len(self.texts)):
             true_aug = 0
@@ -75,8 +76,12 @@ class ReportDataset(Dataset):
                 # randomly swap some words
                 self.enhanced_texts.append(RandomSwap(self.texts[i],self.eda_alpha))
                 self.enhanced_labels.append(self.labels[i])
-        self.texts += self.enhanced_texts
-        self.labels += self.enhanced_labels
+        if self.pretrain:
+            self.texts = self.enhanced_texts
+            self.labels = self.enhanced_labels
+        else:
+            self.texts += self.enhanced_texts
+            self.labels += self.enhanced_labels
         # randomly break up the data
         for i in range(3*len(self.texts)):
             text_1_index = int(np.random.random()*len(self.texts))

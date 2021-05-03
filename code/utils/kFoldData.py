@@ -17,7 +17,7 @@ class KFoldDataLoader:
     """
     K Fold Data Loader
     """
-    def __init__(self,df,batch_size=128,k=5,nclass=17,max_len=70,label_smoothing=0,eda_alpha=0,n_aug=0):
+    def __init__(self,df,batch_size=128,k=5,nclass=29,max_len=100,label_smoothing=0,eda_alpha=0.1,n_aug=4,pretrain=False):
         """
         args:
             k - k Folder, default = 5
@@ -36,6 +36,7 @@ class KFoldDataLoader:
         self.label_smoothing = label_smoothing
         self.eda_alpha = eda_alpha
         self.n_aug = n_aug
+        self.pretrain = pretrain
 
     def cal_token_number(self):
         """
@@ -64,8 +65,12 @@ class KFoldDataLoader:
             valid_index += range(i*self.a_fold_length,self.lenght)
             train_index += range(0,i*self.a_fold_length)
 
-        train_df = self.df.iloc[train_index]
-        train_dataset = ReportDataset(train_df,nclass=self.nclass,max_len=self.max_len,label_smoothing=self.label_smoothing,eda_alpha=self.eda_alpha,n_aug=self.n_aug)
+        if self.pretrain:
+            train_df = self.df
+        else:
+            train_df = self.df.iloc[train_index]
+
+        train_dataset = ReportDataset(train_df,nclass=self.nclass,max_len=self.max_len,label_smoothing=self.label_smoothing,eda_alpha=self.eda_alpha,n_aug=self.n_aug,pretrain = self.pretrain)
         train_dataloader = DataLoader(dataset=train_dataset,batch_size=self.batch_size,collate_fn=self.collect_fn)
         valid_df = self.df.iloc[valid_index]
         valid_dataset = ReportDataset(valid_df,nclass=self.nclass,max_len=self.max_len,eda_alpha=0,n_aug=0)

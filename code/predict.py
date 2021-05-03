@@ -130,8 +130,6 @@ def main():
     else:
         results = {"report_ID":[],"Prediction":[],"label":[]}
     data = pd.read_csv(opt.input,index_col=0,sep="\|,\|",names=["id","report"])
-    print(data)
-
 
     # prediction here
     desc = '  - (Prediction)   '

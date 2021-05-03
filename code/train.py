@@ -345,7 +345,8 @@ def main():
                                 max_len = opt.max_len,
                                 label_smoothing = opt.label_smoothing,
                                 eda_alpha = opt.eda_alpha,
-                                n_aug = opt.n_aug
+                                n_aug = opt.n_aug,
+                                pretrain = opt.is_pretrain
                                 )
         opt.pad_token = tokenizer.vocab["<pad>"]
         opt.ntokens = len(tokenizer.vocab)
@@ -359,7 +360,8 @@ def main():
                                 max_len = opt.max_len,
                                 label_smoothing = opt.label_smoothing,
                                 eda_alpha = opt.eda_alpha,
-                                n_aug = opt.n_aug
+                                n_aug = opt.n_aug,
+                                pretrain = opt.is_pretrain
                                 )
         opt.pad_token = k_fold_data_loader.pad_idx
         opt.ntokens = k_fold_data_loader.pad_idx + 1
