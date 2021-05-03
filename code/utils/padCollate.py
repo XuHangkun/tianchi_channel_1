@@ -9,7 +9,7 @@
     :license: MIT, see LICENSE for more details.
 """
 import torch
-import math
+
 def pad_tensor(vec, pad, dim,pad_idx):
     """
     args:
@@ -22,20 +22,7 @@ def pad_tensor(vec, pad, dim,pad_idx):
     """
     pad_size = list(vec.shape)
     pad_size[dim] = pad - vec.shape[dim]
-    vec_pad_z = torch.Tensor()
-    if math.ceil(pad/2) <= vec.shape[dim]:
-        vec_pad = vec[0:pad_size[dim]]
-    else:
-        vec_pad_z = vec
-        index = pad//vec.shape[dim]-1
-        for i in range(index):
-            vec_pad_z = torch.cat([vec_pad_z,vec])
-        vec = vec_pad_z
-        pad_size_z = pad%vec.shape[dim]
-        vec_pad = vec[0:pad_size_z]
-    #print(vec.shape[dim])
-    return torch.cat([vec,vec_pad], dim=dim)
-    #return torch.cat([vec, pad_idx*torch.ones(*pad_size,dtype=torch.long)], dim=dim)
+    return torch.cat([vec, pad_idx*torch.ones(*pad_size,dtype=torch.long)], dim=dim)
 
 class PadCollate:
     """
@@ -62,8 +49,7 @@ class PadCollate:
             ys - a LongTensor of all labels in batch
         """
         # find longest sequence
-        max_len = 100
-        #max_len = max(map(lambda x: x[0].shape[self.dim], batch))
+        max_len = max(map(lambda x: x[0].shape[self.dim], batch))
         # pad according to max_len
         new_batch = []
         for x,y in batch:
@@ -82,7 +68,7 @@ class PadCollate:
 def test():
     import numpy as np
     pad = PadCollate()
-    batch = [(np.array([1.0,2,3,4,5,6,39,11,17,15]),np.array([1,0,0])),
+    batch = [(np.array([1.0,2,3,4,5,6]),np.array([1,0,0])),
             (np.array([1,2,3,4]),np.array([1,1,0]))
             ]
     print(pad(batch))
