@@ -17,7 +17,7 @@ class KFoldDataLoader:
     """
     K Fold Data Loader
     """
-    def __init__(self,df,batch_size=128,k=5,nclass=17,max_len=70,label_smoothing=0,eda_alpha=0,n_aug=0):
+    def __init__(self,df,batch_size=128,k=5,nclass=17,max_len=70,label_smoothing=0,eda_alpha=0,n_aug=0,tf_idf=True,rm_high_words=True):
         """
         args:
             k - k Folder, default = 5
@@ -29,14 +29,15 @@ class KFoldDataLoader:
         self.lenght = len(df)
         self.a_fold_length = self.lenght//k
         self.fold_k = k
-        self.collect_fn = PadCollate(pad_idx = self.pad_idx)
+        self.rm_high_words = rm_high_words
+        self.collect_fn = PadCollate(pad_idx = self.pad_idx,rm_high_words=self.rm_high_words)
         self.nclass = nclass
         self.max_len = max_len
         self.batch_size = batch_size
         self.label_smoothing = label_smoothing
         self.eda_alpha = eda_alpha
         self.n_aug = n_aug
-
+        self.tf_idf = tf_idf
     def cal_token_number(self):
         """
         calculate number of tokens of reports in train dataset
@@ -65,10 +66,11 @@ class KFoldDataLoader:
             train_index += range(0,i*self.a_fold_length)
 
         train_df = self.df.iloc[train_index]
-        train_dataset = ReportDataset(train_df,nclass=self.nclass,max_len=self.max_len,label_smoothing=self.label_smoothing,eda_alpha=self.eda_alpha,n_aug=self.n_aug)
+        train_dataset = ReportDataset(train_df,nclass=self.nclass,max_len=self.max_len,label_smoothing=self.label_smoothing,\
+            eda_alpha=self.eda_alpha,n_aug=self.n_aug,tf_idf=self.tf_idf)
         train_dataloader = DataLoader(dataset=train_dataset,batch_size=self.batch_size,collate_fn=self.collect_fn)
         valid_df = self.df.iloc[valid_index]
-        valid_dataset = ReportDataset(valid_df,nclass=self.nclass,max_len=self.max_len,eda_alpha=0,n_aug=0)
+        valid_dataset = ReportDataset(valid_df,nclass=self.nclass,max_len=self.max_len,eda_alpha=0,n_aug=0,tf_idf=self.tf_idf)
         valid_dataloader = DataLoader(dataset=valid_dataset,batch_size=self.batch_size,collate_fn=self.collect_fn)
         return train_dataloader,valid_dataloader,train_dataset,valid_dataset
 

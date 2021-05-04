@@ -12,13 +12,15 @@ import pandas as pd
 from torch.utils.data import Dataset
 import numpy as np
 import torch
+import math
+from collections import Counter
 from utils.EDA import RandomDelete,RandomSwap
 
 class ReportDataset(Dataset):
     """
     Dataset of medical report
     """
-    def __init__(self,df,nclass=29,max_len=70,label_smoothing=0,eda_alpha=0.1,n_aug=2):
+    def __init__(self,df,nclass=29,max_len=70,label_smoothing=0,eda_alpha=0,n_aug=0,tf_idf=True):
         """
         create a dataset from dataFrame, ['id','report','label']
         args:
@@ -32,6 +34,7 @@ class ReportDataset(Dataset):
         self.label_smoothing = label_smoothing
         self.eda_alpha = eda_alpha
         self.n_aug = n_aug
+        self.tf_idf = tf_idf
         super(ReportDataset,self).__init__()
         # generate texts
         self.texts = df['report'].values
@@ -50,8 +53,36 @@ class ReportDataset(Dataset):
             "1 2 4" -> [1,2,4]
         """
         texts = []
+        if self.tf_idf:
+            dict_idf = {i:0 for i in range(858)}
+            for report_ in self.texts:
+                for key in dict_idf.keys():
+                    if str(key) in report_:
+                        dict_idf[key]+=1
         for text in self.texts:
-            texts.append(self.tokenizer(str(text)))
+            if self.tf_idf:
+                words = text.split()
+                sentence=[]
+                for word in words:
+                    sentence.append(int(word))
+                dict_sent = Counter(sentence)
+
+                for element in dict_sent.keys():
+                    dict_sent[element] = (dict_sent[element]/len(sentence))*math.log10(len(self.texts)/dict_idf[element])
+
+                dict_sent_new = sorted(dict_sent.items(), key=lambda x: x[1], reverse=True)
+                remove_report=[]
+                for index in range(len(dict_sent_new)):
+                    remove_report.append(dict_sent_new[index][0])
+                rm_words_num = int(len(words)*0.15)#Delete words based on the percentage of sentence length
+                remove_report = [str(i) for i in remove_report[-rm_words_num:]]# Remove the data with the last two digits of if-idf value
+                processed_report = []
+                for word in words:
+                    if word not in remove_report:
+                        processed_report.append(int(word))
+                texts.append(processed_report)
+            else:
+                texts.append(self.tokenizer(str(text)))
         self.texts = texts
 
     def easy_data_augmentation(self):
@@ -123,8 +154,8 @@ class ReportDataset(Dataset):
         split the sentence and map the tokens to word index
         """
         rep = [int(x) for x in text.split()]
-        #if len(rep) >self.max_len:
-        #    rep = rep[:self.max_len]
+        if len(rep) >self.max_len:
+            rep = rep[:self.max_len]
         return rep
 
 
@@ -156,9 +187,10 @@ def test():
     train_df = pd.read_csv(os.path.join(os.getenv('PROJTOP'),'tcdata/train.csv'),sep="\|,\|",names=["id","report","label"],index_col=0)
     data = ReportDataset(train_df)
     count = 0
-    for index in range(10):
+    for index in range(3):
         text,label = data[index]
         print('text: ',text)
+        print('text: ',type(text))
         print('label: ',label)
         print('')
 

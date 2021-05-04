@@ -10,7 +10,7 @@
 """
 import torch
 import math
-def pad_tensor(vec, pad, dim,pad_idx):
+def pad_tensor(vec, pad, dim,pad_idx,rm_high_words):
     """
     args:
         vec - tensor to pad
@@ -20,31 +20,32 @@ def pad_tensor(vec, pad, dim,pad_idx):
     return:
         a new tensor padded to 'pad' in dimension 'dim'
     """
-    #
-    remove_element = torch.tensor([693,328,380,698])
-    vec_new = torch.IntTensor([])
-    for element in vec:
-        if element not in remove_element:
-            element = element.unsqueeze(0)
-            vec_new = torch.cat((vec_new,element),0)
-    vec = vec_new
+    if rm_high_words :
+        remove_element = torch.tensor([693,328,380,698])
+        vec_new = torch.IntTensor([])
+        for element in vec:
+            if element not in remove_element:
+                element = element.unsqueeze(0)
+                vec_new = torch.cat((vec_new,element),0)
+        vec = vec_new
 
     pad_size = list(vec.shape)
     pad_size[dim] = pad - vec.shape[dim]
-    vec_pad_z = torch.Tensor()
-    '''
-    if math.ceil(pad/2) <= vec.shape[dim]:
-        #vec_pad = vec[0:pad_size[dim]]# Replenish information from front to back
-        vec_pad = vec[vec.shape[dim]*2-pad:pad]
-    else:
-        vec_pad_cat = vec
-        index = pad//vec.shape[dim]-1
-        for i in range(index):
-            vec_pad_cat = torch.cat([vec_pad_cat,vec])
-        vec = vec_pad_cat
-        pad_remain_size = pad%vec.shape[dim]
-        vec_pad = vec[0:pad_remain_size]
-    '''
+
+    change_padding_method = False
+    if change_padding_method:
+        if math.ceil(pad/2) <= vec.shape[dim]:
+            #vec_pad = vec[0:pad_size[dim]]# Replenish information from front to back
+            vec_pad = vec[vec.shape[dim]*2-pad:pad]
+        else:
+            vec_pad_cat = vec
+            index = pad//vec.shape[dim]-1
+            for i in range(index):
+                vec_pad_cat = torch.cat([vec_pad_cat,vec])
+            vec = vec_pad_cat
+            pad_remain_size = pad%vec.shape[dim]
+            vec_pad = vec[0:pad_remain_size]
+
     #return torch.cat([vec,vec_pad], dim=dim)
     return torch.cat([vec, pad_idx*torch.ones(*pad_size,dtype=torch.long)], dim=dim)
 
@@ -54,7 +55,7 @@ class PadCollate:
     a batch of sequences
     """
 
-    def __init__(self, dim=0,pad_idx = 858):
+    def __init__(self, dim=0,pad_idx = 858,rm_high_words=True):
         """
         args:
             dim - the dimension to be padded (dimension of time in sequences)
@@ -62,7 +63,7 @@ class PadCollate:
         """
         self.dim = dim
         self.pad_idx = pad_idx
-
+        self.rm_high_words = rm_high_words
     def pad_collate(self, batch):
         """
         args:
@@ -73,14 +74,14 @@ class PadCollate:
             ys - a LongTensor of all labels in batch
         """
         # find longest sequence
-        max_len = 100
-        #max_len = max(map(lambda x: x[0].shape[self.dim], batch))
+        #max_len = 100
+        max_len = max(map(lambda x: x[0].shape[self.dim], batch))
         # pad according to max_len
         new_batch = []
         for x,y in batch:
             x = torch.LongTensor(x)
             y = torch.LongTensor(y)
-            new_batch.append((pad_tensor(x, pad=max_len, dim=self.dim,pad_idx=self.pad_idx),y))
+            new_batch.append((pad_tensor(x, pad=max_len, dim=self.dim,pad_idx=self.pad_idx,rm_high_words=self.rm_high_words),y))
         batch = new_batch
         # stack all
         xs = torch.stack([x for (x,y) in batch])
