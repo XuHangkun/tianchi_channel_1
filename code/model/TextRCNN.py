@@ -23,14 +23,14 @@ class TextRCNNConfig(object):
     """配置参数"""
     def __init__(self, n_vocab=859,embedding=100,
             max_seq_len=100,num_class=29,dropout=0.5,lstm_layer=2,
-            hidden_size=256,lstm_dropout=0.1
+            hidden_size=256,lstm_dropout=0.1,padding_idx=0
             ):
         self.model_name = 'TextRCNN'
 
         self.dropout = dropout                                          # 随机失活
         self.num_classes = num_class                                    # 类别数
         self.n_vocab = n_vocab                                          # 词表大小，在运行时赋值
-        self.padding_idx = self.n_vocab - 1
+        self.padding_idx = padding_idx
         self.embedding = embedding
         self.hidden_size = hidden_size                                  # hidden size
         self.num_layers = lstm_layer                                    # lstm层数
@@ -54,7 +54,7 @@ class TextRCNNModel(nn.Module):
         self.padding_idx = config.padding_idx
         self.lstm_dropout = config.lstm_dropout
 
-        self.embed = nn.Embedding(config.n_vocab, config.embedding, padding_idx=config.n_vocab - 1)
+        self.embed = nn.Embedding(config.n_vocab, config.embedding, padding_idx=self.padding_idx)
         self.emb_dropout_layer = nn.Dropout(self.dropout)
         self.lstm = nn.LSTM(config.embedding, config.hidden_size, config.num_layers,
                             bidirectional=True, batch_first=True, dropout=self.lstm_dropout)

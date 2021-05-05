@@ -18,7 +18,7 @@ class ReportDataset(Dataset):
     """
     Dataset of medical report
     """
-    def __init__(self,df,nclass=29,max_len=70,label_smoothing=0,eda_alpha=0.1,n_aug=2,pretrain=False):
+    def __init__(self,df,tokenizer,nclass=29,max_len=70,label_smoothing=0,eda_alpha=0.1,n_aug=2,pretrain=False):
         """
         create a dataset from dataFrame, ['id','report','label']
         args:
@@ -29,6 +29,7 @@ class ReportDataset(Dataset):
         """
         self.max_len = max_len
         self.nclass = nclass
+        self.tokenizer = tokenizer
         self.label_smoothing = label_smoothing
         self.eda_alpha = eda_alpha
         self.n_aug = n_aug
@@ -106,32 +107,22 @@ class ReportDataset(Dataset):
                 label += ","
             label_area,label_ill = label.split(',')
             # label area
-            if label_area == '' or label_area == 'nan':
+            if label_area == '' or label_area == 'nan' or label_area == " ":
                 pass
             else:
-                label_area = self.tokenizer(label_area)
+                label_area = [int(x) for x in label_area.split()]
                 for index in label_area:
                     label_tensor[index] = 1.0
 
-            if label_ill == '' or label_ill == 'nan':
+            if label_ill == '' or label_ill == 'nan' or label_area == " ":
                 pass
             else:
-                label_ill = self.tokenizer(label_ill)
+                label_ill = [int(x) for x in label_ill.split()]
                 for index in label_ill:
                     label_tensor[index+17] = 1.0
             labels.append(label_tensor)
 
         self.labels = labels
-
-    def tokenizer(self,text):
-        """
-        split the sentence and map the tokens to word index
-        """
-        rep = [int(x) for x in text.split()]
-        #if len(rep) >self.max_len:
-        #    rep = rep[:self.max_len]
-        return rep
-
 
     def __len__(self):
         return len(self.labels)

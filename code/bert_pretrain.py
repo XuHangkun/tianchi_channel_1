@@ -50,10 +50,15 @@ def easy_data_augmentation(texts,eda_alpha=0.1,n_aug=4):
 parser = argparse.ArgumentParser(description="Bert Pretrain")
 parser.add_argument('-epoch',type=int,default=100,help="epoch")
 parser.add_argument('-hidden_size',type=int,default=768,help="hidden size")
-parser.add_argument('-batch_size',type=int,default=128,help="epoch")
+parser.add_argument('-lr',type=float,default=7.e-4,help="hidden size")
+parser.add_argument('-eda_alpha',type=float,default=0.15,help="hidden size")
+parser.add_argument('-n_aug',type=float,default=4.0,help="hidden size")
+parser.add_argument('-batch_size',type=int,default=1024,help="epoch")
 parser.add_argument('-corpus_dir',default=os.path.join(os.getenv('PROJTOP'),'tcdata'),help="dir of corpus")
+parser.add_argument('-corpus_file',nargs="+",default=["track1_round1_train_20210222.csv","track1_round1_testA_20210222.csv","track1_round1_testB.csv","train.csv"],help="file of corpus")
 parser.add_argument('-out_dir',default=os.path.join(os.getenv('PROJTOP'),'user_data/bert'),help="out dir of tokenizer and pretrained model")
 parser.add_argument('-not_do_eda',action="store_true",help="out dir of tokenizer and pretrained model")
+parser.add_argument('-pre_train_path',default=os.path.join(os.getenv('PROJTOP'),"user_data/bert"),help="path of pretrained BERT")
 args = parser.parse_args()
 print(args)
 
@@ -61,14 +66,12 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 # Generate the corpus
 # Read train.csv and save the report
-reports_path = os.path.join(os.getenv('PROJTOP'),'user_data/bert/reports.txt')
-corpus_input = ["track1_round1_train_20210222.csv","track1_round1_testA_20210222.csv","track1_round1_testB.csv","train.csv"]
-corpus_input_tag = [0,1,1,0]
+reports_path = os.path.join(args.out_dir,'reports.txt')
 all_reports = []
-for corpus_file,tag in zip(corpus_input,corpus_input_tag):
-    if tag:
+for corpus_file in args.corpus_file:
+    if "test" in corpus_file :
         train_df = pd.read_csv(os.path.join(args.corpus_dir,corpus_file),sep="\|,\|",names=["id","report"],index_col=0)
-    else:
+    elif "train" in corpus_file:
         train_df = pd.read_csv(os.path.join(args.corpus_dir,corpus_file),sep="\|,\|",names=["id","report","label"],index_col=0)
 
     for i in range(len(train_df)):
@@ -78,7 +81,7 @@ for corpus_file,tag in zip(corpus_input,corpus_input_tag):
 if args.not_do_eda:
     pass
 else:
-    all_reports = easy_data_augmentation(all_reports)
+    all_reports = easy_data_augmentation(all_reports,args.eda_alpha,args.n_aug)
 
 # write the data
 reports_f = open(reports_path,"w")
@@ -111,7 +114,7 @@ from transformers import LineByLineTextDataset
 dataset = LineByLineTextDataset(
     tokenizer=tokenizer,
     file_path=reports_path,
-    block_size=128,
+    block_size=args.batch_size
 )
 
 from transformers import DataCollatorForLanguageModeling
@@ -120,6 +123,7 @@ data_collator = DataCollatorForLanguageModeling(
 )
 
 from transformers import RobertaConfig,RobertaForMaskedLM
+from transformers import AutoConfig,AutoModel
 
 config = RobertaConfig(
     vocab_size=vocab_size,
@@ -128,9 +132,16 @@ config = RobertaConfig(
     num_attention_heads=12,
     num_hidden_layers=6,
     type_vocab_size=1,
-    pad_token_id=tokenizer.vocab["<pad>"]
+    pad_token_id=tokenizer.vocab["<pad>"],
+    bos_token_id=tokenizer.vocab["<s>"],
+    eos_token_id=tokenizer.vocab["</s>"]
 )
-model = RobertaForMaskedLM(config=config).to(device)
+
+if args.pre_train_path:
+    model = RobertaForMaskedLM.from_pretrained(args.pre_train_path).to(device)
+else:
+    model = RobertaForMaskedLM(config=config).to(device)
+print(model)
 
 from transformers import Trainer, TrainingArguments
 #counts = 1
@@ -139,8 +150,9 @@ training_args = TrainingArguments(
     overwrite_output_dir=True,
     num_train_epochs=args.epoch,
     per_device_train_batch_size=args.batch_size,
-    save_steps=5600,
-    save_total_limit=30,
+    learning_rate=args.lr,
+    save_steps=1000,
+    save_total_limit=10,
     prediction_loss_only=True,
 )
 

@@ -28,9 +28,10 @@ from model.TextRCNN import TextRCNNConfig,TextRCNNModel
 from model.TextMRCNN import TextMRCNNConfig,TextMRCNNModel
 from model.TextRNN_Att import TextRNNAttConfig,TextRNNAttModel
 from model.transformer import TransformerConfig,TransformerModel
-#from model.bert import BERTConfig,BERTModel
-from model.bert_textrcnn import BERTConfig,BERTModel
+from model.bert import BERTConfig,BERTModel
+#from model.bert_textrcnn import BERTConfig,BERTModel
 from transformers import RobertaTokenizerFast
+from utils.tokenizer import Tokenizer
 import torch.optim as optim
 import torch.nn.functional as F
 import warnings
@@ -341,19 +342,21 @@ def main():
                                 tokenizer = tokenizer,
                                 batch_size = opt.batch_size,
                                 k = opt.fold_k,
-                                nclass = opt.nclass,
+                                nclass = 29,
                                 max_len = opt.max_len,
                                 label_smoothing = opt.label_smoothing,
                                 eda_alpha = opt.eda_alpha,
-                                n_aug = opt.n_aug,
-                                pretrain = opt.is_pretrain
+                                n_aug = opt.n_aug
                                 )
         opt.pad_token = tokenizer.vocab["<pad>"]
         opt.ntokens = len(tokenizer.vocab)
     else:
         from utils.kFoldData import KFoldDataLoader
+        tokenizer = Tokenizer()
+        tokenizer.load(opt.tokenizer_path)
         k_fold_data_loader = KFoldDataLoader(
                                 df=train_df,
+                                tokenizer = tokenizer,
                                 batch_size = opt.batch_size,
                                 k = opt.fold_k,
                                 nclass = 29,
@@ -363,8 +366,8 @@ def main():
                                 n_aug = opt.n_aug,
                                 pretrain = opt.is_pretrain
                                 )
+        opt.ntokens = tokenizer.vocab_num()
         opt.pad_token = k_fold_data_loader.pad_idx
-        opt.ntokens = k_fold_data_loader.pad_idx + 1
     print("Finish getting data ~ v ~")
 
     # create the log file to save training performance

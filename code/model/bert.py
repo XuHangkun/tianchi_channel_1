@@ -54,14 +54,35 @@ class BERTModel(nn.Module):
         attention_mask = x.attention_mask
         output = self.bert(input_ids=input_ids,attention_mask=attention_mask)
         output = output.pooler_output
-        print(output)
+        #print(output)
         return self.feed_forward(output)
 
 def test():
     import numpy as np
-    input = torch.LongTensor([range(4),range(4)])
-    print(input)
-    config = BERTConfig()
+    import random
+    seed=7
+    torch.manual_seed(seed)
+    torch.backends.cudnn.benchmark = False
+    np.random.seed(seed)
+    random.seed(seed)
+
+    from transformers import RobertaTokenizerFast
+    from tokenizers import ByteLevelBPETokenizer
+    tokenizer = RobertaTokenizerFast.from_pretrained(os.path.join(os.getenv('PROJTOP'),'user_data/new_bert_768_eda'), max_len=100)
+    tokens = [str(i) for i in range(857,-1,-1)]
+    tokenizer.add_tokens(tokens)
+    #print(tokenizer.vocab)
+    vocab_size = len(tokenizer.vocab)
+    print("<pad>:%d,<mask>:%d,<s>:%d,</s>:%d,<unk>:%d"%(tokenizer.vocab["<pad>"],
+        tokenizer.vocab["<mask>"],
+        tokenizer.vocab["<s>"],
+        tokenizer.vocab["</s>"],
+        tokenizer.vocab["<unk>"]))
+    print("total tokens: %d"%(vocab_size))
+
+    input = tokenizer("1 2 4 5 6 7", return_tensors="pt")
+    #print(input)
+    config = BERTConfig(pre_train_path=os.path.join(os.getenv('PROJTOP'),'user_data/new_bert_768_eda/checkpoint-18000'))
     model = BERTModel(config)
     output = model(input)
     print(output)

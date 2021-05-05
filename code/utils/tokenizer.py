@@ -15,25 +15,30 @@ import pickle
 
 class Tokenizer:
 
-    def __init__(self,df,max_seq_len=100,high_freq_n=4,mul_words_num=800):
-        self.df = df
-        self.max_seq_len = max_seq_len
+    def __init__(self,high_freq_n=4,mul_words_num=800):
         self.mul_words_num = mul_words_num
         self.high_freq_n = high_freq_n
         self.high_freq_words = []
         self.word2index = {}
         self.index2word = []
 
-    def initialize(self):
+    def initialize(self,df):
+        self.df = df
         print("initialize the vocab")
         self.high_freq_words = self.find_high_freq_word(self.high_freq_n)
         self.word2index = {"<pad>":0}
         self.index2word = ["pad"]
         self.make_vocab(self.mul_words_num)
 
+    def padding_idx(self):
+        return self.word2index["<pad>"]
+
+    def vocab_num(self):
+        return len(self.index2word)
+
     def save(self,filename):
         p_file = open(filename,"wb")
-        all_info = {"max_seq_len":self.max_seq_len,
+        all_info = {
                 "high_freq_n":self.high_freq_n,
                 "mul_words_num":self.mul_words_num,
                 "high_freq_words":self.high_freq_words,
@@ -44,9 +49,8 @@ class Tokenizer:
         p_file.close()
 
     def load(self,filename):
-        p_file = open(filename,"wb")
+        p_file = open(filename,"rb")
         all_info = pickle.load(p_file)
-        self.max_seq_len = all_info["max_seq_len"]
         self.mul_words_num = all_info["mul_words_num"]
         self.high_freq_n = all_info["high_freq_n"]
         self.high_freq_words = all_info["high_freq_words"]
@@ -75,16 +79,15 @@ class Tokenizer:
         for report in self.df["report"]:
             tmp = []
             report = self.del_high_freq_words(report).split()
-            for i in range(len(report) - 1):
-                tmp.append("%s %s"%(report[i],report[i+1]))
-            mul_word_counter += Counter(tmp)
-            tmp = []
-            for i in range(len(report) - 2):
-                tmp.append("%s %s %s"%(report[i],report[i+1],report[i+1]))
-            mul_word_counter += Counter(tmp)
-            tmp = []
-            for i in range(len(report) - 3):
-                tmp.append("%s %s %s %s"%(report[i],report[i+1],report[i+2],report[i+3]))
+            i = 0
+            while i < len(report):
+                if i < (len(report) - 1):
+                    tmp.append("%s %s"%(report[i],report[i+1]))
+                if i < (len(report) - 2):
+                    tmp.append("%s %s %s"%(report[i],report[i+1],report[i+1]))
+                if i < (len(report) - 3):
+                    tmp.append("%s %s %s %s"%(report[i],report[i+1],report[i+2],report[i+3]))
+                i += 1
             mul_word_counter += Counter(tmp)
 
         for item in mul_word_counter.most_common(mul_words_num):
@@ -128,8 +131,8 @@ class Tokenizer:
 def test():
     import os
     train_df = pd.read_csv(os.path.join(os.getenv('PROJTOP'),'tcdata/train.csv'),sep="\|,\|",names=["id","report","label"],index_col=0)
-    tokens = Tokenizer(train_df)
-    tokens.initialize()
+    tokens = Tokenizer()
+    tokens.initialize(train_df)
     print(tokens.high_freq_words)
     print(tokens.index2word)
     print(tokens.word2index)
