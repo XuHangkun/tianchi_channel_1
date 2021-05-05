@@ -17,7 +17,7 @@ class KFoldDataLoader:
     """
     K Fold Data Loader
     """
-    def __init__(self,df,batch_size=128,k=5,nclass=17,max_len=70,label_smoothing=0,eda_alpha=0,n_aug=0,tf_idf=True,rm_high_words=True):
+    def __init__(self,df,batch_size=128,k=5,nclass=17,max_len=70,label_smoothing=0,eda_alpha=0,n_aug=0,tf_idf=True,tf_idf_cut=0.006,rm_high_words=True):
         """
         args:
             k - k Folder, default = 5
@@ -38,6 +38,7 @@ class KFoldDataLoader:
         self.eda_alpha = eda_alpha
         self.n_aug = n_aug
         self.tf_idf = tf_idf
+        self.tf_idf_cut = tf_idf_cut
     def cal_token_number(self):
         """
         calculate number of tokens of reports in train dataset
@@ -67,10 +68,10 @@ class KFoldDataLoader:
 
         train_df = self.df.iloc[train_index]
         train_dataset = ReportDataset(train_df,nclass=self.nclass,max_len=self.max_len,label_smoothing=self.label_smoothing,\
-            eda_alpha=self.eda_alpha,n_aug=self.n_aug,tf_idf=self.tf_idf)
+            eda_alpha=self.eda_alpha,n_aug=self.n_aug,tf_idf=self.tf_idf,tf_idf_cut=self.tf_idf_cut)
         train_dataloader = DataLoader(dataset=train_dataset,batch_size=self.batch_size,collate_fn=self.collect_fn)
         valid_df = self.df.iloc[valid_index]
-        valid_dataset = ReportDataset(valid_df,nclass=self.nclass,max_len=self.max_len,eda_alpha=0,n_aug=0,tf_idf=self.tf_idf)
+        valid_dataset = ReportDataset(valid_df,nclass=self.nclass,max_len=self.max_len,eda_alpha=0,n_aug=0,tf_idf=self.tf_idf,tf_idf_cut=self.tf_idf_cut)
         valid_dataloader = DataLoader(dataset=valid_dataset,batch_size=self.batch_size,collate_fn=self.collect_fn)
         return train_dataloader,valid_dataloader,train_dataset,valid_dataset
 

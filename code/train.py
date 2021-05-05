@@ -28,8 +28,8 @@ from model.TextRCNN import TextRCNNConfig,TextRCNNModel
 from model.TextMRCNN import TextMRCNNConfig,TextMRCNNModel
 from model.TextRNN_Att import TextRNNAttConfig,TextRNNAttModel
 from model.transformer import TransformerConfig,TransformerModel
-#from model.bert import BERTConfig,BERTModel
-from model.bert_textrcnn import BERTConfig,BERTModel
+from model.bert import BERTConfig,BERTModel
+#from model.bert_textrcnn import BERTConfig,BERTModel
 from transformers import RobertaTokenizerFast
 import torch.optim as optim
 import torch.nn.functional as F
@@ -77,7 +77,7 @@ def train_epoch(model, training_data, optimizer, opt, device,scheduler=None):
         losses.append(loss.item())
         acces.append(acc)
 
-    # print(losses)
+    #print(losses)
     loss_per_seq = sum(losses)/len(losses)
     acc_per_seq = sum(acces)/len(acces)
     return loss_per_seq,acc_per_seq
@@ -257,6 +257,9 @@ def main():
     # data enhancement, not do this defaultly
     parser.add_argument('-eda_alpha',type=float,default=0.0,help="alpha of eda")
     parser.add_argument('-n_aug',type=float,default=0.0,help="n of aug")
+    parser.add_argument('-tf_idf',action='store_true',help="use tf_idf mechanism to delete redundant words")
+    parser.add_argument('-tf_idf_cut',type=float,default=0.006,help="cut value in tf_idf method")
+    parser.add_argument('-rm_high_words',action='store_true',help="Remove the words with the highest evaluation rate in the text")
 
     # parameters of optimizer
     parser.add_argument('-lr', type=float, default=1.e-3,help="learning rate, advice: 1.e-5 for bert and 1.e-3 for others")
@@ -326,7 +329,10 @@ def main():
                                 max_len = opt.max_len,
                                 label_smoothing = opt.label_smoothing,
                                 eda_alpha = opt.eda_alpha,
-                                n_aug = opt.n_aug
+                                n_aug = opt.n_aug,
+                                tf_idf = opt.tf_idf,
+                                rm_high_words = opt.rm_high_words,
+                                tf_idf_cut=opt.tf_idf_cut
                                 )
         opt.pad_token = tokenizer.vocab["<pad>"]
         opt.ntokens = len(tokenizer.vocab)
@@ -340,7 +346,10 @@ def main():
                                 max_len = opt.max_len,
                                 label_smoothing = opt.label_smoothing,
                                 eda_alpha = opt.eda_alpha,
-                                n_aug = opt.n_aug
+                                n_aug = opt.n_aug,
+                                tf_idf = opt.tf_idf,
+                                rm_high_words = opt.rm_high_words,
+                                tf_idf_cut=opt.tf_idf_cut
                                 )
         opt.pad_token = k_fold_data_loader.pad_idx
         opt.ntokens = k_fold_data_loader.pad_idx + 1

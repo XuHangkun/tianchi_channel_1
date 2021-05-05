@@ -20,7 +20,7 @@ class ReportDataset(Dataset):
     """
     Dataset of medical report
     """
-    def __init__(self,df,nclass=29,max_len=70,label_smoothing=0,eda_alpha=0,n_aug=0,tf_idf=True):
+    def __init__(self,df,nclass=29,max_len=70,label_smoothing=0,eda_alpha=0,n_aug=0,tf_idf=True,tf_idf_cut=0.006):
         """
         create a dataset from dataFrame, ['id','report','label']
         args:
@@ -35,6 +35,7 @@ class ReportDataset(Dataset):
         self.eda_alpha = eda_alpha
         self.n_aug = n_aug
         self.tf_idf = tf_idf
+        self.tf_idf_cut = tf_idf_cut
         super(ReportDataset,self).__init__()
         # generate texts
         self.texts = df['report'].values
@@ -57,7 +58,7 @@ class ReportDataset(Dataset):
             dict_idf = {i:0 for i in range(858)}
             for report_ in self.texts:
                 for key in dict_idf.keys():
-                    if str(key) in report_:
+                    if str(key) in report_.split():
                         dict_idf[key]+=1
         for text in self.texts:
             if self.tf_idf:
@@ -72,10 +73,17 @@ class ReportDataset(Dataset):
 
                 dict_sent_new = sorted(dict_sent.items(), key=lambda x: x[1], reverse=True)
                 remove_report=[]
+                '''
                 for index in range(len(dict_sent_new)):
                     remove_report.append(dict_sent_new[index][0])
-                rm_words_num = int(len(words)*0.15)#Delete words based on the percentage of sentence length
+                rm_words_num = int(len(words)*0.05)#Delete words based on the percentage of sentence length
                 remove_report = [str(i) for i in remove_report[-rm_words_num:]]# Remove the data with the last two digits of if-idf value
+                '''
+#########################################
+                for key,value in dict_sent.items():
+                    if value<self.tf_idf_cut:
+                        remove_report.append(str(key))
+#########################################
                 processed_report = []
                 for word in words:
                     if word not in remove_report:
