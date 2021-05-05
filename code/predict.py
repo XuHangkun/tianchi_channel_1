@@ -70,6 +70,7 @@ def load_model(opt,device):
             model_config.padding_idx = model_setting.pad_token
             m_model = TransformerModel(model_config).to(device)
         elif  "BERT" in opt.models[index]:
+            model_setting.bert_path = opt.bert_pretrain_path
             model_config = BERTConfig(num_class = model_setting.nclass,pre_train_path=model_setting.bert_path,dropout=model_setting.dropout)
             m_model = BERTModel(model_config).to(device)
         else:
@@ -95,7 +96,10 @@ def main():
     parser.add_argument('-model_path', type = str,
                         default=os.path.join(os.getenv('PROJTOP'),'user_data/model_data'),
                         help='Path to model weight file')
-    parser.add_argument('-tokenizer_path',default=os.path.join(os.getenv('PROJTOP'),"user_data/bert"),help="path of tokenizer")
+    parser.add_argument('-bert_pretrain_path', type = str,
+                        default=os.path.join(os.getenv('PROJTOP'),'user_data/bert'),
+                        help='bert pretrain path')
+    parser.add_argument('-tokenizer_path',type=str,default=os.path.join(os.getenv('PROJTOP'),"user_data/bert"),help="path of tokenizer")
     parser.add_argument('-input', type=str,
         default=os.path.join(os.getenv('PROJTOP'),'tcdata/testA.csv'),help="path for test.csv")
     parser.add_argument('-output', type = str,
@@ -105,6 +109,16 @@ def main():
 
     opt = parser.parse_args()
     print(opt)
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+
+    contain_bert=False
+    for model_name in opt.models:
+        if "BERT" in model_name:
+            contain_bert = True
+            break
+    if contain_bert:
+        # tokenizer for bert model
+        tokenizer = RobertaTokenizerFast.from_pretrained(opt.tokenizer_path, max_len=100)
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
     contain_bert=False

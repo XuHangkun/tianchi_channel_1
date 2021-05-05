@@ -53,14 +53,14 @@ class BERTModel(nn.Module):
         input_ids = x.input_ids
         attention_mask = x.attention_mask
         output = self.bert(input_ids=input_ids,attention_mask=attention_mask)
-        output = output.pooler_output
-        #print(output)
+        output = output.last_hidden_state[:,0,:]
+        # output = output.pooler_output
         return self.feed_forward(output)
 
 def test():
     import numpy as np
     import random
-    seed=7
+    seed=17
     torch.manual_seed(seed)
     torch.backends.cudnn.benchmark = False
     np.random.seed(seed)

@@ -15,7 +15,7 @@ class DPCNNConfig(object):
         self.padding_idx = n_vocab - 1
         self.num_classes = num_class                                    # 类别数
         self.embedding = embedding                                      # dim of embedding
-        self.num_filters = 250                                          # 卷积核数量(channels数)
+        self.num_filters = 512                                          # 卷积核数量(channels数)
         self.max_seq_len = max_seq_len
 
 class DPCNNModel(nn.Module):
@@ -38,8 +38,6 @@ class DPCNNModel(nn.Module):
         self.padding2 = nn.ZeroPad2d((0, 0, 0, 1))  # bottom
         self.relu = nn.ReLU()
         self.feed_forward = nn.Sequential(
-            nn.Dropout(self.dropout),
-            nn.Linear(config.num_filters, config.num_filters),
             nn.Dropout(self.dropout),
             nn.ReLU(),
             nn.Linear(config.num_filters, config.num_classes),
