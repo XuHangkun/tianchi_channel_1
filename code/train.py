@@ -454,7 +454,7 @@ def main():
 
         # train the model
         print("Start training...")
-        train_losses,train_accs,valid_losses,valid_accs = train(m_model, train_iterator, val_iterator, optimizer, device, opt,scheduler=lr_scheduler)
+        train_losses,train_accs,valid_losses,valid_accs = train(m_model, train_iterator, val_iterator, optimizer, device, opt)#,scheduler=lr_scheduler)
         train_info["{}th_fold_train_loss".format(k_index)] = train_losses
         train_info["{}th_fold_train_acc".format(k_index)] = train_accs
         train_info["{}th_fold_valid_loss".format(k_index)] = valid_losses
