@@ -60,7 +60,7 @@ class BERTModel(nn.Module):
 def test():
     import numpy as np
     import random
-    seed=17
+    seed=7
     torch.manual_seed(seed)
     torch.backends.cudnn.benchmark = False
     np.random.seed(seed)
@@ -80,10 +80,16 @@ def test():
         tokenizer.vocab["<unk>"]))
     print("total tokens: %d"%(vocab_size))
 
-    input = tokenizer("1 2 4 5 6 7", return_tensors="pt")
+    input = tokenizer(["623 355 582 617 265 162 498 289 169 137 405 693 399 842 698 335 266 14 177 415 381 693 48 328 461 478 439 473 851 636 739 374 698 494 504 656 575 754 421 421 791 200 103 718 569"],padding=True,truncation=True,return_tensors="pt")
+    print(input)
     #print(input)
     config = BERTConfig(pre_train_path=os.path.join(os.getenv('PROJTOP'),'user_data/new_bert_768_eda/checkpoint-18000'))
     model = BERTModel(config)
+    model_weight_path = os.path.join(os.getenv('PROJTOP'),'user_data/model_data/Bert_new/BERT_fold1.chkpt')
+    checkpoint = torch.load(model_weight_path)
+    model_setting = checkpoint["settings"]
+    model.load_state_dict(checkpoint['model'])
+    model.eval()
     output = model(input)
     print(output)
 

@@ -102,6 +102,7 @@ def eval_epoch(model, validation_data, opt,device):
 
         # predict and calculate the loss, accuracy
         pred = model(report)    #prediction, we do not use mask now!
+        print(pred)
         if opt.model_task == 0:
             loss = 0.6*F.binary_cross_entropy(pred[:,:17],label[:,:17]) +  0.4*F.binary_cross_entropy(pred[:,17:],label[:,17:])
         elif opt.model_task == 1:

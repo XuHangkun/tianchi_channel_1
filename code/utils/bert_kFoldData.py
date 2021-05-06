@@ -24,7 +24,7 @@ class KFoldDataLoader:
             df - dataFrame, should have three column ['id','report','label']
         """
         self.df = df
-        self.df = self.df.sample(frac=1).reset_index(drop=True)
+        #self.df = self.df.sample(frac=1).reset_index(drop=True)
         self.tokenizer = tokenizer
         self.lenght = len(df)
         self.a_fold_length = self.lenght//k

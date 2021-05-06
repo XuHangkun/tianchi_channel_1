@@ -70,7 +70,7 @@ python ./code/predict.py -input ./tcdata/testA.csv \
 -models Bert_new/BERT_fold1 Bert_new/BERT_fold2 \
 Bert_new/BERT_fold3 Bert_new/BERT_fold4 Bert_new/BERT_fold5 \
 -model_path ./user_data/model_data \
--tokenizer_path ./user_data/bert \
+-bert_tokenizer_dir ./user_data/bert \
 -output ./user_data/tmp_data/result_bert.csv
 
 

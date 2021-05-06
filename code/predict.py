@@ -24,6 +24,7 @@ from model.transformer import TransformerConfig,TransformerModel
 from model.bert import BERTConfig,BERTModel
 from utils.bert_kFoldData import KFoldDataLoader
 from transformers import RobertaTokenizerFast
+from utils.tokenizer import Tokenizer
 
 def load_model(opt,device):
     m_models = []
@@ -99,7 +100,8 @@ def main():
     parser.add_argument('-bert_pretrain_path', type = str,
                         default=os.path.join(os.getenv('PROJTOP'),'user_data/bert'),
                         help='bert pretrain path')
-    parser.add_argument('-tokenizer_path',type=str,default=os.path.join(os.getenv('PROJTOP'),"user_data/bert"),help="path of tokenizer")
+    parser.add_argument('-bert_tokenizer_dir',type=str,default=os.path.join(os.getenv('PROJTOP'),"user_data/bert"),help="path of tokenizer")
+    parser.add_argument('-tokenizer_file',type=str,default=os.path.join(os.getenv('PROJTOP'),"user_data/tokenizer/tokenizer.pkl"),help="path of tokenizer")
     parser.add_argument('-input', type=str,
         default=os.path.join(os.getenv('PROJTOP'),'tcdata/testA.csv'),help="path for test.csv")
     parser.add_argument('-output', type = str,
@@ -116,23 +118,16 @@ def main():
         if "BERT" in model_name:
             contain_bert = True
             break
-    if contain_bert:
-        # tokenizer for bert model
-        tokenizer = RobertaTokenizerFast.from_pretrained(opt.tokenizer_path, max_len=100)
-    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-    contain_bert=False
-    for model_name in opt.models:
-        if "BERT" in model_name:
-            contain_bert = True
-            break
     if contain_bert:
         # tokenizer for bert model
-        tokenizer = RobertaTokenizerFast.from_pretrained(opt.tokenizer_path, max_len=100)
+        bert_tokenizer = RobertaTokenizerFast.from_pretrained(opt.bert_tokenizer_dir, max_len=100)
         tokens = [str(i) for i in range(857,-1,-1)]
-        tokenizer.add_tokens(tokens)
-    else:
-        tokenizer = None
+        bert_tokenizer.add_tokens(tokens)
+
+    tokenizer = None
+    tokenizer = Tokenizer()
+    tokenizer.load(opt.tokenizer_file)
 
     # load model
     models = load_model(opt,device)
@@ -157,14 +152,10 @@ def main():
 
             if "BERT" in model_name:
                 report = [data["report"][index]]
-                report = tokenizer(report,padding=True, truncation=True, return_tensors="pt")
+                report = bert_tokenizer(report,padding=True, truncation=True, return_tensors="pt")
                 report.to(device)
             else:
-                report = [model.padding_idx for x in range(model.max_seq_len)]
-                for word_index,word in enumerate((data["report"][index]).split()):
-                    if word_index >= model.max_seq_len:
-                        break
-                    report[word_index] = int(word)
+                report = tokenizer(data["report"][index])
                 report = torch.LongTensor([report]).to(device)
 
             pred = model(report).squeeze()  # shape [17,1] --> [5]
