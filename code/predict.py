@@ -48,7 +48,7 @@ def load_model(opt,device):
                     embedding=model_setting.nemb,max_seq_len=model_setting.max_len,
                     num_class=model_setting.nclass,dropout=model_setting.dropout,
                     lstm_layer=model_setting.lstm_layer,hidden_size=model_setting.hidden_size,
-                    lstm_dropout=model_setting.lstm_dropout
+                    lstm_dropout=model_setting.lstm_dropout,high_level_size=model_setting.high_level_size
                     )
             model_config.padding_idx = model_setting.pad_token
             m_model = TextRCNNModel(model_config).to(device)
