@@ -25,6 +25,7 @@ from model.textCNN import TextCNNModel,TextCNNConfig
 from model.DPCNN import DPCNNConfig,DPCNNModel
 from model.TextRNN import TextRNNConfig,TextRNNModel
 from model.TextRCNN import TextRCNNConfig,TextRCNNModel
+from model.BiLSTMAtt import BiLSTMAttConfig,BiLSTMAttModel
 from model.TextMRCNN import TextMRCNNConfig,TextMRCNNModel
 from model.TextRNN_Att import TextRNNAttConfig,TextRNNAttModel
 from model.transformer import TransformerConfig,TransformerModel
@@ -102,7 +103,6 @@ def eval_epoch(model, validation_data, opt,device):
 
         # predict and calculate the loss, accuracy
         pred = model(report)    #prediction, we do not use mask now!
-        print(pred)
         if opt.model_task == 0:
             loss = 0.6*F.binary_cross_entropy(pred[:,:17],label[:,:17]) +  0.4*F.binary_cross_entropy(pred[:,17:],label[:,17:])
         elif opt.model_task == 1:
@@ -206,7 +206,8 @@ def load_model(opt,device):
             model_config = TextRCNNConfig(n_vocab=opt.ntokens,embedding=opt.nemb,
                     max_seq_len=opt.max_len,num_class=opt.nclass,
                     dropout=opt.dropout,lstm_layer=opt.lstm_layer,
-                    hidden_size=opt.hidden_size,lstm_dropout=opt.lstm_dropout
+                    hidden_size=opt.hidden_size,lstm_dropout=opt.lstm_dropout,
+                    high_level_size=opt.high_level_size
                     )
             model_config.padding_idx = opt.pad_token
             m_model = TextRCNNModel(model_config).to(device)
@@ -215,9 +216,28 @@ def load_model(opt,device):
                     embedding=model_setting.nemb,max_seq_len=model_setting.max_len,
                     num_class=model_setting.nclass,dropout=model_setting.dropout,
                     lstm_layer=model_setting.lstm_layer,hidden_size=model_setting.hidden_size,
-                    lstm_dropout=model_setting.lstm_dropout
+                    lstm_dropout=model_setting.lstm_dropout,high_level_size=model_setting.high_level_size
                     )
             m_model = TextRCNNModel(model_config).to(device)
+            m_model.load_state_dict(checkpoint['model'])
+            print("Use Pre-trained TextRCNN")
+    elif "BiLSTMAtt" in opt.model:
+        if not opt.model_path:
+            model_config = BiLSTMAttConfig(n_vocab=opt.ntokens,embedding=opt.nemb,
+                    max_seq_len=opt.max_len,num_class=opt.nclass,
+                    dropout=opt.dropout,lstm_layer=opt.lstm_layer,
+                    hidden_size=opt.hidden_size,lstm_dropout=opt.lstm_dropout
+                    )
+            model_config.padding_idx = opt.pad_token
+            m_model = BiLSTMAttModel(model_config).to(device)
+        else:
+            model_config = BiLSTMAttConfig(n_vocab=model_setting.ntokens,
+                    embedding=model_setting.nemb,max_seq_len=model_setting.max_len,
+                    num_class=model_setting.nclass,dropout=model_setting.dropout,
+                    lstm_layer=model_setting.lstm_layer,hidden_size=model_setting.hidden_size,
+                    lstm_dropout=model_setting.lstm_dropout
+                    )
+            m_model = BiLSTMAttModel(model_config).to(device)
             m_model.load_state_dict(checkpoint['model'])
             print("Use Pre-trained TextRCNN")
 
@@ -237,7 +257,9 @@ def load_model(opt,device):
     elif  "BERT" in opt.model:
         model_config = BERTConfig(num_class = opt.nclass,dropout=opt.dropout,
             frazing_encode=opt.frazing_bert_encode,pre_train_path=opt.bert_path)
-        m_model = BERTModel(model_config).to(device)
+        m_model = BERTModel(model_config)
+        m_model.reinit_bert(opt.bert_reinit_nlayer)
+        m_model.to(device)
     else:
         # default TextCNN
         model_config = TextCNNConfig(n_vocab=opt.ntokens,embedding=opt.nemb,num_class=opt.nclass,max_seq_len=opt.max_len,dropout=opt.dropout)
@@ -268,9 +290,11 @@ def main():
     parser.add_argument('-lstm_dropout', type=float, default=0.1,help="dropout rate of lstm layer")
     parser.add_argument('-nclass', type=int, default=29,help="number of class")
     parser.add_argument('-dropout', type=float, default=0.5,help="dropout rate of end layer")
+    parser.add_argument('-high_level_size', type=int, default=100,help="high level size")
     parser.add_argument('-lstm_layer', type=int, default=2,help="number of lstm layer")
     parser.add_argument('-frazing_bert_encode',action="store_true", help="frazing bert encode when train")
     parser.add_argument('-bert_path',default=os.path.join(os.getenv('PROJTOP'),"user_data/bert"),help="path of pretrained BERT")
+    parser.add_argument('-bert_reinit_nlayer',default=1,type=int,help="reinit layer of bert")
     parser.add_argument('-tokenizer_path',default=os.path.join(os.getenv('PROJTOP'),"user_data/bert"),help="path of tokenizer")
     parser.add_argument('-model_path', type = str, default = None,help='Path to model weight file')
     parser.add_argument('-is_pretrain', action="store_true" , help='Path to model weight file')

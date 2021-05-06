@@ -4,6 +4,7 @@ import torch.nn.functional as F
 import numpy as np
 import copy
 import os
+import torch.nn.init as init
 from transformers import BertModel, BertConfig
 from transformers import AutoConfig,AutoModel
 
@@ -39,6 +40,16 @@ class BERTModel(nn.Module):
             nn.Sigmoid()
         )
 
+
+    def reinit_bert(self,n=1):
+        num_layers = len(self.bert.encoder.layer)
+        parlist = []
+        for i in range(num_layers,num_layers-n,-1):
+            parlist.append(self.bert.encoder.layer[5].attention.self.query.weight.data),
+            parlist.append(self.bert.encoder.layer[5].attention.self.query.bias.data),
+        for data in parlist:
+            init.normal_(data)
+
     def complete_short_sentence(self,x):
         device = x.device
         if x.size(1) > self.max_seq_len:
@@ -55,7 +66,21 @@ class BERTModel(nn.Module):
         output = self.bert(input_ids=input_ids,attention_mask=attention_mask)
         output = output.last_hidden_state[:,0,:]
         # output = output.pooler_output
+
         return self.feed_forward(output)
+
+
+    def use_pretrain_word2vec(self,word2vec_model):
+        """
+        use pretrain model to init the weight in Embedding layer
+        """
+        assert word2vec_model["word_size"] == self.embed_dim
+        vocab = word2vec_model["wv"].keys()
+        for index in range(self.embed_num):
+            if str(index) in vocab:
+                self.embed.weight.data[index] = copy.deepcopy(word2vec_model["wv"][str(index)])
+        return True
+
 
 def test():
     import numpy as np
@@ -85,11 +110,12 @@ def test():
     #print(input)
     config = BERTConfig(pre_train_path=os.path.join(os.getenv('PROJTOP'),'user_data/new_bert_768_eda/checkpoint-18000'))
     model = BERTModel(config)
+    model.reinit_bert()
     model_weight_path = os.path.join(os.getenv('PROJTOP'),'user_data/model_data/Bert_new/BERT_fold1.chkpt')
     checkpoint = torch.load(model_weight_path)
     model_setting = checkpoint["settings"]
-    model.load_state_dict(checkpoint['model'])
     model.eval()
+    #model.load_state_dict(checkpoint['model'])
     output = model(input)
     print(output)
 

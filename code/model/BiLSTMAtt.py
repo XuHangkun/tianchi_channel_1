@@ -1,29 +1,13 @@
-# coding: UTF-8
+from torch import nn
 import torch
-import torch.nn as nn
 import torch.nn.functional as F
-import numpy as np
-import copy
 
-class HanAtt(nn.Module):
-
-    def __init__(self, input_size, output_size):
-        super(HanAtt, self).__init__()
-        self.W = nn.Linear(input_size, output_size)
-        self.u = nn.Linear(output_size, 1)
-
-    def forward(self, x):
-        u = torch.tanh(self.W(x))
-        a = F.softmax(self.u(u), dim=1)
-        x = x*a
-        return x
-
-class TextRCNNConfig(object):
+class BiLSTMAttConfig(object):
 
     """配置参数"""
     def __init__(self, n_vocab=859,embedding=100,
             max_seq_len=100,num_class=29,dropout=0.5,lstm_layer=2,
-            hidden_size=256,lstm_dropout=0.1,padding_idx=0,high_level_size=100
+            hidden_size=1024,lstm_dropout=0.1,padding_idx=0
             ):
         self.model_name = 'TextRCNN'
 
@@ -36,17 +20,12 @@ class TextRCNNConfig(object):
         self.num_layers = lstm_layer                                    # lstm层数
         self.max_seq_len = max_seq_len
         self.lstm_dropout=lstm_dropout
-        self.high_level_size = high_level_size
 
 
-'''Recurrent Convolutional Neural Networks for Text Classification'''
-
-
-class TextRCNNModel(nn.Module):
+# textrnn_att
+class BiLSTMAttModel(nn.Module):
     def __init__(self, config):
-
-
-        super(TextRCNNModel, self).__init__()
+        super(BiLSTMAttModel, self).__init__()
         self.embed_num = config.n_vocab
         self.embed_dim = config.embedding
         self.max_seq_len = config.max_seq_len
@@ -54,52 +33,33 @@ class TextRCNNModel(nn.Module):
         self.dropout = config.dropout                                              # 随机失活
         self.padding_idx = config.padding_idx
         self.lstm_dropout = config.lstm_dropout
-        self.high_level_size = config.high_level_size
 
-        self.embed = nn.Embedding(config.n_vocab, config.embedding, padding_idx=self.padding_idx)
-        self.emb_dropout_layer = nn.Dropout(self.dropout)
-        self.lstm = nn.LSTM(config.embedding, config.hidden_size, config.num_layers,
-                            bidirectional=True, batch_first=True, dropout=self.lstm_dropout)
-        self.W2 = nn.Linear(2 * self.hidden_size + self.embed_dim, self.hidden_size * 2)
+        self.embedding = nn.Embedding(self.embed_num,self.embed_dim)
+        self.drop_emb = nn.Dropout(self.dropout)
 
-
-        self.feed_forward_1 = nn.Sequential(
+        self.lstm = nn.LSTM(self.embed_dim, self.hidden_size, config.num_layers, bidirectional=True, batch_first=True)
+        # self.lstm = nn.GRU(embed_dim, self.hidden_size, num_layers, bidirectional=True, batch_first=True)
+        self.tanh1 = nn.Tanh()
+        self.w = nn.Parameter(torch.zeros(self.hidden_size * 2), requires_grad=True)
+        self.fc_out = nn.Sequential(
+            nn.Linear(self.hidden_size * 2, self.hidden_size),
             nn.Dropout(self.dropout),
-            nn.Linear(config.hidden_size * 2 , 17),
-            nn.Sigmoid()
-        )
-
-        self.W3 = nn.Linear(config.hidden_size * 2, self.high_level_size)
-        self.feed_forward_2 = nn.Sequential(
-            nn.Dropout(self.dropout),
-            nn.Linear(self.high_level_size + 17, 12),
+            nn.Linear(self.hidden_size, config.num_classes),
             nn.Sigmoid()
         )
 
     def forward(self, x):
         x = self.complete_short_sentence(x)
-        #x, _ = x
-        embed = self.embed(x)  # [batch_size, seq_len, embeding]=[64, 32, 64]
-        embed = self.emb_dropout_layer(embed)
-        out, _ = self.lstm(embed)
+        emb = self.drop_emb(self.embedding(x))
+        lstmout, _ = self.lstm(emb)
 
-        # Add attention here
-        #out = self.han_att(out)
+        M = self.tanh1(lstmout)
+        alpha = F.softmax(torch.matmul(M, self.w), dim=1).unsqueeze(-1)
+        out = lstmout * alpha
+        out = torch.sum(out, dim=1)
 
-        # Add a attention
-        #alpha = F.softmax(torch.matmul(out, self.w), dim=1).unsqueeze(-1)
-        out = torch.cat((embed, out), 2)
-        #out = out * alpha
-
-        out =  torch.tanh(self.W2(out))
-        out = out.permute(0, 2, 1)
-        out = F.max_pool1d(out, out.size()[2]).squeeze(2)
-
-        out_1 = self.feed_forward_1(out)
-        out_2 = self.W3(out)
-        out_2 = torch.cat([out_1,out_2], 1)
-        out_2 = self.feed_forward_2(out_2)
-        return torch.cat((out_1,out_2),1)
+        out = self.fc_out(out)
+        return out
 
     def complete_short_sentence(self,x):
         device = x.device
@@ -127,8 +87,8 @@ def test():
     from torchsummary import summary
     input = torch.LongTensor([range(100)])
     print(input)
-    config = TextRCNNConfig(hidden_size=1024)
-    model = TextRCNNModel(config)
+    config = BiLSTMAttConfig(hidden_size=1024)
+    model = BiLSTMAtt(config)
     print(summary(model,input_size=(128,100),batch_size=128,dtypes=torch.long))
     output = model(input)
     print(output)
