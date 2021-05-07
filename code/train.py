@@ -57,7 +57,6 @@ def train_epoch(model, training_data, optimizer, opt, device,scheduler=None):
         else:
             report = report.type(torch.LongTensor).to(device)
         label = label.to(device).float()
-
         # predict and calculate the loss, accuracy
         optimizer.zero_grad()
         pred = model(report)    #prediction
@@ -67,8 +66,36 @@ def train_epoch(model, training_data, optimizer, opt, device,scheduler=None):
             loss = F.binary_cross_entropy(pred,label[:,:17])
         elif opt.model_task == 2:
             loss = F.binary_cross_entropy(pred,label[:,17:])
+        elif opt.model_task == 3:
+            mask_area_words = opt.mask_area_words_task3
+            mask_ill_words = opt.mask_ill_words_task3
+            mask_area = [False]*label.shape[1]
+            mask_ill = [False]*label.shape[1]
+            for index in mask_area_words:
+                mask_area[index] = True
+            for index in mask_ill_words:
+                mask_ill[index] = True
+            if opt.ill_location == 1:
+                loss = 0.5*F.binary_cross_entropy(pred[:,:len(opt.mask_area_words_task3)],label[:,mask_area]) +  0.5*F.binary_cross_entropy(pred[:,len(opt.mask_area_words_task3):],label[:,mask_ill])
+            else:
+                loss = 0.6*F.binary_cross_entropy(pred[:,:len(opt.mask_area_words_task3)],label[:,mask_area]) +  0.4*F.binary_cross_entropy(pred[:,len(opt.mask_area_words_task3):],label[:,mask_ill])
+        elif opt.model_task == 4:
+            mask_area_words = opt.mask_area_words_task4
+            mask_ill_words = opt.mask_ill_words_task4
+            mask_area = [False]*label.shape[1]
+            mask_ill = [False]*label.shape[1]
+            for index in mask_area_words:
+                mask_area[index] = True
+            for index in mask_ill_words:
+                mask_ill[index] = True
+            if opt.ill_location == 1:
+                loss = 0.5*F.binary_cross_entropy(pred[:,:len(opt.mask_area_words_task4)],label[:,mask_area]) +  0.5*F.binary_cross_entropy(pred[:,len(opt.mask_area_words_task4):],label[:,mask_ill])
+            else:
+                loss = 0.6*F.binary_cross_entropy(pred[:,:len(opt.mask_area_words_task4)],label[:,mask_area]) +  0.4*F.binary_cross_entropy(pred[:,len(opt.mask_area_words_task4):],label[:,mask_ill])
 
-        acc = cal_accuracy(pred,label,opt.model_task)
+
+        acc = 1
+        #acc = cal_accuracy(pred,label,opt.model_task)
         loss.backward()
         optimizer.step()
         if scheduler:
@@ -98,7 +125,6 @@ def eval_epoch(model, validation_data, opt,device):
         else:
             report = report.type(torch.LongTensor).to(device)
         label = label.to(device).float()
-
         # predict and calculate the loss, accuracy
         pred = model(report)    #prediction, we do not use mask now!
         if opt.model_task == 0:
@@ -107,8 +133,36 @@ def eval_epoch(model, validation_data, opt,device):
             loss = F.binary_cross_entropy(pred,label[:,:17])
         elif opt.model_task == 2:
             loss = F.binary_cross_entropy(pred,label[:,17:])
+        elif opt.model_task == 3:
+            mask_area_words = opt.mask_area_words_task3
+            mask_ill_words = opt.mask_ill_words_task3
+            mask_area = [False]*label.shape[1]
+            mask_ill = [False]*label.shape[1]
+            for index in mask_area_words:
+                mask_area[index] = True
+            for index in mask_ill_words:
+                mask_ill[index] = True
+            if opt.ill_location == 1:
+                loss = 0.5*F.binary_cross_entropy(pred[:,:len(opt.mask_area_words_task3)],label[:,mask_area]) +  0.5*F.binary_cross_entropy(pred[:,len(opt.mask_area_words_task3):],label[:,mask_ill])
+            else:
+                loss = 0.6*F.binary_cross_entropy(pred[:,:len(opt.mask_area_words_task3)],label[:,mask_area]) +  0.4*F.binary_cross_entropy(pred[:,len(opt.mask_area_words_task3):],label[:,mask_ill])
+        elif opt.model_task == 4:
+            mask_area_words = opt.mask_area_words_task4
+            mask_ill_words = opt.mask_ill_words_task4
+            mask_area = [False]*label.shape[1]
+            mask_ill = [False]*label.shape[1]
+            for index in mask_area_words:
+                mask_area[index] = True
+            for index in mask_ill_words:
+                mask_ill[index] = True
+            if opt.ill_location == 1:
+                loss = 0.5*F.binary_cross_entropy(pred[:,:len(opt.mask_area_words_task4)],label[:,mask_area]) +  0.5*F.binary_cross_entropy(pred[:,len(opt.mask_area_words_task4):],label[:,mask_ill])
+            else:
+                loss = 0.6*F.binary_cross_entropy(pred[:,:len(opt.mask_area_words_task4)],label[:,mask_area]) +  0.4*F.binary_cross_entropy(pred[:,len(opt.mask_area_words_task4):],label[:,mask_ill])
+
         losses.append(loss.item())
-        acc = cal_accuracy(pred,label,opt.model_task)
+        #acc = cal_accuracy(pred,label,opt.model_task)
+        acc = 1
         acces.append(acc)
 
     loss_per_seq = sum(losses)/len(losses)
@@ -230,7 +284,7 @@ def main():
     parser = argparse.ArgumentParser()
     # parameters of training
     # 1 for task 1, 2 for task 2, 0 for both tasks
-    parser.add_argument('-model_task', type=int, default=0,choices=[0,1,2],help="type of model")
+    parser.add_argument('-model_task', type=int, default=0,choices=[0,1,2,3,4],help="type of model")
     parser.add_argument('-epoch', type=int, default=100,help="epochs you want to run")
     parser.add_argument('-max_len',type=int,default=100,help="mac length of the sentence")
     parser.add_argument('-batch_size', type=int, default=128,help="size of batch")
@@ -257,9 +311,18 @@ def main():
     # data enhancement, not do this defaultly
     parser.add_argument('-eda_alpha',type=float,default=0.0,help="alpha of eda")
     parser.add_argument('-n_aug',type=float,default=0.0,help="n of aug")
+
+    # rm high frequence words and use tf-idf method
     parser.add_argument('-tf_idf',action='store_true',help="use tf_idf mechanism to delete redundant words")
     parser.add_argument('-tf_idf_cut',type=float,default=0.006,help="cut value in tf_idf method")
     parser.add_argument('-rm_high_words',action='store_true',help="Remove the words with the highest evaluation rate in the text")
+
+    # parameters of cluster method
+    parser.add_argument('-mask_area_words_task3',type=int,nargs='+',default=[])
+    parser.add_argument('-mask_ill_words_task3',type=int,nargs='+',default=[])
+    parser.add_argument('-mask_area_words_task4',type=int,nargs='+',default=[])
+    parser.add_argument('-mask_ill_words_task4',type=int,nargs='+',default=[])
+    parser.add_argument('-ill_location',type=int,default=0,help="type of cluster")
 
     # parameters of optimizer
     parser.add_argument('-lr', type=float, default=1.e-3,help="learning rate, advice: 1.e-5 for bert and 1.e-3 for others")
@@ -295,6 +358,10 @@ def main():
         opt.nclass = 17
     elif opt.model_task == 2:
         opt.nclass = 12
+    elif opt.model_task == 3:
+        opt.nclass = len(opt.mask_area_words_task3)+len(opt.mask_ill_words_task3)
+    elif opt.model_task == 4:
+        opt.nclass = len(opt.mask_area_words_task4)+len(opt.mask_ill_words_task4)
 
     if opt.output_dir and not os.path.exists(opt.output_dir):
         os.makedirs(opt.output_dir)
@@ -411,7 +478,7 @@ def main():
 
         # train the model
         print("Start training...")
-        train_losses,train_accs,valid_losses,valid_accs = train(m_model, train_iterator, val_iterator, optimizer, device, opt,scheduler=lr_scheduler)
+        train_losses,train_accs,valid_losses,valid_accs = train(m_model, train_iterator, val_iterator, optimizer, device, opt)#,scheduler=lr_scheduler)
         train_info["{}th_fold_train_loss".format(k_index)] = train_losses
         train_info["{}th_fold_train_acc".format(k_index)] = train_accs
         train_info["{}th_fold_valid_loss".format(k_index)] = valid_losses

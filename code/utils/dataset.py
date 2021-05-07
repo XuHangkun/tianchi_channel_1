@@ -200,6 +200,7 @@ def test():
         print('text: ',text)
         print('text: ',type(text))
         print('label: ',label)
+        print('label: ',type(label))
         print('')
 
 if __name__ == "__main__":

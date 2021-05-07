@@ -79,8 +79,7 @@ class KFoldDataLoader:
 def test():
     import pandas as pd
     import os
-    df = pd.read_csv(os.path.join(os.getenv('PROJTOP'),'tcdata/medical_nlp_round1_data/train.csv'),sep="\|,\|",names=["id","report","label"])
-    print(df.iloc[range(10)])
+    df = pd.read_csv(os.path.join(os.getenv('PROJTOP'),'tcdata/train.csv'),sep="\|,\|",names=["id","report","label"])
     kfold_load = KFoldDataLoader(df)
     train_loader,valid_loader,train_dataset,valid_dataset = kfold_load.get_ith_data(0)
     print(len(valid_dataset))
@@ -88,7 +87,8 @@ def test():
     for i in range(3):
         report,label = valid_dataset[i]
         print(report)
-    print(train_loader)
+        print(type(report))
+    #print(train_loader)
     for X,y in train_loader:
         print(X)
         print(y.shape)
