@@ -300,11 +300,11 @@ def main():
     parser.add_argument('-is_pretrain', action="store_true" , help='Path to model weight file')
 
     # data enhancement, not do this defaultly
-    parser.add_argument('-eda_alpha',type=float,default=0.0,help="alpha of eda")
-    parser.add_argument('-n_aug',type=float,default=0.0,help="n of aug")
+    parser.add_argument('-eda_alpha',type=float,default=0.1,help="alpha of eda")
+    parser.add_argument('-n_aug',type=float,default=4.0,help="n of aug")
 
     # parameters of optimizer
-    parser.add_argument('-lr', type=float, default=1.e-3,help="learning rate, advice: 1.e-5 for bert and 1.e-3 for others")
+    parser.add_argument('-lr', type=float, default=5.e-4,help="learning rate, advice: 1.e-5 for bert and 1.e-3 for others")
     parser.add_argument('-seed', type=int, default=None,help="random seed")
 
     # word2vector pretrain model
@@ -454,7 +454,7 @@ def main():
 
         # train the model
         print("Start training...")
-        train_losses,train_accs,valid_losses,valid_accs = train(m_model, train_iterator, val_iterator, optimizer, device, opt)#,scheduler=lr_scheduler)
+        train_losses,train_accs,valid_losses,valid_accs = train(m_model, train_iterator, val_iterator, optimizer, device, opt,scheduler=lr_scheduler)
         train_info["{}th_fold_train_loss".format(k_index)] = train_losses
         train_info["{}th_fold_train_acc".format(k_index)] = train_accs
         train_info["{}th_fold_valid_loss".format(k_index)] = valid_losses

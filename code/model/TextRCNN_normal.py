@@ -65,16 +65,16 @@ class TextRCNNModel(nn.Module):
 
         self.feed_forward_1 = nn.Sequential(
             nn.Dropout(self.dropout),
-            nn.Linear(config.hidden_size * 2 , 17),
+            nn.Linear(config.hidden_size * 2 , config.num_classes),
             nn.Sigmoid()
         )
 
-        self.W3 = nn.Linear(config.hidden_size * 2, self.high_level_size)
-        self.feed_forward_2 = nn.Sequential(
-            nn.Dropout(self.dropout),
-            nn.Linear(self.high_level_size + 17, 12),
-            nn.Sigmoid()
-        )
+        #self.W3 = nn.Linear(config.hidden_size * 2, self.high_level_size)
+        #self.feed_forward_2 = nn.Sequential(
+        #    nn.Dropout(self.dropout),
+        #    nn.Linear(self.high_level_size + 17, 12),
+        #    nn.Sigmoid()
+        #)
 
     def forward(self, x):
         x = self.complete_short_sentence(x)
@@ -96,10 +96,10 @@ class TextRCNNModel(nn.Module):
         out = F.max_pool1d(out, out.size()[2]).squeeze(2)
 
         out_1 = self.feed_forward_1(out)
-        out_2 = self.W3(out)
-        out_2 = torch.cat([out_1,out_2], 1)
-        out_2 = self.feed_forward_2(out_2)
-        return torch.cat((out_1,out_2),1)
+        #out_2 = self.W3(out)
+        #out_2 = torch.cat([out_1,out_2], 1)
+        #out_2 = self.feed_forward_2(out_2)
+        return out_1
 
     def complete_short_sentence(self,x):
         device = x.device

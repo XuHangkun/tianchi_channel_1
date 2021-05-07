@@ -7,37 +7,18 @@ cd -
 
 nvidia-smi
 
-## Par
-word_size=100
-
-####### TRAIN WORD VEC ############
-# python ./code/train_word_vector.py -epoch 12 -word_size ${word_size}
+########## Tokenizer ##############
+python ./code/generate_tokenizer.py -input ./tcdata/train.csv -output ./user_data/tokenizer/tokenizer.pkl 
 
 ############ TRAIN ################
 # 5-fold train TextRCNN
-python ./code/train.py -model TextRCNN_task1 -model_task 1 -epoch 12 -seed 7 -no_word2vec_pretrain \
+python ./code/train.py -model TextRCNN -epoch 12 -no_word2vec_pretrain -seed 7 \
 -output_dir ./user_data/model_data/TextRCNN -lr 5.e-4 -input ./tcdata/train.csv \
--dropout 0.5 -nemb ${word_size} -max_len 100 -hidden_size 1024 -lstm_dropout 0.1 \
--eda_alpha 0.1 -n_aug 4.0
+-dropout 0.5 -nemb 100 -max_len 100 -hidden_size 1024 -eda_alpha 0.15 -n_aug 4 \
+-lstm_dropout 0.1 -tokenizer_path ./user_data/tokenizer/tokenizer.pkl -batch_size 128
 
 ########## PREDICTION #############
 python ./code/predict.py -input ./tcdata/testA.csv \
--models TextRCNN/TextRCNN_task1_fold1 TextRCNN/TextRCNN_task1_fold2 TextRCNN/TextRCNN_task1_fold3 TextRCNN/TextRCNN_task1_fold4 TextRCNN/TextRCNN_task1_fold5 \
--model_path ./user_data/model_data \
--output ./user_data/tmp_data/result_1.csv
-
-############ TRAIN ################
-# 5-fold train TextRCNN
-python ./code/train.py -model TextRCNN_task2 -model_task 2 -epoch 6 -seed 17 -no_word2vec_pretrain \
--output_dir ./user_data/model_data/TextRCNN -lr 5.e-4 -input ./tcdata/train.csv \
--dropout 0.5 -nemb ${word_size} -max_len 100 -hidden_size 1024 -lstm_dropout 0.1 \
--eda_alpha 0.1 -n_aug 4.0
-
-########## PREDICTION #############
-python ./code/predict.py -input ./tcdata/testA.csv \
--models TextRCNN/TextRCNN_task2_fold1 TextRCNN/TextRCNN_task2_fold2 TextRCNN/TextRCNN_task2_fold3 TextRCNN/TextRCNN_task2_fold4 TextRCNN/TextRCNN_task2_fold5 \
--model_path ./user_data/model_data \
--output ./user_data/tmp_data/result_2.csv
-
-### concat all result
-python code/concat_two_result.py -task1_file ./user_data/tmp_data/result_1.csv -task2_file ./user_data/tmp_data/result_2.csv -output ./result.csv   
+-models TextRCNN/TextRCNN_fold1 TextRCNN/TextRCNN_fold2 TextRCNN/TextRCNN_fold3 TextRCNN/TextRCNN_fold4 TextRCNN/TextRCNN_fold5 \
+-model_path ./user_data/model_data -tokenizer_file ./user_data/tokenizer/tokenizer.pkl \
+-output ./result.csv
