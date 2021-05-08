@@ -8,7 +8,9 @@ import copy
 class DPCNNConfig(object):
 
     """配置参数"""
-    def __init__(self,n_vocab=859,embedding=100,padding_idx=0,num_class=29,max_seq_len=70,dropout=0.5,num_filters=512):
+    def __init__(self,n_vocab=859,embedding=100,padding_idx=0,
+            num_class=29,max_seq_len=70,dropout=0.5,
+            num_filters=512,reduction=8):
         self.model_name = 'DPCNN'
         self.dropout = dropout                                          # 随机失活
         self.n_vocab = n_vocab                                          # 词表大小，在运行时赋值
@@ -17,6 +19,7 @@ class DPCNNConfig(object):
         self.embedding = embedding                                      # dim of embedding
         self.num_filters =  num_filters                                 # 卷积核数量(channels数)
         self.max_seq_len = max_seq_len
+        self.reduction = reduction
 
 class DPCNNModel(nn.Module):
     def __init__(self, config):
@@ -31,8 +34,18 @@ class DPCNNModel(nn.Module):
         self.dropout = config.dropout
 
         self.embed = nn.Embedding(config.n_vocab,config.embedding, padding_idx=config.padding_idx)
+        self.avg_pool = torch.nn.AdaptiveAvgPool2d(1)
+        self.att = nn.Sequential(
+            nn.Linear(config.num_filters, config.num_filters // config.reduction, bias=False),
+            nn.ReLU(inplace = True),
+            nn.Linear(config.num_filters // config.reduction, config.num_filters, bias=False),
+            nn.ReLU(inplace = True),
+            )
         self.conv_region = nn.Conv2d(1, config.num_filters, (3, config.embedding), stride=1)
         self.conv = nn.Conv2d(config.num_filters, config.num_filters, (3, 1), stride=1)
+        self.conv_1 = nn.Conv2d(config.num_filters, config.num_filters, (3, 1), stride=1)
+        self.conv_2 = nn.Conv2d(config.num_filters, config.num_filters, (3, 1), stride=1)
+        self.conv_3 = nn.Conv2d(config.num_filters, config.num_filters, (3, 1), stride=1)
         self.max_pool = nn.MaxPool2d(kernel_size=(3, 1), stride=2)
         self.padding1 = nn.ZeroPad2d((0, 0, 1, 1))  # top bottom
         self.padding2 = nn.ZeroPad2d((0, 0, 0, 1))  # bottom
@@ -64,10 +77,13 @@ class DPCNNModel(nn.Module):
 
         x = self.padding1(x)  # [batch_size, 250, seq_len, emb_size]
         x = self.relu(x)
-        x = self.conv(x)  # [batch_size, 250, seq_len-3+1, 1]
+        x = self.conv_1(x)  # [batch_size, 250, seq_len-3+1, 1]
         x = self.padding1(x)  # [batch_size, 250, seq_len, 1]
         x = self.relu(x)
-        x = self.conv(x)  # [batch_size, 250, seq_len-3+1, 1]
+        x = self.conv_2(x)  # [batch_size, 250, seq_len-3+1, 1]
+        x = self.padding1(x)  # [batch_size, 250, seq_len, 1]
+        x = self.relu(x)
+        x = self.conv_3(x)  # [batch_size, 250, seq_len-3+1, 1]
         while x.size()[2] >= 2:
             x = self._block(x)
         x = x.squeeze()  # [batch_size, num_filters(250)]
@@ -86,9 +102,14 @@ class DPCNNModel(nn.Module):
         x = self.padding1(x)
         x = F.relu(x)
         x = self.conv(x)
+        # add the attention here
+        b, c, _, _ = x.size()
+        y = self.avg_pool(x).view(b, c)
+        y = self.att(y).view(b, c, 1, 1)
+        y = x * y.expand_as(x)
 
         # Short Cut
-        x = x + px
+        x = x + px + y
         return x
 
     def use_pretrain_word2vec(self,word2vec_model):
