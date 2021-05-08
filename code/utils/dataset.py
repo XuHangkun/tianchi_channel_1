@@ -40,6 +40,7 @@ class ReportDataset(Dataset):
         self.preprocess_text()
         # generate the labels
         self.labels = df['label'].values
+        self.labels_freq = [0 for x in range(self.nclass)]
         self.preprocess_label()
         self.enhanced_texts = []
         self.enhanced_labels = []
@@ -70,6 +71,10 @@ class ReportDataset(Dataset):
             elif self.n_aug >= 0:
                 if np.random.random() < self.n_aug:
                     true_aug = 1
+            label_all_zero = True
+            for j in range(len(self.labels[i])):
+                if self.labels[i][j] > 0.5:
+                    label_all_zero = False
             for j in range(true_aug):
                 # randomly delete some words
                 self.enhanced_texts.append(RandomDelete(self.texts[i],self.eda_alpha))
@@ -100,6 +105,7 @@ class ReportDataset(Dataset):
         convert the label to multi-hot tensor: [1,2] --> [0,1,1,0,0....]
         """
         labels = []
+        labels_freq = [0 for x in range(self.nclass)]
         for label in self.labels:
             label_tensor = [0.0 for i in range(self.nclass)]
             label = str(label)
@@ -113,16 +119,19 @@ class ReportDataset(Dataset):
                 label_area = [int(x) for x in label_area.split()]
                 for index in label_area:
                     label_tensor[index] = 1.0
+                    labels_freq[index] += 1./len(self.labels)
 
             if label_ill == '' or label_ill == 'nan' or label_area == " ":
                 pass
             else:
                 label_ill = [int(x) for x in label_ill.split()]
                 for index in label_ill:
-                    label_tensor[index+17] = 1.0
+                    label_tensor[index + 17] = 1.0
+                    labels_freq[index + 17] += 1./len(self.labels)
             labels.append(label_tensor)
 
         self.labels = labels
+        self.labels_freq = labels_freq
 
     def __len__(self):
         return len(self.labels)
@@ -136,10 +145,13 @@ class ReportDataset(Dataset):
         if self.label_smoothing:
             new_label = [label for label in self.labels[idx]]
             for j in range(len(new_label)):
-                if np.random.random() < self.label_smoothing:
+                if np.random.random() < self.label_smoothing*self.labels_freq[j]:
                     new_label[j] = 1 - new_label[j]
             return np.array(self.texts[idx]),np.array(new_label)
         else:
+            if len(self.texts[idx]) > self.max_len:
+                new_seq = self.texts[idx][:self.max_len//2] + self.texts[idx][len(self.texts[idx])-self.max_len//2:len(self.texts[idx])]
+                return np.array(self.texts[idx]),np.array(self.labels[idx])
             return np.array(self.texts[idx]),np.array(self.labels[idx])
 
     def getitem(self,idx):

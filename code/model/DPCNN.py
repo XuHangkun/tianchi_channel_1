@@ -8,14 +8,14 @@ import copy
 class DPCNNConfig(object):
 
     """配置参数"""
-    def __init__(self,n_vocab=859,embedding=200,num_class=29,max_seq_len=70,dropout=0.5):
+    def __init__(self,n_vocab=859,embedding=100,padding_idx=0,num_class=29,max_seq_len=70,dropout=0.5,num_filters=512):
         self.model_name = 'DPCNN'
-        self.dropout = dropout                                              # 随机失活
+        self.dropout = dropout                                          # 随机失活
         self.n_vocab = n_vocab                                          # 词表大小，在运行时赋值
-        self.padding_idx = n_vocab - 1
+        self.padding_idx = padding_idx
         self.num_classes = num_class                                    # 类别数
         self.embedding = embedding                                      # dim of embedding
-        self.num_filters = 512                                          # 卷积核数量(channels数)
+        self.num_filters =  num_filters                                 # 卷积核数量(channels数)
         self.max_seq_len = max_seq_len
 
 class DPCNNModel(nn.Module):
@@ -38,6 +38,7 @@ class DPCNNModel(nn.Module):
         self.padding2 = nn.ZeroPad2d((0, 0, 0, 1))  # bottom
         self.relu = nn.ReLU()
         self.feed_forward = nn.Sequential(
+            nn.Linear(config.num_filters, config.num_filters),
             nn.Dropout(self.dropout),
             nn.ReLU(),
             nn.Linear(config.num_filters, config.num_classes),
@@ -70,6 +71,7 @@ class DPCNNModel(nn.Module):
         while x.size()[2] >= 2:
             x = self._block(x)
         x = x.squeeze()  # [batch_size, num_filters(250)]
+
         x = self.feed_forward(x)
         return x
 

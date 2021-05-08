@@ -18,7 +18,7 @@ class HanAtt(nn.Module):
         x = x*a
         return x
 
-class TextRCNNConfig(object):
+class TextRCNNCsConfig(object):
 
     """配置参数"""
     def __init__(self, n_vocab=859,embedding=100,
@@ -42,11 +42,11 @@ class TextRCNNConfig(object):
 '''Recurrent Convolutional Neural Networks for Text Classification'''
 
 
-class TextRCNNModel(nn.Module):
+class TextRCNNCsModel(nn.Module):
     def __init__(self, config):
 
 
-        super(TextRCNNModel, self).__init__()
+        super(TextRCNNCsModel, self).__init__()
         self.embed_num = config.n_vocab
         self.embed_dim = config.embedding
         self.max_seq_len = config.max_seq_len

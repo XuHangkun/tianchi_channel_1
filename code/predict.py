@@ -18,6 +18,7 @@ from model.textCNN import TextCNNModel,TextCNNConfig
 from model.DPCNN import DPCNNConfig,DPCNNModel
 from model.TextRNN import TextRNNConfig,TextRNNModel
 from model.TextRCNN import TextRCNNConfig,TextRCNNModel
+from model.TextRCNNCs import TextRCNNCsConfig,TextRCNNCsModel
 from model.TextMRCNN import TextMRCNNConfig,TextMRCNNModel
 from model.TextRNN_Att import TextRNNAttConfig,TextRNNAttModel
 from model.transformer import TransformerConfig,TransformerModel
@@ -35,7 +36,13 @@ def load_model(opt,device):
         model_setting = checkpoint["settings"]
 
         if "DPCNN_" in opt.models[index]:
-            model_config = DPCNNConfig(model_setting.ntokens,model_setting.nemb,model_setting.nclass,max_seq_len=model_setting.max_len,dropout=model_setting.dropout)
+            model_config = DPCNNConfig(n_vocab = model_setting.ntokens,
+                    embedding = model_setting.nemb,
+                    num_class = model_setting.nclass,
+                    max_seq_len = model_setting.max_len,
+                    dropout = model_setting.dropout,
+                    num_filters = model_setting.num_filters
+                    )
             model_config.padding_idx = model_setting.pad_token
             m_model = DPCNNModel(model_config).to(device)
         # TextRNN
@@ -52,6 +59,15 @@ def load_model(opt,device):
                     )
             model_config.padding_idx = model_setting.pad_token
             m_model = TextRCNNModel(model_config).to(device)
+        elif "TextRCNNCs_" in opt.models[index]:
+            model_config = TextRCNNCsConfig(n_vocab=model_setting.ntokens,
+                    embedding=model_setting.nemb,max_seq_len=model_setting.max_len,
+                    num_class=model_setting.nclass,dropout=model_setting.dropout,
+                    lstm_layer=model_setting.lstm_layer,hidden_size=model_setting.hidden_size,
+                    lstm_dropout=model_setting.lstm_dropout,high_level_size=model_setting.high_level_size
+                    )
+            model_config.padding_idx = model_setting.pad_token
+            m_model = TextRCNNCsModel(model_config).to(device)
         elif  "TextMRCNN_" in opt.models[index]:
             model_config = TextMRCNNConfig(n_vocab=model_setting.ntokens,
                     embedding=model_setting.nemb,max_seq_len=model_setting.max_len,
