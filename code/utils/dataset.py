@@ -149,9 +149,9 @@ class ReportDataset(Dataset):
                     new_label[j] = 1 - new_label[j]
             return np.array(self.texts[idx]),np.array(new_label)
         else:
-            if len(self.texts[idx]) > self.max_len:
-                new_seq = self.texts[idx][:self.max_len//2] + self.texts[idx][len(self.texts[idx])-self.max_len//2:len(self.texts[idx])]
-                return np.array(self.texts[idx]),np.array(self.labels[idx])
+            #if len(self.texts[idx]) > self.max_len:
+            #    new_seq = self.texts[idx][:self.max_len//2] + self.texts[idx][len(self.texts[idx])-self.max_len//2:len(self.texts[idx])]
+            #    return np.array(self.texts[idx]),np.array(self.labels[idx])
             return np.array(self.texts[idx]),np.array(self.labels[idx])
 
     def getitem(self,idx):

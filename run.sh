@@ -53,7 +53,7 @@ python ./code/predict.py -input ./tcdata/testB.csv \
 # 5-fold train DPCNN
 python ./code/train.py -model DPCNN -epoch 4 -no_word2vec_pretrain -seed 7 \
 -output_dir ./user_data/model_data/TextRCNN -lr 5.e-4 -input ./tcdata/train.csv \
--dropout 0.5 -nemb 100 -max_len 80 -num_filters 512 -eda_alpha 0.15 -n_aug 4 \
+-dropout 0.5 -nemb 100 -max_len 100 -num_filters 512 -eda_alpha 0.15 -n_aug 4 \
 -lstm_dropout 0.1 -tokenizer_path ./user_data/tokenizer/tokenizer.pkl -batch_size 128
 ########## PREDICTION #############
 python ./code/predict.py -input ./tcdata/testB.csv \
@@ -61,6 +61,20 @@ python ./code/predict.py -input ./tcdata/testB.csv \
 -model_path ./user_data/model_data -tokenizer_file ./user_data/tokenizer/tokenizer.pkl \
 -output ./user_data/result_dpcnn.csv
 
+########## Text  ##############
+############ TRAIN ################
+# 5-fold train TextCNN
+python ./code/train.py -model TextCNN -epoch 8 -no_word2vec_pretrain -seed 7 \
+-output_dir ./user_data/model_data/TextRCNN -lr 5.e-4 -input ./tcdata/train.csv \
+-dropout 0.5 -nemb 100 -max_len 100 -num_filters 128 -eda_alpha 0.15 -n_aug 4 \
+-lstm_dropout 0.1 -tokenizer_path ./user_data/tokenizer/tokenizer.pkl -batch_size 128
+
+########## PREDICTION #############
+python ./code/predict.py -input ./tcdata/testB.csv \
+-models TextRCNN/TextCNN_fold1 TextRCNN/TextCNN_fold2 TextRCNN/TextCNN_fold3 TextRCNN/TextCNN_fold4 TextRCNN/TextCNN_fold5 \
+-model_path ./user_data/model_data -tokenizer_file ./user_data/tokenizer/tokenizer.pkl \
+-output ./user_data/result_textcnn.csv
+
 ######## Mix All Result ##########
-python ./code/mix_results.py -in_files ./user_data/result_textrcnn.csv ./user_data/result_textrcnncs.csv ./user_data/result_dpcnn.csv \
--in_weights 0.4 0.35 0.25  
+python ./code/mix_results.py -in_files ./user_data/result_textrcnn.csv ./user_data/result_textrcnncs.csv ./user_data/result_dpcnn.csv ./user_data/result_textcnn.csv \
+-in_weights 0.35 0.3 0.25 0.1

@@ -193,7 +193,7 @@ def load_model(opt,device):
         model_config = DPCNNConfig(n_vocab=opt.ntokens,
                 embedding=opt.nemb,num_class=opt.nclass,
                 max_seq_len=opt.max_len,dropout=opt.dropout,
-                num_filters = opt.num_filters
+                num_filters = opt.num_filters,reduction=opt.reduction
                 )
         model_config.padding_idx = opt.pad_token
         m_model = DPCNNModel(model_config).to(device)
@@ -277,7 +277,13 @@ def load_model(opt,device):
         m_model.to(device)
     else:
         # default TextCNN
-        model_config = TextCNNConfig(n_vocab=opt.ntokens,embedding=opt.nemb,num_class=opt.nclass,max_seq_len=opt.max_len,dropout=opt.dropout)
+        model_config = TextCNNConfig(
+                n_vocab=opt.ntokens,
+                embedding=opt.nemb,
+                num_class=opt.nclass,
+                max_seq_len=opt.max_len,
+                dropout=opt.dropout
+                )
         model_config.padding_idx = opt.pad_token
         m_model = TextCNNModel(model_config).to(device)
     return m_model
@@ -306,6 +312,7 @@ def main():
     parser.add_argument('-lstm_dropout', type=float, default=0.1,help="dropout rate of lstm layer")
     parser.add_argument('-nclass', type=int, default=29,help="number of class")
     parser.add_argument('-dropout', type=float, default=0.5,help="dropout rate of end layer")
+    parser.add_argument('-reduction', type=int,default=8,help="reduction")
     parser.add_argument('-high_level_size', type=int, default=100,help="high level size")
     parser.add_argument('-lstm_layer', type=int, default=2,help="number of lstm layer")
     parser.add_argument('-frazing_bert_encode',action="store_true", help="frazing bert encode when train")

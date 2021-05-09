@@ -38,7 +38,7 @@ for i in range(len(inputs[0])):
         prediction.append([float(x) for x in inputs[j]["label"][i].split()])
     for j in range(29):
         tmp = [value[j]*weight for value,weight in zip(prediction,weights)]
-        res += "%.8f "%(sum(tmp))
+        res += "%.9f "%(sum(tmp))
     res += "\n"
     file.write(res)
 file.close()

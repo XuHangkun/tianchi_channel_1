@@ -41,7 +41,8 @@ def load_model(opt,device):
                     num_class = model_setting.nclass,
                     max_seq_len = model_setting.max_len,
                     dropout = model_setting.dropout,
-                    num_filters = model_setting.num_filters
+                    num_filters = model_setting.num_filters,
+                    reduction = model_setting.reduction
                     )
             model_config.padding_idx = model_setting.pad_token
             m_model = DPCNNModel(model_config).to(device)
@@ -92,7 +93,13 @@ def load_model(opt,device):
             m_model = BERTModel(model_config).to(device)
         else:
             # default TextCNN
-            model_config = TextCNNConfig(model_setting.ntokens,model_setting.nemb,model_setting.nclass,dropout=model_setting.dropout)
+            model_config = TextCNNConfig(
+                    n_vocab = model_setting.ntokens,
+                    embedding = model_setting.nemb,
+                    num_class = model_setting.nclass,
+                    max_seq_len = model_setting.max_len,
+                    dropout=model_setting.dropout
+                    )
             model_config.padding_idx = model_setting.pad_token
             m_model = TextCNNModel(model_config).to(device)
 
