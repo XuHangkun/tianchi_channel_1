@@ -17,6 +17,7 @@ from model.fastTextModel import FastTextModel
 from model.textCNN import TextCNNModel,TextCNNConfig
 from model.DPCNN import DPCNNConfig,DPCNNModel
 from model.TextRNN import TextRNNConfig,TextRNNModel
+from model.Seq2SeqAtt import Seq2SeqAttConfig,Seq2SeqAttModel
 from model.TextRCNN import TextRCNNConfig,TextRCNNModel
 from model.TextRCNNCs import TextRCNNCsConfig,TextRCNNCsModel
 from model.TextMRCNN import TextMRCNNConfig,TextMRCNNModel
@@ -69,6 +70,15 @@ def load_model(opt,device):
                     )
             model_config.padding_idx = model_setting.pad_token
             m_model = TextRCNNCsModel(model_config).to(device)
+        elif "Seq2SeqAtt_" in opt.models[index]:
+            model_config = Seq2SeqAttConfig(n_vocab=model_setting.ntokens,
+                    embedding=model_setting.nemb,max_seq_len=model_setting.max_len,
+                    num_class=model_setting.nclass,dropout=model_setting.dropout,
+                    lstm_layer=model_setting.lstm_layer,hidden_size=model_setting.hidden_size,
+                    lstm_dropout=model_setting.lstm_dropout,high_level_size=model_setting.high_level_size
+                    )
+            model_config.padding_idx = model_setting.pad_token
+            m_model = Seq2SeqAttModel(model_config).to(device)
         elif  "TextMRCNN_" in opt.models[index]:
             model_config = TextMRCNNConfig(n_vocab=model_setting.ntokens,
                     embedding=model_setting.nemb,max_seq_len=model_setting.max_len,

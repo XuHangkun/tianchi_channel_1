@@ -26,7 +26,7 @@ class KFoldDataLoader:
         self.df = df
         self.tokenizer = tokenizer
         # random shuffle
-        # self.df = self.df.sample(frac=1).reset_index(drop=True)
+        self.df = self.df.sample(frac=1).reset_index(drop=True)
         self.pad_idx = self.tokenizer.padding_idx()
         self.num_token = self.tokenizer.vocab_num()
         self.lenght = len(df)

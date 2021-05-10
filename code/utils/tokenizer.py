@@ -15,7 +15,8 @@ import pickle
 
 class Tokenizer:
 
-    def __init__(self,high_freq_n=4,mul_words_num=800):
+    def __init__(self,high_freq_n=0,mul_words_num=0):
+        self.use_vocab = False
         self.mul_words_num = mul_words_num
         self.high_freq_n = high_freq_n
         self.high_freq_words = []
@@ -29,6 +30,15 @@ class Tokenizer:
         self.word2index = {"<pad>":0}
         self.index2word = ["pad"]
         self.make_vocab(self.mul_words_num)
+        self.use_vocab = True
+
+    def normal_initialize(self,df):
+        print("initialize the vocab")
+        self.index2word = [str(i) for i in range(859)]
+        for i in range(858):
+            self.word2index[str(i)]=i
+        self.word2index["<pad>"]=858
+
 
     def padding_idx(self):
         return self.word2index["<pad>"]
@@ -57,6 +67,7 @@ class Tokenizer:
         self.word2index = all_info["word2index"]
         self.index2word = all_info["index2word"]
         p_file.close()
+        self.use_vocab = True
 
     def find_high_freq_word(self,n=4):
         counter = Counter()
@@ -108,23 +119,28 @@ class Tokenizer:
         return report.strip()
 
     def __call__(self,report):
-        report = self.del_high_freq_words(report).split()
+        if self.high_freq_n > 0:
+            report = self.del_high_freq_words(report).split()
+        else:
+            report = report.split()
         index  = []
         i = 0
         while i < len(report):
-            if i < len(report)-3 and "%s %s %s %s"%(report[i],report[i+1],report[i+2],report[i+3]) in self.word2index.keys():
-                index.append(self.word2index["%s %s %s %s"%(report[i],report[i+1],report[i+2],report[i+3])])
-                i += 3
-            elif i < len(report)-2 and "%s %s %s"%(report[i],report[i+1],report[i+2]) in self.word2index.keys():
-                index.append(self.word2index["%s %s %s"%(report[i],report[i+1],report[i+2])])
-                i += 2
-            elif i < len(report)-1 and "%s %s"%(report[i],report[i+1]) in self.word2index.keys():
-                index.append(self.word2index["%s %s"%(report[i],report[i+1])])
-                i += 1
+            if self.mul_words_num > 0:
+                if i < len(report)-3 and "%s %s %s %s"%(report[i],report[i+1],report[i+2],report[i+3]) in self.word2index.keys():
+                    index.append(self.word2index["%s %s %s %s"%(report[i],report[i+1],report[i+2],report[i+3])])
+                    i += 3
+                elif i < len(report)-2 and "%s %s %s"%(report[i],report[i+1],report[i+2]) in self.word2index.keys():
+                    index.append(self.word2index["%s %s %s"%(report[i],report[i+1],report[i+2])])
+                    i += 2
+                elif i < len(report)-1 and "%s %s"%(report[i],report[i+1]) in self.word2index.keys():
+                    index.append(self.word2index["%s %s"%(report[i],report[i+1])])
+                    i += 1
+                else:
+                    index.append(self.word2index[report[i]])
             else:
                 index.append(self.word2index[report[i]])
             i += 1
-
         return index
 
 
@@ -133,6 +149,7 @@ def test():
     train_df = pd.read_csv(os.path.join(os.getenv('PROJTOP'),'tcdata/train.csv'),sep="\|,\|",names=["id","report","label"],index_col=0)
     tokens = Tokenizer()
     tokens.initialize(train_df)
+    #tokens.normal_initialize(train_df)
     print(tokens.high_freq_words)
     print(tokens.index2word)
     print(tokens.word2index)

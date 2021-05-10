@@ -25,6 +25,7 @@ from model.textCNN import TextCNNModel,TextCNNConfig
 from model.DPCNN import DPCNNConfig,DPCNNModel
 from model.TextRNN import TextRNNConfig,TextRNNModel
 from model.TextRCNN import TextRCNNConfig,TextRCNNModel
+from model.Seq2SeqAtt import Seq2SeqAttConfig,Seq2SeqAttModel
 from model.TextRCNNCs import TextRCNNCsConfig,TextRCNNCsModel
 from model.BiLSTMAtt import BiLSTMAttConfig,BiLSTMAttModel
 from model.TextMRCNN import TextMRCNNConfig,TextMRCNNModel
@@ -216,6 +217,16 @@ def load_model(opt,device):
                     )
             model_config.padding_idx = opt.pad_token
             m_model = TextRCNNCsModel(model_config).to(device)
+    elif  "Seq2SeqAtt" in opt.model:
+        if not opt.model_path:
+            model_config = Seq2SeqAttConfig(n_vocab=opt.ntokens,embedding=opt.nemb,
+                    max_seq_len=opt.max_len,num_class=opt.nclass,
+                    dropout=opt.dropout,lstm_layer=opt.lstm_layer,
+                    hidden_size=opt.hidden_size,lstm_dropout=opt.lstm_dropout,
+                    high_level_size=opt.high_level_size
+                    )
+            model_config.padding_idx = opt.pad_token
+            m_model = Seq2SeqAttModel(model_config).to(device)
     elif  "TextRCNN" in opt.model:
         if not opt.model_path:
             model_config = TextRCNNConfig(n_vocab=opt.ntokens,embedding=opt.nemb,
@@ -282,7 +293,8 @@ def load_model(opt,device):
                 embedding=opt.nemb,
                 num_class=opt.nclass,
                 max_seq_len=opt.max_len,
-                dropout=opt.dropout
+                dropout=opt.dropout,
+                num_filters = opt.num_filters
                 )
         model_config.padding_idx = opt.pad_token
         m_model = TextCNNModel(model_config).to(device)
@@ -307,7 +319,7 @@ def main():
         help="Net work for learning")
     parser.add_argument('-ntokens', type = int, default= 858,help="number of tokens")
     parser.add_argument('-nemb', type=int, default=100,help="embeding size")
-    parser.add_argument('-num_filters', type=int, default=512,help="embeding size")
+    parser.add_argument('-num_filters', type=int, default=128,help="embeding size")
     parser.add_argument('-hidden_size', type=int, default=256,help="hidden size")
     parser.add_argument('-lstm_dropout', type=float, default=0.1,help="dropout rate of lstm layer")
     parser.add_argument('-nclass', type=int, default=29,help="number of class")
@@ -400,8 +412,12 @@ def main():
         opt.ntokens = len(tokenizer.vocab)
     else:
         from utils.kFoldData import KFoldDataLoader
-        tokenizer = Tokenizer()
-        tokenizer.load(opt.tokenizer_path)
+        if os.path.exists(opt.tokenizer_path):
+            tokenizer = Tokenizer()
+            tokenizer.load(opt.tokenizer_path)
+        else:
+            tokenizer = Tokenizer()
+            tokenizer.normal_initialize(train_df)
         k_fold_data_loader = KFoldDataLoader(
                                 df=train_df,
                                 tokenizer = tokenizer,
