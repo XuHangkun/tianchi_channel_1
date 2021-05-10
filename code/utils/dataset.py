@@ -20,7 +20,7 @@ class ReportDataset(Dataset):
     """
     Dataset of medical report
     """
-    def __init__(self,df,nclass=29,max_len=70,label_smoothing=0,eda_alpha=0,n_aug=0,tf_idf=True,tf_idf_cut=0.006):
+    def __init__(self,df,nclass=29,max_len=70,label_smoothing=0,eda_alpha=0,n_aug=0,tf_idf=False,tf_idf_cut=0.006):
         """
         create a dataset from dataFrame, ['id','report','label']
         args:
@@ -117,7 +117,7 @@ class ReportDataset(Dataset):
         self.texts += self.enhanced_texts
         self.labels += self.enhanced_labels
         # randomly break up the data
-        for i in range(len(self.texts)):
+        for i in range(3*len(self.texts)):
             text_1_index = int(np.random.random()*len(self.texts))
             text_2_index = int(np.random.random()*len(self.texts))
             x = self.texts[text_1_index]
@@ -162,8 +162,8 @@ class ReportDataset(Dataset):
         split the sentence and map the tokens to word index
         """
         rep = [int(x) for x in text.split()]
-        if len(rep) >self.max_len:
-            rep = rep[:self.max_len]
+        #if len(rep) >self.max_len:
+        #    rep = rep[:self.max_len]
         return rep
 
 

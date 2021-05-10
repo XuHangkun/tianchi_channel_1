@@ -17,7 +17,7 @@ class KFoldDataLoader:
     """
     K Fold Data Loader
     """
-    def __init__(self,df,batch_size=128,k=5,nclass=17,max_len=70,label_smoothing=0,eda_alpha=0,n_aug=0,tf_idf=True,tf_idf_cut=0.006,rm_high_words=True):
+    def __init__(self,df,batch_size=128,k=5,nclass=17,max_len=70,label_smoothing=0,eda_alpha=0,n_aug=0,tf_idf=False,tf_idf_cut=0.006,rm_high_words=False):
         """
         args:
             k - k Folder, default = 5

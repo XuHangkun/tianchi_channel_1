@@ -21,7 +21,7 @@ def pad_tensor(vec, pad, dim,pad_idx,rm_high_words):
         a new tensor padded to 'pad' in dimension 'dim'
     """
     if rm_high_words :
-        remove_element = torch.tensor([693,328,380,698])
+        remove_element = torch.tensor([693,328,698])
         vec_new = torch.IntTensor([])
         for element in vec:
             if element not in remove_element:
@@ -55,7 +55,7 @@ class PadCollate:
     a batch of sequences
     """
 
-    def __init__(self, dim=0,pad_idx = 858,rm_high_words=True):
+    def __init__(self, dim=0,pad_idx = 858,rm_high_words=False):
         """
         args:
             dim - the dimension to be padded (dimension of time in sequences)
@@ -74,7 +74,6 @@ class PadCollate:
             ys - a LongTensor of all labels in batch
         """
         # find longest sequence
-        #max_len = 100
         max_len = max(map(lambda x: x[0].shape[self.dim], batch))
         # pad according to max_len
         new_batch = []

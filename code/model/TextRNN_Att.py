@@ -9,15 +9,15 @@ import copy
 class TextRNNAttConfig(object):
 
     """配置参数"""
-    def __init__(self, n_vocab=859, embedding=500,num_class=17):
+    def __init__(self, n_vocab=859, embedding=500,num_class=17, hidden_size=128, hidden_size2=128,num_layers=2):
         self.model_name = "TextRNNAtt"
         self.dropout = 0.5                                              # 随机失活
         self.num_classes = num_class                         # 类别数
         self.n_vocab = n_vocab                                                # 词表大小，在运行时赋值
         self.embedding = embedding           # 字向量维度, 若使用了预训练词向量，则维度统一
-        self.hidden_size = 128                                          # lstm隐藏层
-        self.num_layers = 2                                             # lstm层数
-        self.hidden_size2 = 64
+        self.hidden_size = hidden_size                                          # lstm隐藏层
+        self.num_layers = num_layers                                             # lstm层数
+        self.hidden_size2 = hidden_size2
 
 
 '''Attention-Based Bidirectional Long Short-Term Memory Networks for Relation Classification'''

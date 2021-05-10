@@ -191,7 +191,9 @@ def load_model(opt,device):
         model_config.padding_idx = opt.pad_token
         m_model = TextRNNModel(model_config).to(device)
     elif "TextAttRNN" in opt.model:
-        model_config = TextRNNAttConfig(opt.ntokens,opt.nemb,opt.nclass)
+        model_config = TextRNNAttConfig(opt.ntokens,opt.nemb,opt.nclass,
+                hidden_size=opt.hidden_size,hidden_size2=opt.hidden_size2,
+                num_layers=opt.lstm_layer)
         model_config.padding_idx = opt.pad_token
         m_model = TextRNNAttModel(model_config).to(device)
     elif  "TextRCNN" in opt.model:
@@ -221,7 +223,8 @@ def load_model(opt,device):
         m_model = BERTModel(model_config).to(device)
     else:
         # default TextCNN
-        model_config = TextCNNConfig(n_vocab=opt.ntokens,embedding=opt.nemb,num_class=opt.nclass,max_seq_len=opt.max_len,dropout=opt.dropout)
+        model_config = TextCNNConfig(n_vocab=opt.ntokens,embedding=opt.nemb,
+        num_class=opt.nclass,max_seq_len=opt.max_len,dropout=opt.dropout,num_filters=opt.num_filters)
         model_config.padding_idx = opt.pad_token
         m_model = TextCNNModel(model_config).to(device)
     return m_model
@@ -246,6 +249,8 @@ def main():
     parser.add_argument('-ntokens', type = int, default= 858,help="number of tokens")
     parser.add_argument('-nemb', type=int, default=100,help="embeding size")
     parser.add_argument('-hidden_size', type=int, default=256,help="hidden size")
+    parser.add_argument('-hidden_size2', type=int, default=256,help="hidden size2")
+    parser.add_argument('-num_filters', type=int, default=128,help="num_filters for textCNNSS")
     parser.add_argument('-lstm_dropout', type=float, default=0.1,help="dropout rate of lstm layer")
     parser.add_argument('-nclass', type=int, default=29,help="number of class")
     parser.add_argument('-dropout', type=float, default=0.5,help="dropout rate of end layer")
