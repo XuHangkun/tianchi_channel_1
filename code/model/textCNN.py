@@ -8,7 +8,7 @@ class TextCNNConfig(object):
     """配置参数"""
     def __init__(self,n_vocab=859,embedding=100,
             num_class=29,max_seq_len=100,dropout=0.5,
-            num_filters=128,padding_idx=0):
+            num_filters=86,padding_idx=0):
         self.model_name = 'TextCNN'
         self.dropout = dropout                                              # 随机失活
         self.n_vocab = n_vocab                                          # 词表大小，在运行时赋值

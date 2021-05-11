@@ -10,7 +10,7 @@ class Seq2SeqAttConfig(object):
     """配置参数"""
     def __init__(self, n_vocab=859,embedding=100,
             max_seq_len=100,num_class=29,dropout=0.5,lstm_layer=2,
-            hidden_size=256,lstm_dropout=0.1,padding_idx=0,high_level_size=100
+            hidden_size=512,lstm_dropout=0.3,padding_idx=0,high_level_size=100
             ):
         self.model_name = 'Seq2SeqAtt'
 
